@@ -13,16 +13,12 @@ public class TryContactPanel {
 	public static void main(String[] args) {
 		JFrame test = new JFrame();
 		test.setVisible(true);
-		
-		
-		
+
 		ContactPanel contact = new ContactPanel();
-		
+
 		test.add(contact);
-		
+
 		test.setSize(new Dimension(800, 500));
-        
-        
+
 	}
 }
-

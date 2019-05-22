@@ -1,3 +1,4 @@
+package gallery;
 
 
 import java.awt.image.BufferedImage;

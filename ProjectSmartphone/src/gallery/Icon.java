@@ -1,3 +1,4 @@
+package gallery;
 /*
  * Background picture
  * Author: Brice Berclaz & Numeric1 (forum code source CCM)
