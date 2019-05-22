@@ -28,9 +28,24 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
+import contact.ContactPanel;
 import images.Icon;
 
 public class Galerie extends JPanel {
+
+	// boolean pour savoir si la galerie s'exÈcute normalement ou dans les contacts
+	private boolean activContact = false;
+	
+	public boolean isActivContact() {
+		return activContact;
+	}
+
+	public void setActivContact(boolean activContact) {
+		this.activContact = activContact;
+	}
+	
+	//urldelimagecontact
+	private String urlContact = "";
 
 	private ArrayList<Photo> listPhoto = new ArrayList<Photo>();
 
@@ -70,6 +85,7 @@ public class Galerie extends JPanel {
 	// changement de fond d'ecran
 
 	class ClickPhoto implements ActionListener {
+		
 		String path;
 
 		public ClickPhoto(String path) {
@@ -78,19 +94,57 @@ public class Galerie extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			panelgallery.setVisible(false);
-			cardlayout.show(gettripanel(), "photo");
+			
+			//START CODING BRICE (EN TEST)
+			
+			if(activContact==true) {
+				String temp = "";
+				String temp2 = "";
+				
+				//boucle qui exÈcute un substring inversÈ pour obtenir le chemin absolu de l'image
+				for(int i=path.length()-1; i>0; i--) {
+					if(path.charAt(i)=='\\') {
+						break;
+					}
+					temp+=path.charAt(i);
+					System.out.println(path.charAt(i));
+					System.out.println(temp);
+					}
+				
+				//boucle qui remet ‡ l'endroit le chemin absolu obtenu
+				for(int i=temp.length()-1; i>=0; i--) {
+					temp2+=temp.charAt(i);
+				}
+				
+				System.out.println("TEMP2 = " + temp2);
+			
+				setUrlContact(path);
+				System.out.println(path);
+				
+				
+				
+				activContact=false;
+				
+				
+				
+				
+			}//END CODING BRICE
+			else {
+				panelgallery.setVisible(false);
+				cardlayout.show(gettripanel(), "photo");
 
-			// On va chercher la source du clique de l'image
-			MiniPhoto minsource = (MiniPhoto) e.getSource();
-			PhotoPanel photoPanel = new PhotoPanel(Galerie.this, minsource.pic);
+				// On va chercher la source du clique de l'image
+				MiniPhoto minsource = (MiniPhoto) e.getSource();
+				PhotoPanel photoPanel = new PhotoPanel(Galerie.this, minsource.pic);
 
-			// Cr√©ation d'un panel pour la photo en grand
-			photo.setLayout(new BorderLayout());
+				// Creation d'un panel pour la photo en grand
+				photo.setLayout(new BorderLayout());
 
-			// on fait un removeAll pour remettre √† z√©ro l'objet instanci√©
-			photo.removeAll();
-			photo.add(photoPanel, BorderLayout.CENTER);
+				// on fait un removeAll pour remettre a† zero l'objet instanciÈ
+				photo.removeAll();
+				photo.add(photoPanel, BorderLayout.CENTER);
+			}
+			
 		}
 	}
 
@@ -361,6 +415,14 @@ public class Galerie extends JPanel {
 		for (File photo : photos) {
 			new MiniPhoto(photo.getAbsolutePath());
 		}
+	}
+
+	public String getUrlContact() {
+		return urlContact;
+	}
+
+	public void setUrlContact(String urlContact) {
+		this.urlContact = urlContact;
 	}
 
 	private class MiniPhoto extends JButton {

@@ -24,6 +24,7 @@ import javax.swing.*;
 import calculator.CalculatorPanel;
 import clock.ClockPanel;
 import contact.ContactPanel;
+import gallery.Galerie;
 import images.Background;
 import images.Icon;
 import musicPlayer.MusicPlayerPanel;
@@ -41,6 +42,7 @@ public class Frame extends JFrame {
 	ClockPanel clockpanel = new ClockPanel();
 	SettingsPanel settingspanel = new SettingsPanel();
 	CalculatorPanel calculatorpanel = new CalculatorPanel();
+	Galerie gallerypanel = new Galerie();
 
 	// Panels emplacement
 	BannerPanel bannerPanel = new BannerPanel();
@@ -195,6 +197,7 @@ public class Frame extends JFrame {
 		iconHome.addActionListener(new Home());
 		iconShutdown.addActionListener(new Shutdown());
 
+		iconGallery.addActionListener(new RunGallery());
 		iconClock.addActionListener(new RunClock());
 		iconMusic.addActionListener(new RunMusic());
 		iconContact.addActionListener(new RunContact());
@@ -207,6 +210,7 @@ public class Frame extends JFrame {
 		switchPanel.add(contactpanel, "contactpanel");
 		switchPanel.add(settingspanel, "settingspanel");
 		switchPanel.add(calculatorpanel, "calculatorpanel");
+		switchPanel.add(gallerypanel, "gallerypanel");
 
 		// rajouter le smartphone dans la frame principale
 		this.add(smartphone);
@@ -240,6 +244,17 @@ public class Frame extends JFrame {
 	 * METHODES ACTION LISTENER
 	 */
 
+	// RUNGALLERY
+	private class RunGallery implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			cardLayout.show(switchPanel, "gallerypanel");
+			
+			
+		}
+	}
+	
+	
 	// SHUTDOWN
 	private class Shutdown implements ActionListener {
 		@Override

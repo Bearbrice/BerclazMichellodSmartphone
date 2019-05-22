@@ -16,11 +16,11 @@ import java.io.IOException;
 import java.io.Serializable;
 
 public class ContactData implements Serializable {
-	
-	//Variable qui stock l'id du contact en création
-	//int idContact=Integer.parseInt(read());
 
-	//Initialisation des variables
+	// Variable qui stock l'id du contact en création
+	// int idContact=Integer.parseInt(read());
+
+	// Initialisation des variables
 	private int id;
 	private String prenom;
 	private String nom;
@@ -28,79 +28,70 @@ public class ContactData implements Serializable {
 	private String telephoneFixe;
 	private String adresse;
 	private String organisation;
-	
-	//Constructeur
-	public ContactData(int id, String prenom, String nom, String telephonePrive, String telephoneFixe, String adresse, String organisation){
-		this.id=id;
+	// private String urlPicture;
+
+	// Constructeur
+	public ContactData(int id, String prenom, String nom, String telephonePrive, String telephoneFixe, String adresse,
+			String organisation) {
+		this.id = id;
 		setPrenom(prenom);
 		setNom(nom);
 		setTelephonePrive(telephonePrive);
 		setTelephoneFixe(telephoneFixe);
 		setAdresse(adresse);
 		setOrganisation(organisation);
+		// setUrl(urlPicture);
 	}
-	
+
 	public ContactData() {
-		
+
 	}
-	
-	//Methode de lecture du fichier
-	/*private String read()
-	{
-		String retour="";
-		
-		File dossier = new File("src/Contact");
-		dossier.mkdir();
-		
-		File fichier = new File(dossier, "data.txt");
-		
-		try {
-			FileReader read = new FileReader(fichier);
-			BufferedReader bfread = new BufferedReader(read);
-			retour = bfread.readLine();
-			read.close();
-			bfread.close();
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		return retour;
-	}*/
-	
-	//Methode d'écriture du fichier
-	/*private void write(int idContact)
-	{
-		this.idContact=idContact;
-		
-		File dossier = new File("src/Contact");
-		dossier.mkdir();
-		
-		File fichier = new File(dossier, "data.txt");
-		
-		try {
-			fichier.createNewFile();
-			
-			FileWriter ecriture = new FileWriter(fichier);
-			BufferedWriter bfwrite = new BufferedWriter(ecriture);
-			bfwrite.write(Integer.toString(idContact)); 
-			bfwrite.close();
-		
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}*/
-	
-	//Méthode getters & setters
-	/*public int getIdContact() {
-		return idContact;
-	}*/
-	
+
+	// Methode de lecture du fichier
+	/*
+	 * private String read() { String retour="";
+	 * 
+	 * File dossier = new File("src/Contact"); dossier.mkdir();
+	 * 
+	 * File fichier = new File(dossier, "data.txt");
+	 * 
+	 * try { FileReader read = new FileReader(fichier); BufferedReader bfread = new
+	 * BufferedReader(read); retour = bfread.readLine(); read.close();
+	 * bfread.close();
+	 * 
+	 * } catch (IOException e) { e.printStackTrace(); }
+	 * 
+	 * return retour; }
+	 */
+
+	// Methode d'écriture du fichier
+	/*
+	 * private void write(int idContact) { this.idContact=idContact;
+	 * 
+	 * File dossier = new File("src/Contact"); dossier.mkdir();
+	 * 
+	 * File fichier = new File(dossier, "data.txt");
+	 * 
+	 * try { fichier.createNewFile();
+	 * 
+	 * FileWriter ecriture = new FileWriter(fichier); BufferedWriter bfwrite = new
+	 * BufferedWriter(ecriture); bfwrite.write(Integer.toString(idContact));
+	 * bfwrite.close();
+	 * 
+	 * } catch (IOException e) { e.printStackTrace(); } }
+	 */
+
+	// Méthode getters & setters
+	/*
+	 * public int getIdContact() { return idContact; }
+	 */
+
+	@Override
 	public String toString() {
-		//return String.format("ContactData X ~ [id: #%d, name: %s]", id, prenom, nom);
-		return prenom + " " + nom + " - " + telephonePrive + " - "+ organisation;
+		// return String.format("ContactData X ~ [id: #%d, name: %s]", id, prenom, nom);
+		return prenom + " " + nom + " - " + telephonePrive + " - " + organisation;
 	}
-	
+
 	public String getPrenom() {
 		return prenom;
 	}
@@ -148,5 +139,11 @@ public class ContactData implements Serializable {
 	public void setOrganisation(String organisation) {
 		this.organisation = organisation;
 	}
-	
+
+	/*
+	 * public String getUrl() { return urlPicture; }
+	 * 
+	 * public void setUrl(String urlPicture) { this.urlPicture = urlPicture; }
+	 */
+
 }
