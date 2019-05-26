@@ -36,10 +36,12 @@ public class Galerie extends JPanel {
 	// boolean pour savoir si la galerie s'exécute normalement ou dans les contacts
 	private boolean activContact = false;
 	
+	//getter pour activContact
 	public boolean isActivContact() {
 		return activContact;
 	}
 
+	//setter pour activContact
 	public void setActivContact(boolean activContact) {
 		this.activContact = activContact;
 	}
@@ -55,7 +57,7 @@ public class Galerie extends JPanel {
 	JPanel center = new JPanel();
 	JPanel photo = new JPanel();
 
-	// fond d'Ã©cran Background
+	// fond d'ecran Background
 
 	// Gestion des panels dans la galerie
 	private CardLayout cardlayout = new CardLayout();
@@ -107,8 +109,8 @@ public class Galerie extends JPanel {
 						break;
 					}
 					temp+=path.charAt(i);
-					System.out.println(path.charAt(i));
-					System.out.println(temp);
+					//System.out.println(path.charAt(i));
+					//System.out.println(temp);
 					}
 				
 				//boucle qui remet à l'endroit le chemin absolu obtenu
@@ -116,19 +118,20 @@ public class Galerie extends JPanel {
 					temp2+=temp.charAt(i);
 				}
 				
-				System.out.println("TEMP2 = " + temp2);
+				setUrlContact("imagesgallery/" + temp2);
 			
-				setUrlContact(path);
+				//setUrlContact(path);
 				System.out.println(path);
+				
+				System.out.println("TEMP2 = " + temp2);
 				
 				
 				
 				activContact=false;
-				
-				
-				
-				
-			}//END CODING BRICE
+			}
+			//END CODING BRICE
+			
+			//else = utilisation normale de la galerie by SAMUEL
 			else {
 				panelgallery.setVisible(false);
 				cardlayout.show(gettripanel(), "photo");
@@ -401,7 +404,7 @@ public class Galerie extends JPanel {
 		return tripanel;
 	}
 
-	private void actualisePhoto() {
+	public void actualisePhoto() {
 		center.removeAll();
 		listPhoto.clear();
 

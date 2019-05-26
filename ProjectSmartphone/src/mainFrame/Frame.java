@@ -305,6 +305,9 @@ public class Frame extends JFrame {
 			// REMETTRE A FALSE SINON A CHAQUE FOIS QU'ON LANCE CONTACT ON PERD TOUS LES
 			// CONTACTS
 			settingspanel.setResetToFalse();
+			
+			//Actualiser la galerie des contacts
+			contactpanel.actualiseGalleryC();
 
 			cardLayout.show(switchPanel, "contactpanel");
 		}

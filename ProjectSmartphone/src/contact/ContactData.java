@@ -28,11 +28,12 @@ public class ContactData implements Serializable {
 	private String telephoneFixe;
 	private String adresse;
 	private String organisation;
-	// private String urlPicture;
+	private String locPicture;
+
 
 	// Constructeur
 	public ContactData(int id, String prenom, String nom, String telephonePrive, String telephoneFixe, String adresse,
-			String organisation) {
+			String organisation, String locPicture) {
 		this.id = id;
 		setPrenom(prenom);
 		setNom(nom);
@@ -40,7 +41,7 @@ public class ContactData implements Serializable {
 		setTelephoneFixe(telephoneFixe);
 		setAdresse(adresse);
 		setOrganisation(organisation);
-		// setUrl(urlPicture);
+		setLocPicture(locPicture);
 	}
 
 	public ContactData() {
@@ -139,11 +140,15 @@ public class ContactData implements Serializable {
 	public void setOrganisation(String organisation) {
 		this.organisation = organisation;
 	}
+	
+	public String getLocPicture() {
+		return locPicture;
+	}
 
-	/*
-	 * public String getUrl() { return urlPicture; }
-	 * 
-	 * public void setUrl(String urlPicture) { this.urlPicture = urlPicture; }
-	 */
+	public void setLocPicture(String locPicture) {
+		this.locPicture = locPicture;
+	}
+
+	
 
 }
