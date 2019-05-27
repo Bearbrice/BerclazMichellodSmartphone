@@ -54,6 +54,7 @@ public class ContactPanel extends JPanel {
 	Icon iconBack = new Icon("images/icons/Back-48.png", 24, 24);
 
 	private final String urlStatic = "images/icons/Unknown.jpg";
+	private final String imageNotFound = "images/icons/ImageNotFound.jpg";
 	private String urlPicture = "images/icons/Unknown.jpg";
 	private String currentPanel = "center";
 	
@@ -356,10 +357,7 @@ public class ContactPanel extends JPanel {
 			//on n'affiche plus l'image du contact supprimé
 			pictureContact.setLocation(urlStatic);
 			pictureContact.refresh();
-			
-			
-			
-			
+					
 		}
 
 	}
@@ -399,9 +397,30 @@ public class ContactPanel extends JPanel {
 				pictureContact.setLocation(allcontact.get(selectedIndex).getLocPicture());
 			}
 			
-			//Met à jour l'icone en fonction de la sélection
+/*			//Met à jour l'icone en fonction de la sélection
+			try {
 			pictureContact.refresh();
+			}
+			catch(Exception x) { //gérer l'exception d'une image supprimée
+				pictureContact.setLocation("images/icons/ImageNotFound.jpg");
+				pictureContact.refresh();
+				
+			}
+*/
+			//Met à jour l'icone en fonction de la sélection
+//			File f = new File(pictureContact.getLocationURL());
+//			if(f.isFile())
+//			{ 
+//				pictureContact.refresh();
+//			}
+//			
+//			//gérer l'exception d'une image supprimée
+//			else {
+//				pictureContact.setLocation(imageNotFound);
+//				pictureContact.refresh();
+//			}
 			
+			pictureContact.refresh();
 		}
 
 	}
@@ -530,7 +549,7 @@ public class ContactPanel extends JPanel {
        	 
        	 //System.out.println(currentPanel);
        	 
-       	 //définit le chemin vers la photo du contact
+       	 //Définit le chemin vers la photo du contact
        	 urlPicture=gallery.getUrlContact();
        	 
        	 if(currentPanel=="contactEdit") {          	 
@@ -559,7 +578,7 @@ public class ContactPanel extends JPanel {
     //Methode qui permet d'exécuter le runnable
     private void executeRunnable() {
     	ExecutorService executor = Executors.newCachedThreadPool();
-	     executor.submit(r);
+	    executor.submit(r);
 	    //this line will execute immediately, not waiting for your task to complete
     }
 
@@ -823,6 +842,24 @@ public class ContactPanel extends JPanel {
 		public void repaintEdit() {
 			pictureContactEdit.setLocation(urlPicture);
 			pictureContactEdit.refresh();
+			
+			
+			
+//			System.out.println(pictureContactEdit.getLocationURL());
+//			
+//			//Met à jour l'icone en fonction de la sélection
+//			File f = new File(pictureContactEdit.getLocationURL());
+//			if(f.isFile())
+//			{ 
+//				pictureContactEdit.refresh();
+//			}
+//			
+//			//gérer l'exception d'une image supprimée
+//			else {
+//				pictureContactEdit.setLocation(imageNotFound);
+//				pictureContactEdit.refresh();
+//			}
+			
 		}
 
 		private void panelProperties() {
@@ -839,8 +876,9 @@ public class ContactPanel extends JPanel {
 			jtftelephonefixe.setText(allcontact.get(selectedIndex).getTelephoneFixe());
 			jtfadresse.setText(allcontact.get(selectedIndex).getAdresse());
 			jtforganisation.setText(allcontact.get(selectedIndex).getOrganisation());
-			
+		
 			pictureContactEdit.setLocation(allcontact.get(selectedIndex).getLocPicture());
+			
 		}
 
 		// ACTION LISTENER SAVE

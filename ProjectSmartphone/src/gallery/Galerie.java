@@ -162,8 +162,10 @@ public class Galerie extends JPanel {
 
 		Icon delete = new Icon("images/icons/delete.png", 48, 48);
 		Icon previous = new Icon("images/icons/left-arrow.png", 48, 48);
-		// Icon background = new Icon ("Projet\\icons8-fond-d'écran-filled-50.png",
-		// 48,48);
+		Icon background = new Icon ("Projet\\icons8-fond-d'écran-filled-50.png",
+		48,48);
+		
+		private JPanel test = new JPanel();
 
 		public PhotoPanel(Galerie photo, Photo image) {
 			this.photo = photo;
@@ -176,14 +178,18 @@ public class Galerie extends JPanel {
 			up.setLayout(new BorderLayout());
 			up.setBackground(Color.BLACK);
 			this.add(up, BorderLayout.NORTH);
+			
+			test.add(background);
 
 			up.add(previous, BorderLayout.WEST);
 			up.add(delete, BorderLayout.EAST);
-			// up.add(background, BorderLayout.CENTER);
+			up.add(test, BorderLayout.CENTER);
 
 			previous.addActionListener(new Previous());
 			delete.addActionListener(new Delete(image));
 			// background.addActionListener(new Background());
+			
+			
 
 			up.setVisible(true);
 

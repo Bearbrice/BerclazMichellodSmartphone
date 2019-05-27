@@ -35,7 +35,8 @@ import settings.SettingsPanel;
 import settings.WLAN;
 
 public class Frame extends JFrame {
-
+	private String bgPath;
+	
 	// Panels
 	ContactPanel contactpanel = new ContactPanel();
 	MusicPlayerPanel musicpanel = new MusicPlayerPanel();
@@ -289,6 +290,9 @@ public class Frame extends JFrame {
 			musicpanel.checkProgress();
 			bannerPanel.setVisibleIconMusic(musicpanel.isInProgress());
 			bannerPanel.refreshNetwork();
+			
+			//bgPath=Galerie.getpathbg;
+			//background.setBackgroundPath(bgPath);
 		}
 	}
 
