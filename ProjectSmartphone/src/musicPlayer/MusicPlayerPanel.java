@@ -7,20 +7,35 @@
 
 package musicPlayer;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
-import javax.swing.*;
+import javax.swing.AbstractButton;
+import javax.swing.ButtonGroup;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import images.Icon;
-import panels.BannerPanel;
+
+
 
 public class MusicPlayerPanel extends JPanel {
 
@@ -34,6 +49,10 @@ public class MusicPlayerPanel extends JPanel {
 	JLabel nameMusic1 = new JLabel("Hardwell & Wildstylez feat. KiFi - \n Shine A Light");
 	JLabel nameMusic2 = new JLabel("Tiësto - WOW");
 	JLabel nameMusic3 = new JLabel("Mike Williams - The Beat (Hardwell Edit)");
+	
+	Icon addMusic = new Icon("images/icons/AddMusic-48.png", 24, 24);
+	
+	ArrayList<Track> alltracks = new ArrayList<Track>();
 
 	private String locationM1 = "music/Shine a Light (feat. KiFi).wav";
 	private String locationM2 = "music/WOW.wav";
@@ -43,6 +62,14 @@ public class MusicPlayerPanel extends JPanel {
 	JRadioButton JRBmusic1 = new JRadioButton();
 	JRadioButton JRBmusic2 = new JRadioButton();
 	JRadioButton JRBmusic3 = new JRadioButton();
+	
+	JRadioButton select;
+	JPanel content = new JPanel(new GridLayout(0,1));
+	
+	JScrollPane scrollPane;
+	
+	
+    
 
 	// PANELS
 	JPanel track1 = new JPanel();
@@ -55,16 +82,65 @@ public class MusicPlayerPanel extends JPanel {
 	String location;
 
 	Clip clip;
+	
+	public void actualize() {
+		String location;
+		String musicTitle;
+		
+		File folder = new File("music");
+
+		if (!folder.exists()) {
+			return;
+		}
+	
+		//Tableau temporaire avec tous les fichiers du dossier music
+		File[] all = folder.listFiles();
+		
+		//On vide le tableau dynamique
+		alltracks.removeAll(alltracks);
+		
+		
+		for(int i=0; i<all.length; i++) {
+			//On recupere le nom du fichier et on enleve l'extension .wav (4 char)
+			musicTitle=all[i].getName().substring(0, all[i].getName().length()-4);
+			
+			//On recupere le chemin relatif
+			location=all[i].toString();
+			
+			//On ajoute les tracks dans le tableau dynamique
+			alltracks.add(new Track(musicTitle, location));
+		}
+		
+		//Supprime tous les JRADIOBUTTONs
+		content.removeAll();
+	    
+		//Ajoute tous les JRADIOBUTTONs
+	    for(int i=0; i<alltracks.size(); i++){
+	        select = new JRadioButton(alltracks.get(i).getTitle());
+	        select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
+			select.setForeground(Color.DARK_GRAY);
+	        content.add(select);
+	        
+	        //permet la sélection d'un seul bouton à la fois
+	        BG.add(select);
+	        
+	       	        
+	     }
+	    
+	    scrollPane = new JScrollPane(content);
+	}
 
 	// Constructor
 	public MusicPlayerPanel() {
-
+		actualize();
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		// this.setTitle("Test Sound Clip");
 		this.setPreferredSize(new Dimension(638, 188));
 		this.setVisible(true);
 		this.setOpaque(false);
 		this.setLayout(new BorderLayout());
+		
+		
 
 		labelProperties();
 
@@ -79,6 +155,7 @@ public class MusicPlayerPanel extends JPanel {
 		JRBmusic3.setOpaque(false);
 
 		// Ajout du titre
+		banner.add(addMusic);
 		banner.add(title);
 		banner.setBackground(Color.GRAY);
 
@@ -111,9 +188,11 @@ public class MusicPlayerPanel extends JPanel {
 		iconPlay.addActionListener(new Play());
 		iconPause.addActionListener(new Pause());
 		iconStop.addActionListener(new Stop());
+		addMusic.addActionListener(new AddMusic());
 
 		this.add(banner, BorderLayout.NORTH);
-		this.add(tracks, BorderLayout.CENTER);
+		//this.add(tracks, BorderLayout.CENTER);
+		this.add(scrollPane, BorderLayout.CENTER);
 		this.add(manager, BorderLayout.SOUTH);
 
 	}
@@ -134,30 +213,61 @@ public class MusicPlayerPanel extends JPanel {
 
 	// findLocation
 	private String findLocation() {
-		String emplacement = "";
-		if (JRBmusic1.isSelected())
-			emplacement = locationM1;
+		String name="";
+		String emplacement="";
+		
+		
+		//source : https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
+		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
+            AbstractButton button = buttons.nextElement();
 
-		if (JRBmusic2.isSelected())
-			emplacement = locationM2;
+            if (button.isSelected()) {
+                name = button.getText();
+            }
+        }
+		
+		for(int i=0; i<alltracks.size(); i++) {
+			if(alltracks.get(i).getTitle()==name) {
+				emplacement=alltracks.get(i).getPath();
+				return emplacement;
+			}
+		}
 
-		if (JRBmusic3.isSelected())
-			emplacement = locationM3;
-
-		return emplacement;
+        return null;
 	}
 
 	// methode play (start)
 	public void play(Clip clip) {
-		// Permet d'enlever l'erreur java si aucun son n'est sélectionné
-		/*
-		 * if(location==null) { return; }
-		 */
-		if (!JRBmusic1.isSelected())
+		// Permet de gérer l'erreur java si le son est introuvable
+		if(findLocation()==null) {
+			return;
+		}
+		
+		//On test si aucun bouton n'est sélectionné alors rien ne se passe
+		int i=-1;
+		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
+			
+            AbstractButton button = buttons.nextElement();
+
+            if (button.isSelected()) {
+                i=1;
+            }
+        }
+		
+		if(i==-1) {
+			System.out.println("Aucun bouton sélectionné");
+			return;
+		}
+		
+		
+		/*if (!JRBmusic1.isSelected())
 			if (!JRBmusic2.isSelected())
 				if (!JRBmusic3.isSelected())
-					return;
+					return;*/
+		
+		System.out.print(findLocation());
 
+		
 		// met sur pause avant de démarrer une nouvelle music
 		pause(clip);
 
@@ -196,6 +306,72 @@ public class MusicPlayerPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			play(clip);
+		}
+	}
+	
+	private class AddMusic implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			/*JFileChooser choisir = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("wav");
+			choisir.setAcceptAllFileFilterUsed(false);
+			choisir.setFileFilter(filter);*/
+			
+			/*JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
+			
+			//jfc.showOpenDialog(content);
+			
+			int returnValue = jfc.showOpenDialog(content);
+			// int returnValue = jfc.showSaveDialog(null);
+			File selectedFile=new File("");
+			
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				selectedFile = jfc.getSelectedFile();
+				System.out.println(selectedFile.getAbsolutePath());
+			}
+			
+			String z=selectedFile.getName();
+			
+			Path source = Paths.get(selectedFile.getAbsolutePath());
+		    Path destination = Paths.get("/music/"+z);
+		 
+		    try {
+				Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}*/
+			
+			JFileChooser choisir = new JFileChooser();
+			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
+			choisir.setAcceptAllFileFilterUsed(false);
+			choisir.setFileFilter(filter);
+
+			int returnVal = choisir.showOpenDialog(content);
+
+			if (returnVal == JFileChooser.APPROVE_OPTION) {
+				File file = choisir.getSelectedFile();
+				String temp = file.getName();
+
+				String newName = Track.copy(file);
+
+				actualize();
+				content.repaint();
+				scrollPane.repaint();
+				//revalidate();
+				//repaint();
+			}
+			
+			
+			
+
+//			int returnVal = choisir.showOpenDialog(this);
+//
+//			if (returnVal == JFileChooser.APPROVE_OPTION) {
+//				File file = choisir.getSelectedFile();
+//				String temp = file.getName();
+			
+			actualize();
 		}
 	}
 

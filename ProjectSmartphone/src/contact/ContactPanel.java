@@ -13,8 +13,7 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -27,13 +26,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
-import javax.swing.JDialog;
+
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-import javax.swing.ListModel;
+
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
@@ -664,6 +663,7 @@ public class ContactPanel extends JPanel {
 			this.setVisible(true);
 		}
 		
+		//Methode qui rafraichit la photo contact du panel
 		public void repaintAdd() {
 			pictureContactAdd.setLocation(urlPicture);
 			pictureContactAdd.refresh();

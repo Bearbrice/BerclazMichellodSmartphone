@@ -111,7 +111,7 @@ public class Galerie extends JPanel {
 					temp+=path.charAt(i);
 					//System.out.println(path.charAt(i));
 					//System.out.println(temp);
-					}
+				}
 				
 				//boucle qui remet à l'endroit le chemin absolu obtenu
 				for(int i=temp.length()-1; i>=0; i--) {
