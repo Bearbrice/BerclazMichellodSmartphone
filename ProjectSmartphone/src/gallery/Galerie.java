@@ -7,6 +7,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -21,6 +23,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -57,7 +60,9 @@ public class Galerie extends JPanel {
 	JPanel center = new JPanel();
 	JPanel photo = new JPanel();
 
-	// fond d'ecran Background
+
+	
+	
 
 	// Gestion des panels dans la galerie
 	private CardLayout cardlayout = new CardLayout();
@@ -83,8 +88,8 @@ public class Galerie extends JPanel {
 
 	}
 
-	// Classe qui va gerer le cique sur le bouton image de la galerie et le
-	// changement de fond d'ecran
+	// Classe qui va gerer le cique sur le bouton image de la galerie
+	
 
 	class ClickPhoto implements ActionListener {
 		
@@ -111,7 +116,7 @@ public class Galerie extends JPanel {
 					temp+=path.charAt(i);
 					//System.out.println(path.charAt(i));
 					//System.out.println(temp);
-				}
+					}
 				
 				//boucle qui remet à l'endroit le chemin absolu obtenu
 				for(int i=temp.length()-1; i>=0; i--) {
@@ -149,6 +154,7 @@ public class Galerie extends JPanel {
 			}
 			
 		}
+		
 	}
 
 	public class PhotoPanel extends JPanel {
@@ -159,13 +165,12 @@ public class Galerie extends JPanel {
 		// private Background fondEcran;
 
 		JPanel up = new JPanel();
+		
+		JPanel backgroundIcon = new JPanel();
 
 		Icon delete = new Icon("images/icons/delete.png", 48, 48);
 		Icon previous = new Icon("images/icons/left-arrow.png", 48, 48);
-		Icon background = new Icon ("Projet\\icons8-fond-d'Ã©cran-filled-50.png",
-		48,48);
-		
-		private JPanel test = new JPanel();
+		Icon background = new Icon ("images\\icons\\icons8-fond-d'écran-filled-50.png", 48,48);
 
 		public PhotoPanel(Galerie photo, Photo image) {
 			this.photo = photo;
@@ -174,22 +179,30 @@ public class Galerie extends JPanel {
 			BorderLayout borderlayout = new BorderLayout();
 			this.setLayout(borderlayout);
 			this.setBackground(Color.BLACK);
+			
+			
 
+            backgroundIcon.add(background);
+            
+            backgroundIcon.setBackground(Color.BLACK);
+
+        
+			
+			
+			
+			up.add(backgroundIcon, BorderLayout.CENTER);
 			up.setLayout(new BorderLayout());
 			up.setBackground(Color.BLACK);
 			this.add(up, BorderLayout.NORTH);
 			
-			test.add(background);
-
+			
 			up.add(previous, BorderLayout.WEST);
 			up.add(delete, BorderLayout.EAST);
-			up.add(test, BorderLayout.CENTER);
+            up.add(backgroundIcon, BorderLayout.CENTER);
 
 			previous.addActionListener(new Previous());
-			delete.addActionListener(new Delete(image));
-			// background.addActionListener(new Background());
-			
-			
+			delete.addActionListener(new ConfirmationDelete());
+			background.addActionListener(new BackgroundListener());
 
 			up.setVisible(true);
 
@@ -265,44 +278,131 @@ public class Galerie extends JPanel {
 			return changeImage;
 		}
 
-		public class Delete implements ActionListener {
-
-			Photo image;
-
-			public Delete(Photo image) {
-				this.image = image;
-			}
+		public class ConfirmationDelete implements ActionListener {
+			
+			private JDialog confirmation = new JDialog();
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			        JLabel warning = new JLabel("Delete this photo?");
+		            JButton yes = new JButton("Yes");
+		            JButton no = new JButton("No");
+		            JPanel north = new JPanel();
+		            JPanel center = new JPanel();
 
-				String[] options = { "supprimer", "annuler" };
-
-				if (e.getSource() == delete) {
-					int reply = JOptionPane.showOptionDialog(null, "Vous etes sur de vouloir supprimer cette photo?",
-							"Attention", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, options,
-							options[0]);
-
-					if (reply == JOptionPane.YES_OPTION) {
-
-						image.delete();
-
-						removeChild(Galerie.this);
-
-						JOptionPane.showMessageDialog(null, "photo supprimee avec succes");
-
-					} else {
-						remove(reply);
-					}
-					{
-
-					}
-				}
-
+		            north.add(warning);
+		            center.add(yes);
+		            center.add(no);
+		            
+		            yes.addActionListener(new Delete());
+		            no.addActionListener(new CloseDialog());
+		            
+		            confirmation.add(north, BorderLayout.NORTH);
+		            confirmation.add(center, BorderLayout.CENTER);
+		            
+		            
+		            confirmation.setLocation(620,400);
+		            confirmation.setTitle("Warning");
+		            
+		            confirmation.pack();
+		            
+		            
+		            confirmation.setVisible(true);
+		            confirmation.setAlwaysOnTop(true);
+		       
+		            
 			}
+			
+			public class Delete implements ActionListener {
 
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					image.delete();
+					removeChild(panelgallery);
+					confirmation.dispose();
+				}
+				
+			}
+			   public class CloseDialog implements ActionListener {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					confirmation.dispose();
+				
+			   }
+			   }
 		}
-	}
+		
+		
+			public class BackgroundListener implements ActionListener {
+			
+			private JDialog confirmation = new JDialog();
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				
+			        JLabel warning = new JLabel("Set this photo as background?");
+		            JButton yes = new JButton("Yes");
+		            JButton no = new JButton("No");
+		            JPanel north = new JPanel();
+		            JPanel center = new JPanel();
+
+		            north.add(warning);
+		            center.add(yes);
+		            center.add(no);
+		            
+		            yes.addActionListener(new Background());
+		            no.addActionListener(new CloseDialog());
+		            confirmation.add(north, BorderLayout.NORTH);
+		            confirmation.add(center, BorderLayout.CENTER);
+		            
+		            
+		            confirmation.setLocation(620,400);
+		            confirmation.setTitle("Warning");
+		            
+		            confirmation.pack();
+		            
+		            
+		            confirmation.setVisible(true);
+		            confirmation.setAlwaysOnTop(true);
+		       
+		            
+			}
+			
+
+            public class Background implements ActionListener {
+    			
+    			private String pathbg;
+    			
+    			@Override
+    			public void actionPerformed(ActionEvent e) {
+    				confirmation.dispose();
+    			}
+
+    			public String getPathbg() {
+    				return pathbg;
+    			}
+
+    			public void setPathbg(String pathbg) {
+    				this.pathbg = pathbg;
+    			}
+
+    		}
+			   public class CloseDialog implements ActionListener {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					confirmation.dispose();
+				
+			   }
+			   }
+		}
+	
+		        }	
 
 	private void removeChild(JPanel PaneltoRemove) {
 		panelgallery.setVisible(true);
@@ -386,17 +486,7 @@ public class Galerie extends JPanel {
 
 	}
 
-	public class Background implements ActionListener {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-
-			JOptionPane.showConfirmDialog(null, "Definir en tant que fond d'ecran ?", "", JOptionPane.YES_NO_OPTION);
-
-		}
-
-	}
 
 	public int getNextPhoto(Photo actuelle) {
 		return listPhoto.indexOf(actuelle);
