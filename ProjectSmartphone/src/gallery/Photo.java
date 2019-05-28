@@ -63,8 +63,6 @@ public class Photo implements Serializable{
 		
 		return newName;
 	}
-
-
 	
 	public String getPath() {
 		return path;

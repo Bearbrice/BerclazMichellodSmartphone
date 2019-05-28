@@ -33,8 +33,22 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import contact.ContactPanel;
 import images.Icon;
+import images.Background;
 
 public class Galerie extends JPanel {
+	//path pour background
+	private String pathbg;
+	private boolean activeBGserialization=false;
+	
+	public boolean isActiveBGserialization() {
+		return activeBGserialization;
+	}
+
+	public void setActiveBGserialization(boolean activeBGserialization) {
+		this.activeBGserialization = activeBGserialization;
+	}
+
+	Background change = new Background();
 
 	// boolean pour savoir si la galerie s'exécute normalement ou dans les contacts
 	private boolean activContact = false;
@@ -61,16 +75,16 @@ public class Galerie extends JPanel {
 	JPanel photo = new JPanel();
 
 
-	
-	
-
 	// Gestion des panels dans la galerie
 	private CardLayout cardlayout = new CardLayout();
 	private JPanel tripanel = new JPanel(cardlayout);
 
 	// pour le scroll
 	JScrollPane scroll = new JScrollPane(center);
-
+	
+	
+	
+	//Constructeur
 	public Galerie() {
 
 		this.setPreferredSize(new Dimension(480, 40));
@@ -85,7 +99,18 @@ public class Galerie extends JPanel {
 		tripanel.add(photo, "photo");
 		panelgallery.setBackground(Color.DARK_GRAY);
 		actualisePhoto();
+		
+		
+		
 
+	}
+	
+	public String getPathbg() {
+		return pathbg;
+	}
+
+	public void setPathbg(String pathbg) {
+		this.pathbg = pathbg;
 	}
 
 	// Classe qui va gerer le cique sur le bouton image de la galerie
@@ -156,6 +181,8 @@ public class Galerie extends JPanel {
 		}
 		
 	}
+	
+
 
 	public class PhotoPanel extends JPanel {
 		private Galerie photo;
@@ -376,33 +403,73 @@ public class Galerie extends JPanel {
 
             public class Background implements ActionListener {
     			
-    			private String pathbg;
-    			
     			@Override
     			public void actionPerformed(ActionEvent e) {
     				confirmation.dispose();
-    			}
-
-    			public String getPathbg() {
-    				return pathbg;
-    			}
-
-    			public void setPathbg(String pathbg) {
-    				this.pathbg = pathbg;
+    				//setPathbg(image.getPath());
+    				//change.changeBackground(image.getPath());
+    				String tempPath;
+    				tempPath=image.getPath();
+    				
+    				System.out.println("imagegetpath: " + tempPath);
+    				
+    				tempPath=findRelativePath(tempPath);
+    				
+    				System.out.println("tempPath: " + tempPath);
+    				
+    				setPathbg(tempPath);
+    				
+    				//activer le boolean pour que la serialization se fasse dans la frame
+    				setActiveBGserialization(true);
     			}
 
     		}
-			   public class CloseDialog implements ActionListener {
+			public class CloseDialog implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					confirmation.dispose();
 				
 			   }
-			   }
+			}
+			
+			//Permet de retrouver le chemin relatif
+			private String findRelativePath(String x) {
+				String newPath = null;
+				int z=0;
+				int profondeur=0;
+				
+				x = x.replace("\\", "/");
+								
+				for(int i=x.length()-1; i>0; i--) {
+					if(x.charAt(i)=='/') {
+						//x.charAt(i).
+						newPath=x.substring(x.length()-z, x.length());
+						profondeur++;
+						
+						//on veut obtenir 2 de profondeur
+						if(profondeur==2) {
+							break;
+						}
+						
+					}
+					z++;
+				}
+				
+				return newPath;
+			}
+			  
+			
+			
+			
+			
+			
 		}
 	
-		        }	
+	}	
+	
+
+		
 
 	private void removeChild(JPanel PaneltoRemove) {
 		panelgallery.setVisible(true);

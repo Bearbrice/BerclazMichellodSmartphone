@@ -10,20 +10,36 @@ package images;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-public class Background extends JPanel {
+import contact.ContactData;
 
-	private String defaultBackground = "images/backgrounds/Background01.jpg";
-	private String backgroundPath = defaultBackground;
+public class Background extends JPanel {
+	
+	private String backgroundPath = "images/backgrounds/Background01.jpg";
 
 	// Constructeur
 	public Background() {
-
+		
 	}
+	
+	public String getBackgroundPath() {
+		return backgroundPath;
+	}
+
+	public void setBackgroundPath(String backgroundPath) {
+		this.backgroundPath = backgroundPath;
+	}
+	
+	
 
 	@Override
 	public void paintComponent(Graphics g) {
@@ -41,13 +57,7 @@ public class Background extends JPanel {
 		}
 	}
 	
-	public String getBackgroundPath() {
-		return backgroundPath;
-	}
 
-	public void setBackgroundPath(String backgroundPath) {
-		this.backgroundPath = backgroundPath;
-	}
 
 //	public String getDefaultBackground() {
 //		return defaultBackground;

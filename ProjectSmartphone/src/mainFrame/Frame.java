@@ -16,7 +16,12 @@ import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -26,6 +31,7 @@ import clock.ClockPanel;
 import contact.ContactPanel;
 import gallery.Galerie;
 import images.Background;
+import images.BackgroundData;
 import images.Icon;
 import musicPlayer.MusicPlayerPanel;
 import panels.BannerPanel;
@@ -71,6 +77,7 @@ public class Frame extends JFrame {
 	ContouringPanel smartphone = new ContouringPanel();
 	ScreenPanel screen = new ScreenPanel();
 	Background background = new Background();
+	BackgroundData bgdata = new BackgroundData();
 
 	// Icons applications
 	Icon iconContact = new Icon("images/icons/Contacts-48.png", 48, 48);
@@ -99,7 +106,9 @@ public class Frame extends JFrame {
 
 	public Frame(String title) {
 		frameSettings(title);
-
+		
+		deserializeBG();
+		
 		// PANEL DU HAUT
 		smartphone.add(bannerPanel, BorderLayout.NORTH);
 
@@ -240,6 +249,65 @@ public class Frame extends JFrame {
 		background.add(iconEmpty);
 		background.add(iconEmpty);
 	}
+	
+	//SERIALIZEBACKGROUND
+	private void serializeBG() {
+		// Sérialisation du fond d'écran
+		FileOutputStream fos;
+		try {
+			fos = new FileOutputStream("serialization/background.ser");
+
+			ObjectOutputStream oos = new ObjectOutputStream(fos); // permet d'écrire au niveau du flux de sortie
+
+			oos.writeObject(bgdata);
+			
+			System.out.println("serialization effectuée : " + bgdata.getBackgroundPath());
+		
+			oos.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	//DESERIALIZEBACKGROUND
+			public void deserializeBG() {
+				File f = new File("serialization/background.ser");
+				if (f.isFile()) {
+					FileInputStream fis;
+					try {
+						fis = new FileInputStream("serialization/background.ser");
+
+						ObjectInputStream ois = new ObjectInputStream(fis); // permet d'écrire au niveau du flux de sortie
+
+						
+						bgdata=(BackgroundData) ois.readObject();
+
+						ois.close();
+						
+						System.out.println("Déserialization effectuée : " + bgdata.getBackgroundPath());
+						
+//						background.setBackgroundPath(bgdata.getBackgroundPath());
+
+					
+					} catch (FileNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ClassNotFoundException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				//System.out.print(bgdata.getBackgroundPath());
+				background.setBackgroundPath(bgdata.getBackgroundPath());
+			}
 
 	/*
 	 * METHODES ACTION LISTENER
@@ -291,8 +359,20 @@ public class Frame extends JFrame {
 			bannerPanel.setVisibleIconMusic(musicpanel.isInProgress());
 			bannerPanel.refreshNetwork();
 			
-			//bgPath=Galerie.getpathbg;
-			//background.setBackgroundPath(bgPath);
+			bgPath=gallerypanel.getPathbg();
+			
+			//change le background immédiatement
+			background.setBackgroundPath(bgPath);
+			
+			if(gallerypanel.isActiveBGserialization()==true) {
+						
+				//Stock le chemin avant serialization
+				bgdata.setBackgroundPath(bgPath);
+				
+				serializeBG();
+			
+				gallerypanel.setActiveBGserialization(false);
+			}
 		}
 	}
 
