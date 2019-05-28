@@ -18,11 +18,17 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.EventObject;
+import java.util.Objects;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
+import javax.sound.sampled.FloatControl;
+import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.Port;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -31,6 +37,9 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 import images.Icon;
@@ -52,6 +61,24 @@ public class MusicPlayerPanel extends JPanel {
 	Icon delMusic = new Icon("images/icons/delete.png", 48, 48);
 	
 	ArrayList<Track> alltracks = new ArrayList<Track>();
+	
+	
+	//SOUND BAR = SB
+	static final int SB_MIN = 0;
+	static final int SB_MAX = 100;
+	static final int SB_INIT = 80;    //initial frames per second
+	
+	private JLabel valeurSound = new JLabel("Volume actuel : 80%");  
+	private float vol = (float) 80;
+	
+	JSlider soundBar = new JSlider(JSlider.HORIZONTAL, SB_MIN, SB_MAX, SB_INIT);
+//	framesPerSecond.addChangeListener(this);
+//
+//	//Turn on labels at major tick marks.
+//	framesPerSecond.setMajorTickSpacing(10);
+//	framesPerSecond.setMinorTickSpacing(1);
+//	framesPerSecond.setPaintTicks(true);
+//	framesPerSecond.setPaintLabels(true);
 
 //	private String locationM1 = "music/Shine a Light (feat. KiFi).wav";
 //	private String locationM2 = "music/WOW.wav";
@@ -76,6 +103,9 @@ public class MusicPlayerPanel extends JPanel {
 	JPanel track3 = new JPanel();
 	JPanel tracks = new JPanel(); // CENTER
 	JPanel manager = new JPanel(); // SOUTH
+	JPanel south = new JPanel(); // SOUTH
+	JPanel slider = new JPanel();
+	JPanel valeur = new JPanel();
 	JPanel banner = new JPanel(); // headline NORTH
 	JPanel bannerN = new JPanel(); // headline NORTH
 	JPanel bannerS = new JPanel(); // headline NORTH
@@ -177,6 +207,8 @@ public class MusicPlayerPanel extends JPanel {
 		this.setLayout(new BorderLayout());		
 
 		labelProperties();
+		
+		slidersettings();
 
 		// Ajout des boutons au groupe de bouton BG afin de pouvoir en sélectionner un
 		// seul à la fois
@@ -193,6 +225,7 @@ public class MusicPlayerPanel extends JPanel {
 //		banner.add(title);
 //		banner.add(delMusic);
 		
+		//panel banner parameters
 		banner.setLayout(new GridLayout(2,1));
 		
 		//banner.setBackground(Color.GRAY);
@@ -208,12 +241,23 @@ public class MusicPlayerPanel extends JPanel {
 		
 		banner.add(bannerN);
 		banner.add(bannerS);
+		
+		//panel south parameters
+		south.setLayout(new GridLayout(3,1));
+		
+		
+		valeur.add(valeurSound);
+		slider.add(soundBar);
 
 		// Ajout des icones play, pause et stop au panel manager
 		manager.add(iconPlay);
 		manager.add(iconPause);
 		manager.add(iconStop);
 		manager.setBackground(Color.BLUE);
+		
+		south.add(valeur);
+		south.add(slider);
+		south.add(manager);
 		
 		//banner.add(delMusic, BorderLayout.EAST);
 
@@ -248,9 +292,48 @@ public class MusicPlayerPanel extends JPanel {
 		this.add(banner, BorderLayout.NORTH);
 		//this.add(tracks, BorderLayout.CENTER);
 		this.add(scrollPane, BorderLayout.CENTER);
-		this.add(manager, BorderLayout.SOUTH);
+		this.add(south, BorderLayout.SOUTH);
 		
 
+	}
+	
+	//RETRIEVED FROM https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+	public float getVolume() {
+	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
+	    return (float) Math.pow(10f, gainControl.getValue() / 20f);
+	}
+
+	//RETRIEVED FROM https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+	public void setVolume4(float volume) {
+	    if (volume < 0f || volume > 1f)
+	        throw new IllegalArgumentException("Volume not valid: " + volume);
+	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
+	    gainControl.setValue(20f * (float) Math.log10(volume));
+	}
+	
+
+	private void slidersettings() {
+		soundBar.setMinorTickSpacing(10);  
+		soundBar.setMajorTickSpacing(20);  
+		soundBar.setPaintTicks(true);  
+		soundBar.setPaintLabels(true);
+		
+		soundBar.addChangeListener(new ChangeVolume());
+	}
+	
+	class ChangeVolume implements ChangeListener {
+
+		@Override
+		public void stateChanged(ChangeEvent e) {
+			// TODO Auto-generated method stub
+			valeurSound.setText("Volume actuel : " + ((JSlider)e.getSource()).getValue()+"%");
+			
+			int x=((JSlider)e.getSource()).getValue();
+			
+			//float z=(float) (x/100.0);
+			vol=(float) (x/100.0);
+			setVolume4(vol);
+		}
 	}
 
 	private void labelProperties() {

@@ -359,13 +359,14 @@ public class Frame extends JFrame {
 			bannerPanel.setVisibleIconMusic(musicpanel.isInProgress());
 			bannerPanel.refreshNetwork();
 			
-			bgPath=gallerypanel.getPathbg();
 			
-			//change le background immédiatement
-			background.setBackgroundPath(bgPath);
 			
 			if(gallerypanel.isActiveBGserialization()==true) {
-						
+				bgPath=gallerypanel.getPathbg();
+				
+				//change le background immédiatement
+				background.setBackgroundPath(bgPath);
+				
 				//Stock le chemin avant serialization
 				bgdata.setBackgroundPath(bgPath);
 				
