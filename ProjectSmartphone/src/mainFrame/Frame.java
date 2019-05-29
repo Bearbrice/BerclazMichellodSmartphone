@@ -305,8 +305,20 @@ public class Frame extends JFrame {
 						e.printStackTrace();
 					}
 				}
-				//System.out.print(bgdata.getBackgroundPath());
-				background.setBackgroundPath(bgdata.getBackgroundPath());
+				
+				//Retrieves the path of the serialized file
+				File check = new File(bgdata.getBackgroundPath());
+				
+				//Check if the file exists
+				if (check.isFile()){
+					background.setBackgroundPath(bgdata.getBackgroundPath());
+				}
+				//If the serialize path no longer finds the file then it sets the default background
+				else {
+					background.setBackgroundPath(bgdata.getDefaultBackground());
+				}
+				
+				
 			}
 
 	/*

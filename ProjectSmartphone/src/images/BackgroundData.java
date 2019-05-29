@@ -4,7 +4,9 @@ import java.io.Serializable;
 
 public class BackgroundData implements Serializable {
 	
-	private String defaultBackground = "images/backgrounds/Background01.jpg";
+	private String defaultBackground = "images/backgroundDefault/Background01.jpg";
+
+
 	private String backgroundPath = defaultBackground;
 	
 	//Constructeur
@@ -23,5 +25,9 @@ public class BackgroundData implements Serializable {
 
 	public void setBackgroundPath(String backgroundPath) {
 		this.backgroundPath = backgroundPath;
+	}
+	
+	public String getDefaultBackground() {
+		return defaultBackground;
 	}
 }

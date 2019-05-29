@@ -24,7 +24,7 @@ import contact.ContactData;
 
 public class Background extends JPanel {
 	
-	private String backgroundPath = "images/backgrounds/Background01.jpg";
+	private String backgroundPath = "images/backgroundDefault/Background01.jpg";
 
 	// Constructeur
 	public Background() {

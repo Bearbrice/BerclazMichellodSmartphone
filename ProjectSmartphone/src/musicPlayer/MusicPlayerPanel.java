@@ -2,7 +2,7 @@
  * Music App
  * Author: Brice Berclaz
  * Date creation: 23.04.2019
- * Date last modification: 28.05.2019
+ * Date last modification: 29.05.2019
  */
 
 package musicPlayer;
@@ -71,6 +71,8 @@ public class MusicPlayerPanel extends JPanel {
 	private JLabel valeurSound = new JLabel("Volume actuel : 80%");  
 	private float vol = (float) 80;
 	
+	Icon sound = new Icon("images/icons/soundLoud.png", 24, 24);	
+
 	JSlider soundBar = new JSlider(JSlider.HORIZONTAL, SB_MIN, SB_MAX, SB_INIT);
 //	framesPerSecond.addChangeListener(this);
 //
@@ -93,9 +95,6 @@ public class MusicPlayerPanel extends JPanel {
 	JPanel content = new JPanel(new GridLayout(0,1));
 	
 	JScrollPane scrollPane;
-	
-	
-    
 
 	// PANELS
 	JPanel track1 = new JPanel();
@@ -140,10 +139,7 @@ public class MusicPlayerPanel extends JPanel {
 			musicTitle=substrTitle(musicTitle);
 			
 			//.substring(0, all[i].getName().length()-4);
-			
-			
-			
-			
+
 			//On recupere le chemin relatif
 			location=all[i].toString();
 			
@@ -162,9 +158,7 @@ public class MusicPlayerPanel extends JPanel {
 	        content.add(select);
 	        
 	        //permet la sélection d'un seul bouton à la fois
-	        BG.add(select);
-	        
-	       	        
+	        BG.add(select);       
 	     }
 	    
 	    scrollPane = new JScrollPane(content);
@@ -247,6 +241,10 @@ public class MusicPlayerPanel extends JPanel {
 		
 		
 		valeur.add(valeurSound);
+//		slider.setLayout(new BorderLayout());
+//		slider.add(sound, BorderLayout.WEST);
+//		slider.add(soundBar, BorderLayout.CENTER);
+		
 		slider.add(soundBar);
 
 		// Ajout des icones play, pause et stop au panel manager
@@ -304,14 +302,15 @@ public class MusicPlayerPanel extends JPanel {
 	}
 
 	//RETRIEVED FROM https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
-	public void setVolume4(float volume) {
+	public void setVolume(float volume) {
+		
 	    if (volume < 0f || volume > 1f)
 	        throw new IllegalArgumentException("Volume not valid: " + volume);
 	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
 	    gainControl.setValue(20f * (float) Math.log10(volume));
 	}
 	
-
+	//Parameters of the JSlider 'soundBar'
 	private void slidersettings() {
 		soundBar.setMinorTickSpacing(10);  
 		soundBar.setMajorTickSpacing(20);  
@@ -332,7 +331,14 @@ public class MusicPlayerPanel extends JPanel {
 			
 			//float z=(float) (x/100.0);
 			vol=(float) (x/100.0);
-			setVolume4(vol);
+			
+			
+			//execute only if there is an active clip
+			if(isInProgress()==true) {
+				setVolume(vol);
+			}
+			
+			
 		}
 	}
 
@@ -433,12 +439,17 @@ public class MusicPlayerPanel extends JPanel {
 			} catch (LineUnavailableException e) {
 				e.printStackTrace();
 			}
-
+			
+			
+			
 			clip.start();
+			
 
 			setInProgress(true);
 
 			this.clip = clip;
+			
+			
 		}
 	}
 	
@@ -500,13 +511,15 @@ public class MusicPlayerPanel extends JPanel {
 				//System.out.print("1"+newName);
 				
 				String addPath = ("music/"+newName);
-
 				
-				//on ajoute la musique dans le tableau dynamique
+				//getting rid of extension .wav
+				temp=substrTitle(temp);
+				
+				//adding music to the dynamic array
 				alltracks.add(new Track(temp, addPath));
 				
-				//on actualise la liste des musiques
-				actualizeList();
+				//adding the new JRB to the panel
+				addNewJRB();
 				
 			}
 
@@ -519,21 +532,69 @@ public class MusicPlayerPanel extends JPanel {
 		}
 	}
 	
+	//Method to add a the JRadioButton of the last index of the array dynamic
+	public void addNewJRB() {
+		//We are adding a new JRadioButton
+		 select = new JRadioButton(alltracks.get(alltracks.size()-1).getTitle());
+	     select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
+	     select.setForeground(Color.DARK_GRAY);
+	     content.add(select);
+
+	     //Allows the selection of only one button at a time
+	     BG.add(select);       
+	}
+	
 	public void actualizeList() {
-//content.revalidate();
-	//content.repaint();
+		//content.removeAll();
+		//content.add(alltracks);
+		//content.repaint();
 		
 		
 		//scrollPane=new JScrollPane(content);
 		//scrollPane.revalidate();
 		//scrollPane.repaint();
 		
+		
+		
 	}
 	
 	class DeleteMusic implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			//On test si aucun bouton n'est sélectionné alors rien ne se passe
+			int i=-1;
+			String text = null;
 			
+			for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
+				
+	            AbstractButton button = buttons.nextElement();
+
+	            if (button.isSelected()) {
+	                i=1;
+	                text=button.getName();
+	            }
+	        }
+			
+			//si le i est toujours à -1 il n'y a pas de bouton sélectionné
+			if(i==-1) {
+				System.out.println("Aucun bouton sélectionné");
+				return;
+			}
+						
+			String location = null;
+			location=findLocation();
+			
+			//Remove the track from the array + from the panel
+			for(int j=0; j<alltracks.size(); j++) {
+				if(alltracks.get(j).getPath()==location) {
+					alltracks.remove(j);
+					content.remove(j);
+				}
+			}
+			
+			//Delete the file from music folder
+			File toDelete = new File(location);
+			toDelete.delete();
 		}
 	}
 
@@ -590,6 +651,14 @@ public class MusicPlayerPanel extends JPanel {
 	public void setInProgress(boolean inProgress) {
 		this.inProgress = inProgress;
 	}
+	
+//	public float getVol() {
+//		return vol;
+//	}
+//
+//	public void setVol(float vol) {
+//		this.vol = vol;
+//	}
 
 	// Permet de checker quand la musique est terminée
 	public void checkProgress() {
