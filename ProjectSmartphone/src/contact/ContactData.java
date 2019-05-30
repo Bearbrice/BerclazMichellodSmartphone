@@ -11,9 +11,6 @@ import java.io.Serializable;
 
 public class ContactData implements Serializable {
 
-	// Variable qui stock l'id du contact en création
-	// int idContact=Integer.parseInt(read());
-
 	// Initialisation des variables
 	private int id;
 	private String prenom;
@@ -23,7 +20,6 @@ public class ContactData implements Serializable {
 	private String adresse;
 	private String organisation;
 	private String locPicture;
-
 
 	// Constructeur
 	public ContactData(int id, String prenom, String nom, String telephonePrive, String telephoneFixe, String adresse,
@@ -42,48 +38,8 @@ public class ContactData implements Serializable {
 
 	}
 
-	// Methode de lecture du fichier
-	/*
-	 * private String read() { String retour="";
-	 * 
-	 * File dossier = new File("src/Contact"); dossier.mkdir();
-	 * 
-	 * File fichier = new File(dossier, "data.txt");
-	 * 
-	 * try { FileReader read = new FileReader(fichier); BufferedReader bfread = new
-	 * BufferedReader(read); retour = bfread.readLine(); read.close();
-	 * bfread.close();
-	 * 
-	 * } catch (IOException e) { e.printStackTrace(); }
-	 * 
-	 * return retour; }
-	 */
-
-	// Methode d'écriture du fichier
-	/*
-	 * private void write(int idContact) { this.idContact=idContact;
-	 * 
-	 * File dossier = new File("src/Contact"); dossier.mkdir();
-	 * 
-	 * File fichier = new File(dossier, "data.txt");
-	 * 
-	 * try { fichier.createNewFile();
-	 * 
-	 * FileWriter ecriture = new FileWriter(fichier); BufferedWriter bfwrite = new
-	 * BufferedWriter(ecriture); bfwrite.write(Integer.toString(idContact));
-	 * bfwrite.close();
-	 * 
-	 * } catch (IOException e) { e.printStackTrace(); } }
-	 */
-
-	// Méthode getters & setters
-	/*
-	 * public int getIdContact() { return idContact; }
-	 */
-
 	@Override
 	public String toString() {
-		// return String.format("ContactData X ~ [id: #%d, name: %s]", id, prenom, nom);
 		return prenom + " " + nom + " - " + telephonePrive + " - " + organisation;
 	}
 
@@ -134,7 +90,7 @@ public class ContactData implements Serializable {
 	public void setOrganisation(String organisation) {
 		this.organisation = organisation;
 	}
-	
+
 	public String getLocPicture() {
 		return locPicture;
 	}
@@ -142,7 +98,5 @@ public class ContactData implements Serializable {
 	public void setLocPicture(String locPicture) {
 		this.locPicture = locPicture;
 	}
-
-	
 
 }

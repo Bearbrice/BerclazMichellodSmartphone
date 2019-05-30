@@ -1,8 +1,8 @@
 /*
  * Music App
- * Author: Brice Berclaz
+ * Author: B. Berclaz
  * Date creation: 23.04.2019
- * Date last modification: 29.05.2019
+ * Date last modification: 30.05.2019
  */
 
 package musicPlayer;
@@ -18,6 +18,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
@@ -38,216 +39,174 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 import images.Icon;
 
+/**
+ * The MusicPlayerPanel class displays a music player
+ * 
+ * @author Brice Berclaz
+ * @see javax.sound.sampled
+ */
+
 public class MusicPlayerPanel extends JPanel {
 
-	boolean inProgress = false;
+	private boolean inProgress = false;
 
-	Icon iconPlay = new Icon("images/icons/Play-48.png", 48, 48);
-	Icon iconPause = new Icon("images/icons/Pause-48.png", 48, 48);
-	Icon iconStop = new Icon("images/icons/Stop-48.png", 48, 48);
+	private Icon iconPlay = new Icon("images/icons/Play-48.png", 48, 48);
+	private Icon iconPause = new Icon("images/icons/Pause-48.png", 48, 48);
+	private Icon iconStop = new Icon("images/icons/Stop-48.png", 48, 48);
 
-	JLabel title = new JLabel("MUSIC PLAYER");
-	JLabel nameMusic1 = new JLabel("Hardwell & Wildstylez feat. KiFi - \n Shine A Light");
-	JLabel nameMusic2 = new JLabel("Tiësto - WOW");
-	JLabel nameMusic3 = new JLabel("Mike Williams - The Beat (Hardwell Edit)");
-	
-	Icon addMusic = new Icon("images/icons/AddMusic-48.png", 48, 48);
-	Icon delMusic = new Icon("images/icons/delete.png", 48, 48);
-	
-	ArrayList<Track> alltracks = new ArrayList<Track>();
-	
-	
-	//SOUND BAR = SB
-	static final int SB_MIN = 0;
-	static final int SB_MAX = 100;
-	static final int SB_INIT = 80;    //initial frames per second
-	
-	private JLabel valeurSound = new JLabel("Volume actuel : 80%");  
+	private JLabel title = new JLabel("MUSIC PLAYER");
+	private JLabel nameMusic1 = new JLabel("Hardwell & Wildstylez feat. KiFi - \n Shine A Light");
+	private JLabel nameMusic2 = new JLabel("Tiësto - WOW");
+	private JLabel nameMusic3 = new JLabel("Mike Williams - The Beat (Hardwell Edit)");
+
+	private Icon addMusic = new Icon("images/icons/AddMusic-48.png", 48, 48);
+	private Icon delMusic = new Icon("images/icons/delete.png", 48, 48);
+
+	private ArrayList<Track> alltracks = new ArrayList<Track>();
+
+	// SOUND BAR = SB
+	private static final int SB_MIN = 0;
+	private static final int SB_MAX = 100;
+	private static final int SB_INIT = 80; // initial frames per second
+
+	private JLabel valeurSound = new JLabel("Volume actuel : 80%");
 	private float vol = (float) 0.8;
-	int currentVolume=80;
-	int volumeTemp=0;
-	
-	private String loud="images/icons/soundLoud-48.png";
-	private String medium="images/icons/soundMedium-48.png";
-	private String low="images/icons/soundLow-48.png";
-	private String mute="images/icons/soundMute-48.png";
-	
-	Icon sound = new Icon(loud, 24, 24);
+	private int currentVolume = 80;
+	private int volumeTemp = 0;
 
+	private String loud = "images/icons/soundLoud-48.png";
+	private String medium = "images/icons/soundMedium-48.png";
+	private String low = "images/icons/soundLow-48.png";
+	private String mute = "images/icons/soundMute-48.png";
 
-	JSlider soundBar = new JSlider(JSlider.HORIZONTAL, SB_MIN, SB_MAX, SB_INIT);
-//	framesPerSecond.addChangeListener(this);
-//
-//	//Turn on labels at major tick marks.
-//	framesPerSecond.setMajorTickSpacing(10);
-//	framesPerSecond.setMinorTickSpacing(1);
-//	framesPerSecond.setPaintTicks(true);
-//	framesPerSecond.setPaintLabels(true);
+	private Icon sound = new Icon(loud, 24, 24);
 
-//	private String locationM1 = "music/Shine a Light (feat. KiFi).wav";
-//	private String locationM2 = "music/WOW.wav";
-//	private String locationM3 = "music/The Beat (Hardwell Edit).wav";
+	private JSlider soundBar = new JSlider(JSlider.HORIZONTAL, SB_MIN, SB_MAX, SB_INIT);
 
-	ButtonGroup BG = new ButtonGroup();
-	JRadioButton JRBmusic1 = new JRadioButton();
-	JRadioButton JRBmusic2 = new JRadioButton();
-	JRadioButton JRBmusic3 = new JRadioButton();
-	
-	JRadioButton select;
-	JPanel content = new JPanel(new GridLayout(0,1));
-	
-	JScrollPane scrollPane;
+	private ButtonGroup BG = new ButtonGroup();
+
+	private JRadioButton select;
+	private JPanel content = new JPanel(new GridLayout(0, 1));
+
+	private JScrollPane scrollPane;
 
 	// PANELS
-	JPanel track1 = new JPanel();
-	JPanel track2 = new JPanel();
-	JPanel track3 = new JPanel();
-	JPanel tracks = new JPanel(); // CENTER
-	JPanel manager = new JPanel(); // SOUTH
-	JPanel south = new JPanel(); // SOUTH
-	JPanel slider = new JPanel();
-	JPanel valeur = new JPanel();
-	JPanel banner = new JPanel(); // headline NORTH
-	JPanel bannerN = new JPanel(); // headline NORTH
-	JPanel bannerS = new JPanel(); // headline NORTH
-	JPanel right = new JPanel();
+	private JPanel manager = new JPanel(); // SOUTH
+	private JPanel south = new JPanel(); // SOUTH
+	private JPanel slider = new JPanel();
+	private JPanel valeur = new JPanel();
+	private JPanel banner = new JPanel(); // headline NORTH
+	private JPanel bannerN = new JPanel(); // headline NORTH
+	private JPanel bannerS = new JPanel(); // headline NORTH
 
-	String location;
+	private String location;
 
-	Clip clip;
-	
+	private Clip clip;
+
 	public void create() {
 		String location;
 		String musicTitle;
-		
+
 		File folder = new File("music");
 
 		if (!folder.exists()) {
 			return;
 		}
-		
-	
-		//Tableau temporaire avec tous les fichiers du dossier music
-		File[] all = folder.listFiles();
-		
-		//On vide le tableau dynamique
-		alltracks.removeAll(alltracks);
-		
-		
-		for(int i=0; i<all.length; i++) {
-			
-			musicTitle=all[i].getName();
-			
-			//on enlève l'extension pour obtenir uniquement le nom
-			musicTitle=substrTitle(musicTitle);
-			
-			//.substring(0, all[i].getName().length()-4);
 
-			//On recupere le chemin relatif
-			location=all[i].toString();
-			
-			//On ajoute les tracks dans le tableau dynamique
+		// Tableau temporaire avec tous les fichiers du dossier music
+		File[] all = folder.listFiles();
+
+		// On vide le tableau dynamique
+		alltracks.removeAll(alltracks);
+
+		for (int i = 0; i < all.length; i++) {
+
+			musicTitle = all[i].getName();
+
+			// on enlève l'extension pour obtenir uniquement le nom
+			musicTitle = substrTitle(musicTitle);
+
+			// .substring(0, all[i].getName().length()-4);
+
+			// On recupere le chemin relatif
+			location = all[i].toString();
+
+			// On ajoute les tracks dans le tableau dynamique
 			alltracks.add(new Track(musicTitle, location));
 		}
-		
-		//Supprime tous les JRADIOBUTTONs
+
+		// Supprime tous les JRADIOBUTTONs
 		content.removeAll();
-	    
-		//Ajoute tous les JRADIOBUTTONs
-	    for(int i=0; i<alltracks.size(); i++){
-	        select = new JRadioButton(alltracks.get(i).getTitle());
-	        select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
+
+		// Ajoute tous les JRADIOBUTTONs
+		for (int i = 0; i < alltracks.size(); i++) {
+			select = new JRadioButton(alltracks.get(i).getTitle());
+			select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
 			select.setForeground(Color.DARK_GRAY);
-	        content.add(select);
-	        
-	        //permet la sélection d'un seul bouton à la fois
-	        BG.add(select);       
-	     }
-	    
-	    scrollPane = new JScrollPane(content);
+			content.add(select);
+
+			// permet la sélection d'un seul bouton à la fois
+			BG.add(select);
+		}
+
+		scrollPane = new JScrollPane(content);
 	}
-	
-	//Methode qui permet d'enlever l'extension pour obtenir uniquement le nom du fichier
+
+	// Methode qui permet d'enlever l'extension pour obtenir uniquement le nom du
+	// fichier
 	public String substrTitle(String name) {
-		int toDelete=0;
-		
-		//Boucle qui prend la longueur du nom et qui va jusqu'au . (décroissant)
-		for(int i=name.length()-1; i>0 ; i--) {
-			if(name.charAt(i)=='.') {
+		int toDelete = 0;
+
+		// Boucle qui prend la longueur du nom et qui va jusqu'au . (décroissant)
+		for (int i = name.length() - 1; i > 0; i--) {
+			if (name.charAt(i) == '.') {
 				toDelete++;
 				break;
 			}
 			toDelete++;
 		}
-		
-		//Integer qui contient l'index de fin du substring
-		int idxEnd = name.length()-toDelete;
-		
-		name=name.substring(0, idxEnd);
-		
+
+		// Integer qui contient l'index de fin du substring
+		int idxEnd = name.length() - toDelete;
+
+		name = name.substring(0, idxEnd);
+
 		return name;
 	}
-	
 
-	
 	// Constructor
 	public MusicPlayerPanel() {
 		create();
-		
-		//System.out.print(substrTitle("jeanmich.wav"));
-		
-		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// this.setTitle("Test Sound Clip");
+
 		this.setPreferredSize(new Dimension(638, 188));
 		this.setVisible(true);
 		this.setOpaque(false);
-		this.setLayout(new BorderLayout());		
+		this.setLayout(new BorderLayout());
 
 		labelProperties();
-		
+
 		slidersettings();
 
-		// Ajout des boutons au groupe de bouton BG afin de pouvoir en sélectionner un
-		// seul à la fois
-		BG.add(JRBmusic1);
-		BG.add(JRBmusic2);
-		BG.add(JRBmusic3);
+		// panel banner parameters
+		banner.setLayout(new GridLayout(2, 1));
 
-		JRBmusic1.setOpaque(false);
-		JRBmusic2.setOpaque(false);
-		JRBmusic3.setOpaque(false);
-
-		// Ajout du titre
-//		banner.add(addMusic);
-//		banner.add(title);
-//		banner.add(delMusic);
-		
-		//panel banner parameters
-		banner.setLayout(new GridLayout(2,1));
-		
-		//banner.setBackground(Color.GRAY);
-		
 		bannerN.add(title);
-		
-		//bannerS.setLayout(new GridLayout(1, 2));
+
 		bannerS.add(addMusic);
 		bannerS.add(delMusic);
-		
+
 		bannerN.setBackground(Color.GRAY);
 		bannerS.setBackground(Color.DARK_GRAY);
-		
+
 		banner.add(bannerN);
 		banner.add(bannerS);
-		
-		//panel south parameters
-		south.setLayout(new GridLayout(3,1));
-		
+
+		// panel south parameters
+		south.setLayout(new GridLayout(3, 1));
+
 		valeur.add(sound);
 		valeur.add(valeurSound);
-//		slider.setLayout(new BorderLayout());
-//		slider.add(sound, BorderLayout.WEST);
-//		slider.add(soundBar, BorderLayout.CENTER);
-		
+
 		slider.add(soundBar);
 
 		// Ajout des icones play, pause et stop au panel manager
@@ -255,32 +214,10 @@ public class MusicPlayerPanel extends JPanel {
 		manager.add(iconPause);
 		manager.add(iconStop);
 		manager.setBackground(Color.BLUE);
-		
+
 		south.add(valeur);
 		south.add(slider);
 		south.add(manager);
-		
-		//banner.add(delMusic, BorderLayout.EAST);
-
-		// Ajout des musiques dans leur panel
-		track1.add(JRBmusic1);
-		track1.add(nameMusic1);
-		track1.setOpaque(false);
-
-		track2.add(JRBmusic2);
-		track2.add(nameMusic2);
-		track2.setOpaque(false);
-
-		track3.add(JRBmusic3);
-		track3.add(nameMusic3);
-		track3.setOpaque(false);
-
-		// Ajout des musiques dans le panel tracks qui regroupes toutes les musiques
-		tracks.setLayout(new GridLayout(3, 1));
-		tracks.setBackground(Color.DARK_GRAY);
-		tracks.add(track1);
-		tracks.add(track2);
-		tracks.add(track3);
 
 		iconPlay.addActionListener(new Play());
 		iconPause.addActionListener(new Pause());
@@ -288,88 +225,85 @@ public class MusicPlayerPanel extends JPanel {
 		addMusic.addActionListener(new AddMusic());
 		delMusic.addActionListener(new DeleteMusic());
 		sound.addActionListener(new Mute());
-		
-		
 
 		this.add(banner, BorderLayout.NORTH);
-		//this.add(tracks, BorderLayout.CENTER);
+		// this.add(tracks, BorderLayout.CENTER);
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.add(south, BorderLayout.SOUTH);
-		
 
 	}
-	
-	//RETRIEVED FROM https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+
+	// RETRIEVED FROM
+	// https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
 	public float getVolume() {
-	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
-	    return (float) Math.pow(10f, gainControl.getValue() / 20f);
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		return (float) Math.pow(10f, gainControl.getValue() / 20f);
 	}
 
-	//RETRIEVED FROM https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+	// RETRIEVED FROM
+	// https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
 	public void setVolume(float volume) {
-		
-	    if (volume < 0f || volume > 1f)
-	        throw new IllegalArgumentException("Volume not valid: " + volume);
-	    FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);        
-	    gainControl.setValue(20f * (float) Math.log10(volume));
+
+		if (volume < 0f || volume > 1f)
+			throw new IllegalArgumentException("Volume not valid: " + volume);
+		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
+		gainControl.setValue(20f * (float) Math.log10(volume));
 	}
-	
-	//Parameters of the JSlider 'soundBar'
+
+	// Parameters of the JSlider 'soundBar'
 	private void slidersettings() {
-		soundBar.setMinorTickSpacing(10);  
-		soundBar.setMajorTickSpacing(20);  
-		soundBar.setPaintTicks(true);  
-		soundBar.setPaintLabels(true); 
-		
+		soundBar.setMinorTickSpacing(10);
+		soundBar.setMajorTickSpacing(20);
+		soundBar.setPaintTicks(true);
+		soundBar.setPaintLabels(true);
+
 		soundBar.addChangeListener(new ChangeVolume());
 	}
-	
+
 	class ChangeVolume implements ChangeListener {
 
 		@Override
 		public void stateChanged(ChangeEvent e) {
-			// TODO Auto-generated method stub
-			valeurSound.setText("Volume actuel : " + ((JSlider)e.getSource()).getValue()+"%");
-			
-			currentVolume=((JSlider)e.getSource()).getValue();
-			
-			//float z=(float) (x/100.0);
-			vol=(float) (currentVolume/100.0);
-			
+			valeurSound.setText("Volume actuel : " + ((JSlider) e.getSource()).getValue() + "%");
+
+			currentVolume = ((JSlider) e.getSource()).getValue();
+
+			// float z=(float) (x/100.0);
+			vol = (float) (currentVolume / 100.0);
+
 			String iconSoundLocation = null;
-			
-			if(currentVolume==0) {
-				iconSoundLocation=mute;
+
+			if (currentVolume == 0) {
+				iconSoundLocation = mute;
 			}
-			if(currentVolume>0) {
-				iconSoundLocation=low;
+			if (currentVolume > 0) {
+				iconSoundLocation = low;
 			}
-			if(currentVolume>29) {
-				iconSoundLocation=medium;
+			if (currentVolume > 29) {
+				iconSoundLocation = medium;
 			}
-			if(currentVolume>69) {
-				iconSoundLocation=loud;
+			if (currentVolume > 69) {
+				iconSoundLocation = loud;
 			}
-			
+
 			sound.setLocation(iconSoundLocation);
 			sound.refresh();
-		
-			//execute only if there is an active clip
-			if(isInProgress()==true) {
+
+			// execute only if there is an active clip
+			if (isInProgress() == true) {
 				setVolume(vol);
-			}	
+			}
 		}
 	}
-	
+
 	private class Mute implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			if(soundBar.getValue()==0) {
+
+			if (soundBar.getValue() == 0) {
 				soundBar.setValue(volumeTemp);
-			}
-			else {
-				volumeTemp=currentVolume;
+			} else {
+				volumeTemp = currentVolume;
 				soundBar.setValue(0);
 			}
 		}
@@ -391,62 +325,53 @@ public class MusicPlayerPanel extends JPanel {
 
 	// findLocation
 	private String findLocation() {
-		String name="";
-		String emplacement="";
-		
-		
-		//source : https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
-		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
-            AbstractButton button = buttons.nextElement();
+		String name = "";
+		String emplacement = "";
 
-            if (button.isSelected()) {
-                name = button.getText();
-            }
-        }
-		
-		for(int i=0; i<alltracks.size(); i++) {
-			if(alltracks.get(i).getTitle()==name) {
-				emplacement=alltracks.get(i).getPath();
+		// source :
+		// https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
+		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
+			AbstractButton button = buttons.nextElement();
+
+			if (button.isSelected()) {
+				name = button.getText();
+			}
+		}
+
+		for (int i = 0; i < alltracks.size(); i++) {
+			if (alltracks.get(i).getTitle() == name) {
+				emplacement = alltracks.get(i).getPath();
 				return emplacement;
 			}
 		}
 
-        return null;
+		return null;
 	}
 
 	// methode play (start)
 	public void play(Clip clip) {
 		// Permet de gérer l'erreur java si le son est introuvable
-		if(findLocation()==null) {
+		if (findLocation() == null) {
 			return;
 		}
-		
-		//On test si aucun bouton n'est sélectionné alors rien ne se passe
-		int i=-1;
-		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
-			
-            AbstractButton button = buttons.nextElement();
 
-            if (button.isSelected()) {
-                i=1;
-            }
-        }
-		
-		//si le i est toujours à -1 il n'y a pas de bouton sélectionné
-		if(i==-1) {
+		// On test si aucun bouton n'est sélectionné alors rien ne se passe
+		int i = -1;
+		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
+
+			AbstractButton button = buttons.nextElement();
+
+			if (button.isSelected()) {
+				i = 1;
+			}
+		}
+
+		// si le i est toujours à -1 il n'y a pas de bouton sélectionné
+		if (i == -1) {
 			System.out.println("Aucun bouton sélectionné");
 			return;
 		}
-		
-		
-		/*if (!JRBmusic1.isSelected())
-			if (!JRBmusic2.isSelected())
-				if (!JRBmusic3.isSelected())
-					return;*/
-		
-		//System.out.print(findLocation());
 
-		
 		// met sur pause avant de démarrer une nouvelle music
 		pause(clip);
 
@@ -472,21 +397,18 @@ public class MusicPlayerPanel extends JPanel {
 			} catch (LineUnavailableException e) {
 				e.printStackTrace();
 			}
-			
+
 			clip.start();
-			
+
 			setInProgress(true);
-			
+
 			this.clip = clip;
-			
-			//starts the music at the volume chosen by the JSlider
+
+			// starts the music at the volume chosen by the JSlider
 			setVolume(vol);
-			
-			
+
 		}
 	}
-	
-	
 
 	private class Play implements ActionListener {
 		@Override
@@ -494,40 +416,10 @@ public class MusicPlayerPanel extends JPanel {
 			play(clip);
 		}
 	}
-	
+
 	private class AddMusic implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			/*JFileChooser choisir = new JFileChooser();
-			FileNameExtensionFilter filter = new FileNameExtensionFilter("wav");
-			choisir.setAcceptAllFileFilterUsed(false);
-			choisir.setFileFilter(filter);*/
-			
-			/*JFileChooser jfc = new JFileChooser(FileSystemView.getFileSystemView().getHomeDirectory());
-			
-			//jfc.showOpenDialog(content);
-			
-			int returnValue = jfc.showOpenDialog(content);
-			// int returnValue = jfc.showSaveDialog(null);
-			File selectedFile=new File("");
-			
-			if (returnValue == JFileChooser.APPROVE_OPTION) {
-				selectedFile = jfc.getSelectedFile();
-				System.out.println(selectedFile.getAbsolutePath());
-			}
-			
-			String z=selectedFile.getName();
-			
-			Path source = Paths.get(selectedFile.getAbsolutePath());
-		    Path destination = Paths.get("/music/"+z);
-		 
-		    try {
-				Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}*/
-			
 			JFileChooser choisir = new JFileChooser();
 			FileNameExtensionFilter filter = new FileNameExtensionFilter("WAV files", "wav");
 			choisir.setAcceptAllFileFilterUsed(false);
@@ -540,97 +432,74 @@ public class MusicPlayerPanel extends JPanel {
 				String temp = file.getName();
 
 				String newName = Track.copy(file);
-				
-				//System.out.print("1"+newName);
-				
-				String addPath = ("music/"+newName);
-				
-				//getting rid of extension .wav
-				temp=substrTitle(temp);
-				
-				//adding music to the dynamic array
+
+				String addPath = ("music/" + newName);
+
+				// getting rid of extension .wav
+				temp = substrTitle(temp);
+
+				// adding music to the dynamic array
 				alltracks.add(new Track(temp, addPath));
-				
-				//adding the new JRB to the panel
+
+				// adding the new JRB to the panel
 				addNewJRB();
-				
+
 			}
-
-//			int returnVal = choisir.showOpenDialog(this);
-//
-//			if (returnVal == JFileChooser.APPROVE_OPTION) {
-//				File file = choisir.getSelectedFile();
-//				String temp = file.getName();
-
 		}
 	}
-	
-	//Method to add a the JRadioButton of the last index of the array dynamic
-	public void addNewJRB() {
-		//We are adding a new JRadioButton
-		 select = new JRadioButton(alltracks.get(alltracks.size()-1).getTitle());
-	     select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
-	     select.setForeground(Color.DARK_GRAY);
-	     content.add(select);
 
-	     //Allows the selection of only one button at a time
-	     BG.add(select);       
+	// Method to add a the JRadioButton of the last index of the array dynamic
+	public void addNewJRB() {
+		// We are adding a new JRadioButton
+		select = new JRadioButton(alltracks.get(alltracks.size() - 1).getTitle());
+		select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
+		select.setForeground(Color.DARK_GRAY);
+		content.add(select);
+
+		// Allows the selection of only one button at a time
+		BG.add(select);
 	}
-	
-	public void actualizeList() {
-		//content.removeAll();
-		//content.add(alltracks);
-		//content.repaint();
-		
-		
-		//scrollPane=new JScrollPane(content);
-		//scrollPane.revalidate();
-		//scrollPane.repaint();
-		
-		
-		
-	}
-	
-	class DeleteMusic implements ActionListener {
+
+	private class DeleteMusic implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//On test si aucun bouton n'est sélectionné alors rien ne se passe
-			int i=-1;
+			// On test si aucun bouton n'est sélectionné alors rien ne se passe
+			int i = -1;
 			String text = null;
-			
-			for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
-				
-	            AbstractButton button = buttons.nextElement();
 
-	            if (button.isSelected()) {
-	                i=1;
-	                text=button.getName();
-	            }
-	        }
-			
-			//si le i est toujours à -1 il n'y a pas de bouton sélectionné
-			if(i==-1) {
+			for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
+
+				AbstractButton button = buttons.nextElement();
+
+				if (button.isSelected()) {
+					i = 1;
+					text = button.getName();
+				}
+			}
+
+			// si le i est toujours à -1 il n'y a pas de bouton sélectionné
+			if (i == -1) {
 				System.out.println("Aucun bouton sélectionné");
 				return;
 			}
-			
-			//we stop the music before deleting the file
-			if(!(clip==null)) {
-			clip.stop();
+
+			// we stop the music before deleting the file
+			if (!(clip == null)) {
+				clip.stop();
 			}
-						
+
 			String location = null;
-			location=findLocation();
-			
-			//Remove the track from the array + from the panel
-			for(int j=0; j<alltracks.size(); j++) {
-				if(alltracks.get(j).getPath()==location) {
+			location = findLocation();
+
+			// Remove the track from the array + from the panel
+			for (int j = 0; j < alltracks.size(); j++) {
+				if (alltracks.get(j).getPath() == location) {
 					alltracks.remove(j);
 					content.remove(j);
 				}
 			}
-			
-			//Delete the file from music folder
+
+			// Delete the file from music folder
 			File toDelete = new File(location);
 			toDelete.delete();
 		}
@@ -660,7 +529,7 @@ public class MusicPlayerPanel extends JPanel {
 	}
 
 	// methode stop (close)
-	public void stop(Clip clip) {
+	private void stop(Clip clip) {
 		try {
 			// Block of code to try
 			if (clip.isRunning())
@@ -689,7 +558,7 @@ public class MusicPlayerPanel extends JPanel {
 	public void setInProgress(boolean inProgress) {
 		this.inProgress = inProgress;
 	}
-	
+
 	// Permet de checker quand la musique est terminée
 	public void checkProgress() {
 		// Test si clip est vide

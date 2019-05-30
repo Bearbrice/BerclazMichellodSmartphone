@@ -13,7 +13,6 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -26,17 +25,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.swing.JButton;
-
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
-
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import contact.ContactData;
 import gallery.Galerie;
 //import Contacts.ContactData;
 import images.Icon;
@@ -56,7 +52,7 @@ public class ContactPanel extends JPanel {
 	private final String imageNotFound = "images/icons/ImageNotFound.jpg";
 	private String urlPicture = "images/icons/Unknown.jpg";
 	private String currentPanel = "center";
-	
+
 	Icon pictureContact = new Icon(urlPicture, 96, 96);
 
 	ArrayList<ContactData> allcontact = new ArrayList<ContactData>();
@@ -95,16 +91,9 @@ public class ContactPanel extends JPanel {
 
 		deserialize();
 
-		/*
-		 * allcontact.add(new ContactData(0, "Brice", "Berclaz", "0798668993",
-		 * "0274559604", "Ch. des Anémones 6", "HES-SO Valais-Wallis"));
-		 * allcontact.add(new ContactData(1, "Samuel", "Michellod", "0761234567",
-		 * "0271234567", "Ch. de l'Arsenal 45", "HES-SO Valais-Wallis"));
-		 */
-
 		// On ne peut pas créé la JList en dehors du constructeur car dans ce cas ci
 		// nous avons ajouté des contacts de base
-		// contactinfo = new JList(allcontact.toArray());
+
 		contactinfo = new JList(allcontact.toArray());
 		contactinfo.setBackground(Color.WHITE);
 		// contactinfo.setForeground(Color.WHITE);
@@ -115,8 +104,6 @@ public class ContactPanel extends JPanel {
 														// ensuite
 
 		listScroller.setPreferredSize(new Dimension(300, 300));
-		
-		
 
 		// Initialiser dans le constructeur sinon le tableau est vide
 		contactShow = new ContactShow();
@@ -153,11 +140,9 @@ public class ContactPanel extends JPanel {
 		buttonProperties();
 
 		// panel center
-		// center.add(test);
 		center.add(pictureContact, BorderLayout.NORTH);
 
 		center.add(listScroller, BorderLayout.CENTER);
-		// center.add(contactinfo);
 
 		center.add(south, BorderLayout.SOUTH);
 		center.setBackground(Color.GRAY);
@@ -165,16 +150,13 @@ public class ContactPanel extends JPanel {
 		// ajouter le cardlayout à Contactpanel
 		this.add(showPanel, BorderLayout.CENTER);
 		this.add(north, BorderLayout.NORTH);
-		// this.add(right, BorderLayout.EAST);
-		// this.add(left, BorderLayout.WEST);
-		// this.add(south, BorderLayout.SOUTH);
 
 		newContact.addActionListener(new RunContactAdd());
 		iconBack.addActionListener(new GetBack());
 		show.addActionListener(new RunContactShow());
 		edit.addActionListener(new RunContactEdition());
 		remove.addActionListener(new ContactRemove());
-		
+
 		contactinfo.addListSelectionListener(new Displayer());
 	}
 
@@ -213,23 +195,11 @@ public class ContactPanel extends JPanel {
 				}
 				ois.close();
 
-				/*
-				 * for(int i=0; i<allcontact.size(); i++) {
-				 * allcontact.add((ContactData)ois.readObject()); }
-				 */
-				/*
-				 * CHECK SERIALIZATION IS WORKING OR NOT for(int i=0; i<allcontact.size(); i++)
-				 * { System.out.println(allcontact.get(i)); }
-				 */
 				id = allcontact.size();
-				
-				
-				for(int i=0; i<allcontact.size(); i++) {
-				System.out.println(allcontact.get(i));
-				}
-				
 
-				// System.out.println(allcontact.get(0).getPrenom());
+				for (int i = 0; i < allcontact.size(); i++) {
+					System.out.println(allcontact.get(i));
+				}
 
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -245,24 +215,7 @@ public class ContactPanel extends JPanel {
 	}
 
 	public void actualizeList() {
-	
 		contactinfo.setListData(allcontact.toArray());
-		
-		// this.updateUI();
-		// center.remove(contactinfo);
-		// center.add(contactinfo);
-		// contactinfo.repaint();
-		// contactinfo.updateUI();
-		// contactinfo.revalidate();
-		// center.updateUI();
-		// center.revalidate();
-		// center.repaint();
-
-		/*
-		 * test contacts for(int i=0; i<allcontact.size(); i++) {
-		 * System.out.print(allcontact.get(i)); }
-		 */
-
 	}
 
 	public void removeAllContacts() {
@@ -302,17 +255,17 @@ public class ContactPanel extends JPanel {
 	}
 
 	public class RunContactAdd implements ActionListener {
-		
+
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			cardLayout.show(showPanel, "contactAdd");
-			currentPanel="contactAdd";
-			
+			currentPanel = "contactAdd";
+
 			iconBack.setVisible(true);
 			newContact.setVisible(false);
 			title.setText("ADD A NEW CONTACT");
 		}
-		
+
 	}
 
 	public class RunContactEdition implements ActionListener {
@@ -333,7 +286,7 @@ public class ContactPanel extends JPanel {
 				contactEdit.actualize();
 
 				cardLayout.show(showPanel, "contactEdit");
-				currentPanel="contactEdit";
+				currentPanel = "contactEdit";
 			}
 		}
 
@@ -343,20 +296,19 @@ public class ContactPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			selectedIndex = contactinfo.getSelectedIndex();
-			
-			//permet d'éviter l'erreur outofbounds
+
+			// permet d'éviter l'erreur outofbounds
 			if (!(selectedIndex == -1)) {
 				allcontact.remove(selectedIndex);
 				serialize();
 				actualizeList();
 			}
-			
-			//on n'affiche plus l'image du contact supprimé
+
+			// on n'affiche plus l'image du contact supprimé
 			pictureContact.setLocation(urlStatic);
 			pictureContact.refresh();
-					
+
 		}
 
 	}
@@ -365,66 +317,40 @@ public class ContactPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			selectedIndex = contactinfo.getSelectedIndex();
 
 			if (!(selectedIndex == -1)) {
 				cardLayout.show(showPanel, "contactShow");
-				currentPanel="contactShow";
-				
+				currentPanel = "contactShow";
+
 				iconBack.setVisible(true);
 				newContact.setVisible(false);
 
 				title.setText("Contact : " + allcontact.get(selectedIndex).getPrenom() + " "
 						+ allcontact.get(selectedIndex).getNom());
 				contactShow.actualize();
-				
-				
+
 			}
 		}
 
 	}
-	
+
 	public class Displayer implements ListSelectionListener {
 
 		@Override
 		public void valueChanged(ListSelectionEvent e) {
 			selectedIndex = contactinfo.getSelectedIndex();
-						
-			//Change le chemin de l'icone contact
+
+			// Change le chemin de l'icone contact
 			if (!(selectedIndex == -1)) {
 				pictureContact.setLocation(allcontact.get(selectedIndex).getLocPicture());
 			}
-			
-/*			//Met à jour l'icone en fonction de la sélection
-			try {
-			pictureContact.refresh();
-			}
-			catch(Exception x) { //gérer l'exception d'une image supprimée
-				pictureContact.setLocation("images/icons/ImageNotFound.jpg");
-				pictureContact.refresh();
-				
-			}
-*/
-			//Met à jour l'icone en fonction de la sélection
-//			File f = new File(pictureContact.getLocationURL());
-//			if(f.isFile())
-//			{ 
-//				pictureContact.refresh();
-//			}
-//			
-//			//gérer l'exception d'une image supprimée
-//			else {
-//				pictureContact.setLocation(imageNotFound);
-//				pictureContact.refresh();
-//			}
-			
+
 			pictureContact.refresh();
 		}
 
 	}
-	
-	
+
 	public void getBackNow() {
 
 		iconBack.setVisible(false);
@@ -434,11 +360,10 @@ public class ContactPanel extends JPanel {
 		actualizeList();
 
 		cardLayout.show(showPanel, "center");
-		
 
 	}
-	
-	//Methode d'actualisation du panel 'gallery' de contactpanel
+
+	// Methode d'actualisation du panel 'gallery' de contactpanel
 	public void actualiseGalleryC() {
 		gallery.actualisePhoto();
 	}
@@ -455,131 +380,83 @@ public class ContactPanel extends JPanel {
 			actualizeList();
 
 			cardLayout.show(showPanel, "center");
-			currentPanel="center";
-			
-			//on n'affiche pas d'image comme rien ne sera sélectionner quand on retourne sur le panel
+			currentPanel = "center";
+
+			// on n'affiche pas d'image comme rien ne sera sélectionner quand on retourne
+			// sur le panel
 			pictureContact.setLocation(urlStatic);
 			pictureContact.refresh();
 
 		}
 
 	}
-	
-	
-	//PERMET DE CHOISIR UNE IMAGE DANS LA GALERIE
+
+	// PERMET DE CHOISIR UNE IMAGE DANS LA GALERIE
 	public class ChoosePicture implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			cardLayout.show(showPanel, "gallery");
 			gallery.setActivContact(true);
-			
-			//Methode qui va executer un runnable
-			executeRunnable();
-			//Ne pas mettre d'instruction après le runnable sinon elle s'exécuteront AVANT sa fin
-			     
-			     
-			     
-			//new System.Threading.ManualResetEvent(false).WaitOne(1000);
-				
-				
-				/*
-				try {
-					Thread.sleep(2000);
-				} catch (InterruptedException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-				*/
-				
-			/*     for(;;) {
-						System.out.println("Actualisation en cours");
-						if(gallery.isActivContact()==false) {
-							break;
-						}
-			}*/
-			
-			// cardLayout.show(showPanel, "center");
-			
-			//gallery.addMouseListener(x);
 
-			/*for (;;) {
-				if (gallery.isActivContact() == false) {
-					cardLayout.show(showPanel, "center");
-				}*/
+			// Methode qui va executer un runnable
+			executeRunnable();
+			// Ne pas mettre d'instruction après le runnable sinon elle s'exécuteront AVANT
+			// sa fin
+
 		}
 	}
-	
-	//Runnable qui permet de savoir quand retourner au panel précédent
+
+	// Runnable qui permet de savoir quand retourner au panel précédent
 	private Runnable r = new Runnable() {
-        public void run() {
-       	 for (;;) {
+		@Override
+		public void run() {
+			for (;;) {
 				if (gallery.isActivContact() == false) {
-					
-					/*if(currentPanel=="contactEdit") {
-						cardLayout.show(showPanel, "contactEdit");
-					}
-					
-					if(currentPanel=="contactAdd") {
-						cardLayout.show(showPanel, "contactAdd");
-					}
-					
-					if(currentPanel=="contactShow") {
-						cardLayout.show(showPanel, "contactAdd");
-					}*/
-					
+
 					cardLayout.show(showPanel, currentPanel);
-								 							 					
+
 					break;
-				}	
-				
-				//Permet de ne pas surcharger le runnable
+				}
+
+				// Permet de ne pas surcharger le runnable
 				try {
 					Thread.sleep(200);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
-				//System.out.println("TEST : " + gallery.getUrlContact());
-				
-       	 }
-       	 //System.out.println("TEST : " + gallery.getUrlContact());
-       	 
-       	 //System.out.println(currentPanel);
-       	 
-       	 //Définit le chemin vers la photo du contact
-       	 urlPicture=gallery.getUrlContact();
-       	 
-       	 if(currentPanel=="contactEdit") {          	 
-           	 //actualise l'image du panel contactEdit
-           	 contactEdit.repaintEdit();
-       	 }
-       	 
-       	 if(currentPanel=="contactAdd") {
-       		 //actualise l'image du panel contactAdd
-           	 contactAdd.repaintAdd();
-       	 }
-       	 
-       	 if(currentPanel=="contactShow") {
-       		//actualise l'image du panel contactShow
-           	contactShow.repaintShow();
-       	 }
-       	 
-       	 //urlPicture=urlStatic;
-       	 
-       	 
-       	 //System.out.println("urlPic : "+urlPicture);
-       	 return;
-        }
-    };
-    
-    //Methode qui permet d'exécuter le runnable
-    private void executeRunnable() {
-    	ExecutorService executor = Executors.newCachedThreadPool();
-	    executor.submit(r);
-	    //this line will execute immediately, not waiting for your task to complete
-    }
+
+			}
+
+			// Définit le chemin vers la photo du contact
+			urlPicture = gallery.getUrlContact();
+
+			if (currentPanel == "contactEdit") {
+				// actualise l'image du panel contactEdit
+				contactEdit.repaintEdit();
+			}
+
+			if (currentPanel == "contactAdd") {
+				// actualise l'image du panel contactAdd
+				contactAdd.repaintAdd();
+			}
+
+			if (currentPanel == "contactShow") {
+				// actualise l'image du panel contactShow
+				contactShow.repaintShow();
+			}
+
+			return;
+		}
+	};
+
+	// Methode qui permet d'exécuter le runnable
+	private void executeRunnable() {
+		ExecutorService executor = Executors.newCachedThreadPool();
+		executor.submit(r);
+		// this line will execute immediately, not waiting for your task to complete
+	}
 
 	// *****************************************************************************************************//
 	// *****************************************************************************************************//
@@ -617,12 +494,9 @@ public class ContactPanel extends JPanel {
 		JButton save = new JButton("Save");
 
 		Icon pictureContactAdd = new Icon(urlPicture, 96, 96);
-		// JLabel test = new JLabel("TEST");
 
 		public ContactAdd() {
 			panelProperties();
-
-			// left.setLayout(new GridLayout(6, 1));
 
 			north.add(pictureContactAdd);
 			pictureContactAdd.addActionListener(new ChoosePicture());
@@ -662,14 +536,12 @@ public class ContactPanel extends JPanel {
 			this.setOpaque(false);
 			this.setVisible(true);
 		}
-		
-		//Methode qui rafraichit la photo contact du panel
+
+		// Methode qui rafraichit la photo contact du panel
 		public void repaintAdd() {
 			pictureContactAdd.setLocation(urlPicture);
 			pictureContactAdd.refresh();
 		}
-		
-		
 
 		// ACTION LISTENER SAVE
 		public class SaveContact implements ActionListener {
@@ -678,7 +550,7 @@ public class ContactPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// T = TYPED
 				// S = SELECTED
-				
+
 				String prenomT = jtfprenom.getText();
 				String nomT = jtfnom.getText();
 				String telPriveT = jtftelephoneprive.getText();
@@ -698,7 +570,8 @@ public class ContactPanel extends JPanel {
 				 */
 
 				// Ajout du contact dans le tableau dynamique
-				allcontact.add(new ContactData(id, prenomT, nomT, telPriveT, telFixeT, adresseT, organisationT, pictureS));
+				allcontact.add(
+						new ContactData(id, prenomT, nomT, telPriveT, telFixeT, adresseT, organisationT, pictureS));
 
 				serialize();
 
@@ -712,28 +585,11 @@ public class ContactPanel extends JPanel {
 				jtfadresse.setText("");
 				jtforganisation.setText("");
 
-				//urlPicture=urlStatic;
 				pictureContactAdd.setLocation(urlStatic);
 				pictureContactAdd.refresh();
-				//repaintAdd();
-				
-				
-
-				// Serialisation de l'objet
-				// this.serializeObject(createContact);
 
 			}
 
-			/*
-			 * //Méthode de sérialisation private void serializeObject(ContactData
-			 * createContact) { try { FileOutputStream fichier = new
-			 * FileOutputStream("serialisation\\contact-"+createContact.getIdContact()+
-			 * ".ser"); ObjectOutputStream oos = new ObjectOutputStream(fichier);
-			 * oos.writeObject(createContact); oos.flush(); oos.close(); fichier.close(); }
-			 * catch (java.io.IOException e) { e.printStackTrace(); }
-			 * 
-			 * }
-			 */
 		}
 
 	}
@@ -773,35 +629,10 @@ public class ContactPanel extends JPanel {
 
 		Icon pictureContactEdit = new Icon(urlPicture, 96, 96);
 
-		/*
-		 * JTextField jtfprenom = new
-		 * JTextField(allcontact.get(selectedIndex).getPrenom());; JTextField jtfnom =
-		 * new JTextField(allcontact.get(selectedIndex).getNom()); JTextField
-		 * jtftelephoneprive = new
-		 * JTextField(allcontact.get(selectedIndex).getTelephonePrive()); JTextField
-		 * jtftelephonefixe = new
-		 * JTextField(allcontact.get(selectedIndex).getTelephoneFixe()); JTextField
-		 * jtfadresse = new JTextField(allcontact.get(selectedIndex).getAdresse());
-		 * JTextField jtforganisation = new
-		 * JTextField(allcontact.get(selectedIndex).getOrganisation());
-		 */
-
-		/*
-		 * jtfprenom = new JTextField(allcontact.get(selectedIndex).getPrenom()); jtfnom
-		 * = new JTextField(allcontact.get(selectedIndex).getNom()); jtftelephoneprive =
-		 * new JTextField(allcontact.get(selectedIndex).getTelephonePrive());
-		 * jtftelephonefixe = new
-		 * JTextField(allcontact.get(selectedIndex).getTelephoneFixe()); jtfadresse =
-		 * new JTextField(allcontact.get(selectedIndex).getAdresse()); jtforganisation =
-		 * new JTextField(allcontact.get(selectedIndex).getOrganisation());
-		 */
-
 		JButton save = new JButton("Save");
 
 		public ContactEdit() {
 			panelProperties();
-
-			// actualize();
 
 			north.add(pictureContactEdit);
 			pictureContactEdit.addActionListener(new ChoosePicture());
@@ -838,28 +669,10 @@ public class ContactPanel extends JPanel {
 			this.add(south, BorderLayout.SOUTH);
 
 		}
-		
+
 		public void repaintEdit() {
 			pictureContactEdit.setLocation(urlPicture);
 			pictureContactEdit.refresh();
-			
-			
-			
-//			System.out.println(pictureContactEdit.getLocationURL());
-//			
-//			//Met à jour l'icone en fonction de la sélection
-//			File f = new File(pictureContactEdit.getLocationURL());
-//			if(f.isFile())
-//			{ 
-//				pictureContactEdit.refresh();
-//			}
-//			
-//			//gérer l'exception d'une image supprimée
-//			else {
-//				pictureContactEdit.setLocation(imageNotFound);
-//				pictureContactEdit.refresh();
-//			}
-			
 		}
 
 		private void panelProperties() {
@@ -876,9 +689,9 @@ public class ContactPanel extends JPanel {
 			jtftelephonefixe.setText(allcontact.get(selectedIndex).getTelephoneFixe());
 			jtfadresse.setText(allcontact.get(selectedIndex).getAdresse());
 			jtforganisation.setText(allcontact.get(selectedIndex).getOrganisation());
-		
+
 			pictureContactEdit.setLocation(allcontact.get(selectedIndex).getLocPicture());
-			
+
 		}
 
 		// ACTION LISTENER SAVE
@@ -896,8 +709,8 @@ public class ContactPanel extends JPanel {
 				String adresseT = jtfadresse.getText();
 				String organisationT = jtforganisation.getText();
 				String pictureS = urlPicture;
-				
-				//System.out.println("SAVED : "+urlPicture);
+
+				// System.out.println("SAVED : "+urlPicture);
 
 				// TESTS
 				// Interdire les vides
@@ -911,9 +724,7 @@ public class ContactPanel extends JPanel {
 				// CREATION CONTACT
 				// allcontact.add(new ContactData(id, prenomT, nomT, telPriveT, telFixeT,
 				// adresseT, organisationT));
-				
-				//allcontact.get(selectedIndex).setPrenom(prenomT);
-				
+
 				allcontact.get(selectedIndex).setPrenom(prenomT);
 				allcontact.get(selectedIndex).setNom(nomT);
 				allcontact.get(selectedIndex).setTelephonePrive(telPriveT);
@@ -965,14 +776,11 @@ public class ContactPanel extends JPanel {
 
 		Icon pictureContactShow = new Icon(urlPicture, 96, 96);
 
-		// JButton save = new JButton("Save");
-
 		public ContactShow() {
 			panelProperties();
 
 			// actualize();
 			north.add(pictureContactShow);
-			// pictureContactShow.addActionListener(new ChoosePicture());
 
 			center.setLayout(new GridLayout(6, 2));
 
@@ -1002,7 +810,7 @@ public class ContactPanel extends JPanel {
 			this.add(north, BorderLayout.NORTH);
 
 		}
-		
+
 		public void repaintShow() {
 			pictureContactShow.setLocation(urlPicture);
 			pictureContactShow.refresh();
@@ -1015,7 +823,7 @@ public class ContactPanel extends JPanel {
 			jltelephonefixeO.setText(allcontact.get(selectedIndex).getTelephoneFixe());
 			jladresseO.setText(allcontact.get(selectedIndex).getAdresse());
 			jlorganisationO.setText(allcontact.get(selectedIndex).getOrganisation());
-			
+
 			pictureContactShow.setLocation(allcontact.get(selectedIndex).getLocPicture());
 		}
 
