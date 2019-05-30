@@ -18,17 +18,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.EventObject;
-import java.util.Objects;
-
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
-import javax.sound.sampled.Line;
 import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.Mixer;
-import javax.sound.sampled.Port;
 import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.AbstractButton;
 import javax.swing.ButtonGroup;
@@ -69,9 +63,17 @@ public class MusicPlayerPanel extends JPanel {
 	static final int SB_INIT = 80;    //initial frames per second
 	
 	private JLabel valeurSound = new JLabel("Volume actuel : 80%");  
-	private float vol = (float) 80;
+	private float vol = (float) 0.8;
+	int currentVolume=80;
+	int volumeTemp=0;
 	
-	Icon sound = new Icon("images/icons/soundLoud.png", 24, 24);	
+	private String loud="images/icons/soundLoud-48.png";
+	private String medium="images/icons/soundMedium-48.png";
+	private String low="images/icons/soundLow-48.png";
+	private String mute="images/icons/soundMute-48.png";
+	
+	Icon sound = new Icon(loud, 24, 24);
+
 
 	JSlider soundBar = new JSlider(JSlider.HORIZONTAL, SB_MIN, SB_MAX, SB_INIT);
 //	framesPerSecond.addChangeListener(this);
@@ -123,6 +125,7 @@ public class MusicPlayerPanel extends JPanel {
 		if (!folder.exists()) {
 			return;
 		}
+		
 	
 		//Tableau temporaire avec tous les fichiers du dossier music
 		File[] all = folder.listFiles();
@@ -239,7 +242,7 @@ public class MusicPlayerPanel extends JPanel {
 		//panel south parameters
 		south.setLayout(new GridLayout(3,1));
 		
-		
+		valeur.add(sound);
 		valeur.add(valeurSound);
 //		slider.setLayout(new BorderLayout());
 //		slider.add(sound, BorderLayout.WEST);
@@ -284,6 +287,7 @@ public class MusicPlayerPanel extends JPanel {
 		iconStop.addActionListener(new Stop());
 		addMusic.addActionListener(new AddMusic());
 		delMusic.addActionListener(new DeleteMusic());
+		sound.addActionListener(new Mute());
 		
 		
 
@@ -327,18 +331,47 @@ public class MusicPlayerPanel extends JPanel {
 			// TODO Auto-generated method stub
 			valeurSound.setText("Volume actuel : " + ((JSlider)e.getSource()).getValue()+"%");
 			
-			int x=((JSlider)e.getSource()).getValue();
+			currentVolume=((JSlider)e.getSource()).getValue();
 			
 			//float z=(float) (x/100.0);
-			vol=(float) (x/100.0);
+			vol=(float) (currentVolume/100.0);
 			
+			String iconSoundLocation = null;
 			
+			if(currentVolume==0) {
+				iconSoundLocation=mute;
+			}
+			if(currentVolume>0) {
+				iconSoundLocation=low;
+			}
+			if(currentVolume>29) {
+				iconSoundLocation=medium;
+			}
+			if(currentVolume>69) {
+				iconSoundLocation=loud;
+			}
+			
+			sound.setLocation(iconSoundLocation);
+			sound.refresh();
+		
 			//execute only if there is an active clip
 			if(isInProgress()==true) {
 				setVolume(vol);
+			}	
+		}
+	}
+	
+	private class Mute implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(soundBar.getValue()==0) {
+				soundBar.setValue(volumeTemp);
 			}
-			
-			
+			else {
+				volumeTemp=currentVolume;
+				soundBar.setValue(0);
+			}
 		}
 	}
 
@@ -440,14 +473,14 @@ public class MusicPlayerPanel extends JPanel {
 				e.printStackTrace();
 			}
 			
-			
-			
 			clip.start();
 			
-
 			setInProgress(true);
-
+			
 			this.clip = clip;
+			
+			//starts the music at the volume chosen by the JSlider
+			setVolume(vol);
 			
 			
 		}
@@ -580,6 +613,11 @@ public class MusicPlayerPanel extends JPanel {
 				System.out.println("Aucun bouton sélectionné");
 				return;
 			}
+			
+			//we stop the music before deleting the file
+			if(!(clip==null)) {
+			clip.stop();
+			}
 						
 			String location = null;
 			location=findLocation();
@@ -652,14 +690,6 @@ public class MusicPlayerPanel extends JPanel {
 		this.inProgress = inProgress;
 	}
 	
-//	public float getVol() {
-//		return vol;
-//	}
-//
-//	public void setVol(float vol) {
-//		this.vol = vol;
-//	}
-
 	// Permet de checker quand la musique est terminée
 	public void checkProgress() {
 		// Test si clip est vide
