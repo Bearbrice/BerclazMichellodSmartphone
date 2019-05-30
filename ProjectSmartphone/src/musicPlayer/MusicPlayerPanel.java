@@ -319,7 +319,7 @@ public class MusicPlayerPanel extends JPanel {
 		soundBar.setMinorTickSpacing(10);  
 		soundBar.setMajorTickSpacing(20);  
 		soundBar.setPaintTicks(true);  
-		soundBar.setPaintLabels(true);
+		soundBar.setPaintLabels(true); 
 		
 		soundBar.addChangeListener(new ChangeVolume());
 	}
