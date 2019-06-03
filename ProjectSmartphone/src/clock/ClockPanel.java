@@ -22,7 +22,7 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 /**
- * The ClockPanel class displays the computer time in real time in a panel
+ * The ClockPanel class displays the computer time in real time in a panel.
  *
  * @author Brice Berclaz
  * @see java.text.DateFormat
