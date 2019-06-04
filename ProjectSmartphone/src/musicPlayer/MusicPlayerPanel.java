@@ -55,9 +55,6 @@ public class MusicPlayerPanel extends JPanel {
 	private Icon iconStop = new Icon("images/icons/Stop-48.png", 48, 48);
 
 	private JLabel title = new JLabel("MUSIC PLAYER");
-	private JLabel nameMusic1 = new JLabel("Hardwell & Wildstylez feat. KiFi - \n Shine A Light");
-	private JLabel nameMusic2 = new JLabel("Tiësto - WOW");
-	private JLabel nameMusic3 = new JLabel("Mike Williams - The Beat (Hardwell Edit)");
 
 	private Icon addMusic = new Icon("images/icons/AddMusic-48.png", 48, 48);
 	private Icon delMusic = new Icon("images/icons/delete.png", 48, 48);
@@ -312,15 +309,6 @@ public class MusicPlayerPanel extends JPanel {
 	private void labelProperties() {
 		title.setFont(new Font("Serif", Font.BOLD, 35));
 		title.setForeground(Color.WHITE);
-
-		nameMusic1.setFont(new Font("Serif", Font.BOLD, 14));
-		nameMusic1.setForeground(Color.WHITE);
-
-		nameMusic2.setFont(new Font("Serif", Font.BOLD, 14));
-		nameMusic2.setForeground(Color.WHITE);
-
-		nameMusic3.setFont(new Font("Serif", Font.BOLD, 14));
-		nameMusic3.setForeground(Color.WHITE);
 	}
 
 	// findLocation

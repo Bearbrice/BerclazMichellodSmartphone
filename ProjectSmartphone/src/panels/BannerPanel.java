@@ -55,7 +55,7 @@ public class BannerPanel extends JPanel {
 
 	Icon iconMusicRun = new Icon("images/icons/MusicRun-48.png", 18, 18);
 	Icon iconWlanForce = new Icon(wlan.getPathForce(), 18, 18);
-	Icon battery = new Icon("", 18, 18);
+	Icon battery = new Icon("", 20, 20);
 
 	// CONSTRUCTEUR
 	public BannerPanel() {
@@ -157,7 +157,6 @@ public class BannerPanel extends JPanel {
 		perc.setText(percentage);
 		iconWlanForce.setLocation(wlan.getPathForce());
 		iconWlanForce.refresh();
-
 	}
 
 }
