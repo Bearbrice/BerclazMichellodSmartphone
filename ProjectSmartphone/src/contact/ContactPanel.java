@@ -93,7 +93,7 @@ public class ContactPanel extends JPanel {
 	private int selectedIndex = 0;
 
 	/*
-	 * This will allow you to display the different panels
+	 * This will allow to display the different panels
 	 * 
 	 * @see java.awt.CardLayout
 	 */
@@ -248,28 +248,29 @@ public class ContactPanel extends JPanel {
 	public void actualizeList() {
 		allcontact = orderArray();
 		contactinfo.setListData(allcontact.toArray());
-//		contactinfo.setAutoCreateRowSorter(true);
-//		contactinfo.toggleSortOrder();
-//		sortList(contactinfo);
-
 	}
 
 	/**
+	 * Sorts the contact table according to the alphabetical order of first names
+	 * 
 	 * @return ArrayList<ContactData>
 	 */
 	public ArrayList<ContactData> orderArray() {
 
 		ArrayList<ContactData> newContact = new ArrayList<ContactData>();
 
+		/* The array will welcome all first names of contacts. */
 		ArrayList<String> firstnames = new ArrayList<String>();
 
+		/* We add the first names to the string array */
 		for (int i = 0; i < allcontact.size(); i++) {
 			firstnames.add(allcontact.get(i).getFirstName());
 		}
 
+		/* Sorts the array of string in alphabetical order of first names */
 		Collections.sort(firstnames, String.CASE_INSENSITIVE_ORDER);
-		// System.out.println(firstnames);
 
+		/* We are preparing the new object array which will be ordered this time */
 		for (int j = 0; j < firstnames.size(); j++) {
 			for (int i = 0; i < allcontact.size(); i++) {
 				if (firstnames.get(j) == allcontact.get(i).getFirstName()) {
@@ -277,7 +278,6 @@ public class ContactPanel extends JPanel {
 				}
 			}
 		}
-		// System.out.println(newContact);
 
 		return newContact;
 	}
@@ -309,7 +309,7 @@ public class ContactPanel extends JPanel {
 		try {
 			fos = new FileOutputStream("serialization/allcontacts.ser");
 
-			ObjectOutputStream oos = new ObjectOutputStream(fos); // permet d'écrire au niveau du flux de sortie
+			ObjectOutputStream oos = new ObjectOutputStream(fos); // allows you to write to the output stream
 
 			for (int i = 0; i < allcontact.size(); i++) {
 				oos.writeObject(allcontact.get(i));
@@ -537,17 +537,17 @@ public class ContactPanel extends JPanel {
 			urlPicture = gallery.getUrlContact();
 
 			if (currentPanel == "contactEdit") {
-				/* updates the image of the contactEdit panel */
+				/* Updates the image of the contactEdit panel */
 				contactEdit.repaintEdit();
 			}
 
 			if (currentPanel == "contactAdd") {
-				/* updates the image of the contactAdd panel */
+				/* Updates the image of the contactAdd panel */
 				contactAdd.repaintAdd();
 			}
 
 			if (currentPanel == "contactShow") {
-				/* updates the image of the contactShow panel */
+				/* Updates the image of the contactShow panel */
 				contactShow.repaintShow();
 			}
 
@@ -578,13 +578,11 @@ public class ContactPanel extends JPanel {
 
 	class ContactAdd extends JPanel {
 
-		// private JLabel title = new JLabel();
-
 		private JPanel north = new JPanel();
-		// private JPanel left = new JPanel();
-		// private JPanel right = new JPanel();
 		private JPanel south = new JPanel();
 		private JPanel center = new JPanel();
+		private JPanel left = new JPanel();
+		private JPanel right = new JPanel();
 
 		private JLabel jlprenom = new JLabel("Prenom");
 		private JLabel jlnom = new JLabel("Nom");
@@ -636,7 +634,8 @@ public class ContactPanel extends JPanel {
 			this.add(north, BorderLayout.NORTH);
 			this.add(center, BorderLayout.CENTER);
 			this.add(south, BorderLayout.SOUTH);
-
+			this.add(left, BorderLayout.WEST);
+			this.add(right, BorderLayout.EAST);
 		}
 
 		/**
@@ -759,14 +758,12 @@ public class ContactPanel extends JPanel {
 	// ******************************************************************** //
 
 	/**
-	 * The ContacAdd class displays a panel which allows you to edit a contact.
+	 * The ContacEdit class displays a panel which allows you to edit a contact.
 	 * 
 	 * @author Brice Berclaz
 	 */
 
 	public class ContactEdit extends JPanel {
-
-		private JLabel title = new JLabel();
 
 		private JPanel north = new JPanel();
 		private JPanel left = new JPanel();
@@ -793,6 +790,7 @@ public class ContactPanel extends JPanel {
 
 		private JButton save = new JButton("Save");
 
+		/** Constructor of the ContactEdit class. */
 		public ContactEdit() {
 			panelProperties(this);
 
@@ -823,12 +821,11 @@ public class ContactPanel extends JPanel {
 			this.add(north, BorderLayout.NORTH);
 			this.add(center, BorderLayout.CENTER);
 			this.add(left, BorderLayout.WEST);
+			this.add(right, BorderLayout.EAST);
 			this.add(south, BorderLayout.SOUTH);
 		}
 
-		/**
-		 * Method that refreshes the panel's contact photo.
-		 */
+		/** Method that refreshes the panel's contact photo. */
 		public void repaintEdit() {
 			pictureContactEdit.setLocation(urlPicture);
 			pictureContactEdit.refresh();
@@ -885,6 +882,12 @@ public class ContactPanel extends JPanel {
 				serialize();
 			}
 
+			/**
+			 * Check if the required fields have been filled in and if the contact can
+			 * therefore be saved
+			 * 
+			 * @return a boolean if it is ready or not
+			 */
 			public boolean isReadyToSave() {
 				boolean ready = false;
 
@@ -951,11 +954,8 @@ public class ContactPanel extends JPanel {
 
 	private class ContactShow extends JPanel {
 
-		// private JLabel title = new JLabel();
-
 		private JPanel north = new JPanel();
 		private JPanel left = new JPanel();
-		// private JPanel right = new JPanel();
 		private JPanel south = new JPanel();
 
 		private JPanel center = new JPanel();
@@ -967,7 +967,7 @@ public class ContactPanel extends JPanel {
 		private JLabel jladresse = new JLabel("Adresse");
 		private JLabel jlorganisation = new JLabel("Organisation");
 
-		/* o pour object */
+		/* O for object. */
 		private JLabel jlprenomO = new JLabel();
 		private JLabel jlnomO = new JLabel();
 		private JLabel jltelephonepriveO = new JLabel();
@@ -977,6 +977,7 @@ public class ContactPanel extends JPanel {
 
 		private Icon pictureContactShow = new Icon(urlPicture, 96, 96);
 
+		/** Constructor of the ContactShow class. */
 		public ContactShow() {
 			panelProperties(this);
 
@@ -1002,14 +1003,17 @@ public class ContactPanel extends JPanel {
 			this.add(left, BorderLayout.WEST);
 			this.add(south, BorderLayout.SOUTH);
 			this.add(north, BorderLayout.NORTH);
-
 		}
 
+		/** Method that refreshes the panel's contact photo. */
 		public void repaintShow() {
 			pictureContactShow.setLocation(urlPicture);
 			pictureContactShow.refresh();
 		}
 
+		/**
+		 * Allows you to retrieve the information of the selected contact and show it
+		 */
 		public void actualize() {
 			jlprenomO.setText(allcontact.get(selectedIndex).getFirstName());
 			jlnomO.setText(allcontact.get(selectedIndex).getLastName());

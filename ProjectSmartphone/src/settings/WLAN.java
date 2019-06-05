@@ -33,7 +33,6 @@ public class WLAN {
 		try {
 			p = builder.start();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -44,7 +43,6 @@ public class WLAN {
 				try {
 					line = r.readLine();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (SSID == false) {
@@ -66,7 +64,6 @@ public class WLAN {
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -33,8 +33,6 @@ public class SettingsPanel extends JPanel {
 	// PANELS
 	private JPanel north = new JPanel();
 	private JPanel center = new JPanel();
-	private JPanel left = new JPanel();
-	private JPanel right = new JPanel();
 
 	private JButton informations = new JButton("Informations");
 	private JButton version = new JButton("Version");
@@ -154,7 +152,6 @@ public class SettingsPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			iconBack.setVisible(false);
 			title.setText("SETTINGS");
 
@@ -341,16 +338,6 @@ public class SettingsPanel extends JPanel {
 			}
 			return IPAddress;
 		}
-	}
-
-	// CLASS CHANGEBACKGROUND
-	private class ChangeBackground extends JPanel {
-
-		// Constructeur
-		public ChangeBackground() {
-
-		}
-
 	}
 
 }

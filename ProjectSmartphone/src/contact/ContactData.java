@@ -17,8 +17,7 @@ import java.io.Serializable;
  */
 public class ContactData implements Serializable {
 
-	/* CLASSE DEDIE A LA SERIALISATION */
-	// Initialisation des variables
+	/* Initialization of variables */
 	private int id;
 	private String firstName;
 	private String lastName;
@@ -57,6 +56,9 @@ public class ContactData implements Serializable {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
 		return firstName + " " + lastName + " - " + privatePhone + " - " + organisation;
