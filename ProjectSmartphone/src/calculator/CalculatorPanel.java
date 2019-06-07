@@ -1,8 +1,8 @@
 /*
  * Calculator App
- * Author: Samuel Michellod
- * Date creation: 
- * Date last modification: 14.05.2019
+ * Author: Samuel Michellod & Brice Berclaz
+ * Date creation: 20.04.2019
+ * Date last modification: 07.06.2019
  */
 
 package calculator;
@@ -23,18 +23,21 @@ import javax.swing.JPanel;
 public class CalculatorPanel extends JPanel {
 
 	private JPanel container = new JPanel();
-	private boolean clicOperateur = false, update = false;
-	private JLabel ecran = new JLabel();
-	private double chiffre;
-	private int sol;
-	private String operateur = "";
+	private boolean clicOperator = false, update = false;
+	private JLabel screen = new JLabel();
+	private double number;
+	private String operator = "";
 
 	private JPanel banner = new JPanel(); // headline NORTH
 	private JLabel title = new JLabel("CALCULATOR");
 
-	// dim pour les chiffres dim2 pour les operations
+	// dim for the numbers dim2 for the operations
 	private Dimension dim = new Dimension(50, 40);
 	private Dimension dim2 = new Dimension(50, 30);
+
+	/**
+	 * Constructor of the calculator panel
+	 */
 
 	public CalculatorPanel() {
 		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -48,7 +51,7 @@ public class CalculatorPanel extends JPanel {
 		this.setOpaque(false);
 		// this.setLayout(new BorderLayout());
 
-		// Ajout du titre
+		// Adding the title
 		banner.add(title);
 		banner.setBackground(Color.GRAY);
 
@@ -64,24 +67,28 @@ public class CalculatorPanel extends JPanel {
 		// this.setVisible(true);
 	}
 
+	/**
+	 * The component of the picture and the buttons
+	 */
+
 	private void initComposant() {
 		Font police = new Font("Arial", Font.BOLD, 35);
 		Font f = new Font("Arial", Font.BOLD, 16);
 
-		ecran = new JLabel("0");
-		ecran.setFont(police);
+		screen = new JLabel("0");
+		screen.setFont(police);
 
-		// On aligne les informations à droite dans le JLabel
-		ecran.setHorizontalAlignment(JLabel.RIGHT);
-		ecran.setPreferredSize(new Dimension(220, 20));
+		// We align the information on the right in the JLabel
+		screen.setHorizontalAlignment(JLabel.RIGHT);
+		screen.setPreferredSize(new Dimension(220, 20));
 
 		JPanel operation = new JPanel();
 		operation.setPreferredSize(new Dimension(105, 265));
 
-		JPanel clavier = new JPanel();
+		JPanel keyboard = new JPanel();
 
 		// original +40 +40
-		clavier.setPreferredSize(new Dimension(165, 225));
+		keyboard.setPreferredSize(new Dimension(165, 225));
 
 		// clavier.setPreferredSize(new Dimension(205, 265));
 
@@ -90,69 +97,68 @@ public class CalculatorPanel extends JPanel {
 		panEcran.setPreferredSize(new Dimension(260, 70));
 
 		panEcran.setLayout(new BorderLayout());
-		clavier.setLayout(new GridLayout(4, 5));
+		keyboard.setLayout(new GridLayout(4, 5));
 		operation.setLayout(new GridLayout(5, 1));
 
 		JButton t1 = new JButton("1");
-		clavier.add(t1);
-		t1.addActionListener(new ChiffreListener());
+		keyboard.add(t1);
+		t1.addActionListener(new NumberListener());
 		t1.setPreferredSize(dim);
 
 		JButton t2 = new JButton("2");
-		clavier.add(t2);
+		keyboard.add(t2);
 		t2.setPreferredSize(dim);
-		t2.addActionListener(new ChiffreListener());
+		t2.addActionListener(new NumberListener());
 
 		JButton t3 = new JButton("3");
-		clavier.add(t3);
+		keyboard.add(t3);
 		t3.setPreferredSize(dim);
-		t3.addActionListener(new ChiffreListener());
+		t3.addActionListener(new NumberListener());
 
 		JButton t4 = new JButton("4");
-		clavier.add(t4);
+		keyboard.add(t4);
 		t4.setPreferredSize(dim);
-		t4.addActionListener(new ChiffreListener());
+		t4.addActionListener(new NumberListener());
 
 		JButton t5 = new JButton("5");
-		clavier.add(t5);
+		keyboard.add(t5);
 		t5.setPreferredSize(dim);
-		t5.addActionListener(new ChiffreListener());
+		t5.addActionListener(new NumberListener());
 
 		JButton t6 = new JButton("6");
-		clavier.add(t6);
+		keyboard.add(t6);
 		t6.setPreferredSize(dim);
-		t6.addActionListener(new ChiffreListener());
+		t6.addActionListener(new NumberListener());
 
 		JButton t7 = new JButton("7");
-		clavier.add(t7);
-		t7.addActionListener(new ChiffreListener());
+		keyboard.add(t7);
+		t7.addActionListener(new NumberListener());
 		t7.setPreferredSize(dim);
 
 		JButton t8 = new JButton("8");
-		clavier.add(t8);
+		keyboard.add(t8);
 		t8.setPreferredSize(dim);
-		t8.addActionListener(new ChiffreListener());
+		t8.addActionListener(new NumberListener());
 
 		JButton t9 = new JButton("9");
-		clavier.add(t9);
+		keyboard.add(t9);
 		t9.setPreferredSize(dim);
-		t9.addActionListener(new ChiffreListener());
+		t9.addActionListener(new NumberListener());
 
 		JButton zero = new JButton("0");
-		clavier.add(zero);
+		keyboard.add(zero);
 		zero.setPreferredSize(dim);
-		zero.addActionListener(new ChiffreListener());
+		zero.addActionListener(new NumberListener());
 
 		JButton point = new JButton(".");
-		clavier.add(point);
+		keyboard.add(point);
 		point.addActionListener(new PointListener());
-		point.setPreferredSize(dim);
+		point.setPreferredSize(dim2);
 
 		JButton egale = new JButton("=");
 		egale.setPreferredSize(dim2);
-		clavier.add(egale);
+		keyboard.add(egale);
 		egale.addActionListener(new EgalListener());
-		// egale.setFont(f);
 
 		JButton c = new JButton("C");
 		operation.add(c);
@@ -167,7 +173,7 @@ public class CalculatorPanel extends JPanel {
 
 		JButton moins = new JButton("-");
 		operation.add(moins);
-		moins.addActionListener(new MoinsListener());
+		moins.addActionListener(new MinusListener());
 		moins.setPreferredSize(dim2);
 
 		JButton fois = new JButton("*");
@@ -245,140 +251,180 @@ public class CalculatorPanel extends JPanel {
 		// operation.setBackground(background);
 		// container.setBackground(background);
 
-		panEcran.add(ecran);
+		panEcran.add(screen);
 		panEcran.setBorder(BorderFactory.createLineBorder(Color.black));
 
 		container.setLayout(new BorderLayout());
 		container.add(panEcran, BorderLayout.NORTH);
-		container.add(clavier, BorderLayout.CENTER);
+		container.add(keyboard, BorderLayout.CENTER);
 		container.add(operation, BorderLayout.EAST);
 
 	}
 
-	private void calcul() {
-		if (operateur.equals("+")) {
-			chiffre = chiffre + Double.valueOf(ecran.getText().toString()).doubleValue();
-			ecran.setText(String.valueOf(chiffre));
+	/**
+	 * Method that will make the calcul according to the operateur
+	 */
+
+	public void calcul() {
+		if (operator.equals("+")) {
+			number = number + Double.valueOf(screen.getText().toString()).doubleValue();
+			screen.setText(String.valueOf(number));
 		}
-		if (operateur.equals("-")) {
-			chiffre = chiffre - Double.valueOf(ecran.getText().toString()).doubleValue();
-			ecran.setText(String.valueOf(chiffre));
+		if (operator.equals("-")) {
+			number = number - Double.valueOf(screen.getText().toString()).doubleValue();
+			screen.setText(String.valueOf(number));
 		}
-		if (operateur.equals("*")) {
-			chiffre = chiffre * Double.valueOf(ecran.getText().toString()).doubleValue();
-			ecran.setText(String.valueOf(chiffre));
+		if (operator.equals("*")) {
+			number = number * Double.valueOf(screen.getText().toString()).doubleValue();
+			screen.setText(String.valueOf(number));
 		}
-		if (operateur.equals("/")) {
+		if (operator.equals("/")) {
 			try {
-				chiffre = chiffre / Double.valueOf(ecran.getText().toString()).doubleValue();
-				ecran.setText(String.valueOf(chiffre));
+				number = number / Double.valueOf(screen.getText().toString()).doubleValue();
+				screen.setText(String.valueOf(number));
 			} catch (ArithmeticException e) {
-				ecran.setText("0");
+				screen.setText("0");
 			}
 		}
-		double y = Math.round(chiffre);
-		if (chiffre - y == 0) {
-			ecran.setText(String.valueOf((int) chiffre));
+		/**
+		 * Set the screen to an int if the number finish by .0
+		 */
+
+		double y = Math.round(number);
+		if (number - y == 0) {
+			screen.setText(String.valueOf((int) number));
 		} else
-			ecran.setText(String.valueOf(chiffre));
+			screen.setText(String.valueOf(number));
 	}
 
-	class ChiffreListener implements ActionListener {
+	/**
+	 * Listener for the numbers in the keyboard
+	 */
+
+	class NumberListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			String str = ((JButton) e.getSource()).getText();
 			if (update) {
 				update = false;
 			} else {
-				if (!ecran.getText().equals("0"))
-					str = ecran.getText() + str;
+				if (!screen.getText().equals("0"))
+					str = screen.getText() + str;
 			}
-			ecran.setText(str);
+			screen.setText(str);
 		}
 	}
+
+	/**
+	 * Listener of the equals button
+	 */
 
 	class EgalListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			update = true;
 			calcul();
-			clicOperateur = false;
+			clicOperator = false;
 		}
 	}
+
+	/**
+	 * Listener of the plus button
+	 */
 
 	class PlusListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (clicOperateur) {
+			if (clicOperator) {
 				calcul();
 
-				ecran.setText(String.valueOf(chiffre));
+				screen.setText(String.valueOf(number));
 			} else {
-				chiffre = Double.valueOf(ecran.getText()).doubleValue();
-				clicOperateur = true;
+				number = Double.valueOf(screen.getText()).doubleValue();
+				clicOperator = true;
 			}
-			operateur = "+";
+			operator = "+";
 			update = true;
 		}
 	}
 
-	class MoinsListener implements ActionListener {
+	/**
+	 * Listener of the minus button
+	 */
+
+	class MinusListener implements ActionListener {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (clicOperateur) {
+			if (clicOperator) {
 				calcul();
-				ecran.setText(String.valueOf(chiffre));
+				screen.setText(String.valueOf(number));
 			} else {
-				chiffre = Double.valueOf(ecran.getText()).doubleValue();
-				clicOperateur = true;
+				number = Double.valueOf(screen.getText()).doubleValue();
+				clicOperator = true;
 			}
-			operateur = "-";
+			operator = "-";
 			update = true;
 		}
 	}
+
+	/**
+	 * Listener of the multiplication button
+	 */
 
 	class MultiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			if (clicOperateur) {
+			if (clicOperator) {
 				calcul();
-				ecran.setText(String.valueOf(chiffre));
+				screen.setText(String.valueOf(number));
 			} else {
-				chiffre = Double.valueOf(ecran.getText()).doubleValue();
-				clicOperateur = true;
+				number = Double.valueOf(screen.getText()).doubleValue();
+				clicOperator = true;
 			}
 			update = true;
-			operateur = "*";
+			operator = "*";
 		}
 	}
+
+	/**
+	 * Listener of the division button
+	 */
 
 	class DivListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			if (clicOperateur) {
+			if (clicOperator) {
 				calcul();
-				ecran.setText(String.valueOf(chiffre));
+				screen.setText(String.valueOf(number));
 			} else {
-				chiffre = Double.valueOf(ecran.getText()).doubleValue();
-				clicOperateur = true;
+				number = Double.valueOf(screen.getText()).doubleValue();
+				clicOperator = true;
 			}
-			operateur = "/";
+			operator = "/";
 			update = true;
 		}
 	}
 
+	/**
+	 * Listener of the reset button
+	 */
+
 	class ResetListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			clicOperateur = false;
+			clicOperator = false;
 			update = true;
-			chiffre = 0;
-			operateur = "C";
-			ecran.setText("0");
+			number = 0;
+			operator = "C";
+			screen.setText("0");
 		}
 	}
+
+	/**
+	 * Listener of the point button
+	 */
 
 	class PointListener implements ActionListener {
 
@@ -389,14 +435,29 @@ public class CalculatorPanel extends JPanel {
 			if (update) {
 				update = false;
 			} else {
-				if (ecran.getText().equals("0"))
-					str = ecran.getText() + str;
+				if (screen.getText().equals("0"))
+					str = screen.getText() + str;
 			}
-			if (!ecran.getText().equals("0")) {
-				str = ecran.getText() + str;
+			if (!screen.getText().equals("0")) {
+				str = screen.getText() + str;
 			}
-			ecran.setText(str);
+			screen.setText(str);
 		}
 	}
 
+	public void setNumber(double number) {
+		this.number = number;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+
+	public JLabel getScreen() {
+		return screen;
+	}
+
+	public void setScreen(JLabel screen) {
+		this.screen = screen;
+	}
 }

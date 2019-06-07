@@ -1,3 +1,10 @@
+/*
+ * Calculator App
+ * Author: Samuel Michellod & Brice Berclaz
+ * Date creation: 27.04.2019
+ * Date last modification: 31.05.2019
+ */
+
 package gallery;
 
 import java.awt.BorderLayout;
@@ -7,39 +14,40 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
-import javax.swing.ImageIcon;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-import contact.ContactPanel;
-import images.Icon;
 import images.Background;
+import images.Icon;
+
+/**
+ * Class that will manage the gallery app
+ * 
+ * @author Samuel Michellod
+ */
 
 public class Galerie extends JPanel {
-	//path pour background
+	// path pour background
 	private String pathbg;
-	private boolean activeBGserialization=false;
-	
+	private boolean activeBGserialization = false;
+
 	public boolean isActiveBGserialization() {
 		return activeBGserialization;
 	}
@@ -52,39 +60,35 @@ public class Galerie extends JPanel {
 
 	// boolean pour savoir si la galerie s'exécute normalement ou dans les contacts
 	private boolean activContact = false;
-	
-	//getter pour activContact
+
+	// getter for activContact
 	public boolean isActivContact() {
 		return activContact;
 	}
 
-	//setter pour activContact
+	// setter for activContact
 	public void setActivContact(boolean activContact) {
 		this.activContact = activContact;
 	}
-	
-	//urldelimagecontact
-	private String urlContact = "";
 
+	// urldelimagecontact
+	private String urlContact = "";
+	// Creation of a picture object array
 	private ArrayList<Photo> listPhoto = new ArrayList<Photo>();
 
 	PanelGallery panelgallery = new PanelGallery("Galerie", "Galerie");
 
-	// Panels pour mettre les photos
+	// Panels that will contains the pictures
 	JPanel center = new JPanel();
 	JPanel photo = new JPanel();
 
-
-	// Gestion des panels dans la galerie
 	private CardLayout cardlayout = new CardLayout();
 	private JPanel tripanel = new JPanel(cardlayout);
 
-	// pour le scroll
+	// for scrolling
 	JScrollPane scroll = new JScrollPane(center);
-	
-	
-	
-	//Constructeur
+
+	// Constructor of Galerie
 	public Galerie() {
 
 		this.setPreferredSize(new Dimension(480, 40));
@@ -99,12 +103,10 @@ public class Galerie extends JPanel {
 		tripanel.add(photo, "photo");
 		panelgallery.setBackground(Color.DARK_GRAY);
 		actualisePhoto();
-		
-		
-		
 
 	}
-	
+
+	// The path of the photo for the background
 	public String getPathbg() {
 		return pathbg;
 	}
@@ -113,11 +115,10 @@ public class Galerie extends JPanel {
 		this.pathbg = pathbg;
 	}
 
-	// Classe qui va gerer le cique sur le bouton image de la galerie
-	
+	// Class that will manage the click on the image button of the gallery
 
 	class ClickPhoto implements ActionListener {
-		
+
 		String path;
 
 		public ClickPhoto(String path) {
@@ -126,64 +127,67 @@ public class Galerie extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			//START CODING BRICE (EN TEST)
-			
-			if(activContact==true) {
+
+			// START CODING BRICE (EN TEST)
+
+			if (activContact == true) {
 				String temp = "";
 				String temp2 = "";
-				
-				//boucle qui exécute un substring inversé pour obtenir le chemin absolu de l'image
-				for(int i=path.length()-1; i>0; i--) {
-					if(path.charAt(i)=='\\') {
+
+				// boucle qui exécute un substring inversé pour obtenir le chemin absolu de
+				// l'image
+				for (int i = path.length() - 1; i > 0; i--) {
+					if (path.charAt(i) == '\\') {
 						break;
 					}
-					temp+=path.charAt(i);
-					//System.out.println(path.charAt(i));
-					//System.out.println(temp);
-					}
-				
-				//boucle qui remet à l'endroit le chemin absolu obtenu
-				for(int i=temp.length()-1; i>=0; i--) {
-					temp2+=temp.charAt(i);
+					temp += path.charAt(i);
+					// System.out.println(path.charAt(i));
+					// System.out.println(temp);
 				}
-				
+
+				// boucle qui remet à l'endroit le chemin absolu obtenu
+				for (int i = temp.length() - 1; i >= 0; i--) {
+					temp2 += temp.charAt(i);
+				}
+
 				setUrlContact("imagesgallery/" + temp2);
-			
-				//setUrlContact(path);
+
+				// setUrlContact(path);
 				System.out.println(path);
-				
+
 				System.out.println("TEMP2 = " + temp2);
-				
-				
-				
-				activContact=false;
+
+				activContact = false;
 			}
-			//END CODING BRICE
-			
-			//else = utilisation normale de la galerie by SAMUEL
+			// END CODING BRICE
+
+			// else = utilisation normale de la galerie by SAMUEL
 			else {
 				panelgallery.setVisible(false);
 				cardlayout.show(gettripanel(), "photo");
 
-				// On va chercher la source du clique de l'image
+				// Look for the source of the image click
 				MiniPhoto minsource = (MiniPhoto) e.getSource();
 				PhotoPanel photoPanel = new PhotoPanel(Galerie.this, minsource.pic);
 
-				// Creation d'un panel pour la photo en grand
+				// Creation of a panel for photos in large
 				photo.setLayout(new BorderLayout());
 
-				// on fait un removeAll pour remettre a  zero l'objet instancié
+				// We do a removeAll to reset the instantiated object to zero
 				photo.removeAll();
 				photo.add(photoPanel, BorderLayout.CENTER);
 			}
-			
+
 		}
-		
+
 	}
-	
 
-
+	/**
+	 * Class that will manage the panel when you click on the picture
+	 * 
+	 * @author Samuel Michellod
+	 *
+	 */
 	public class PhotoPanel extends JPanel {
 		private Galerie photo;
 		private Photo image;
@@ -192,12 +196,20 @@ public class Galerie extends JPanel {
 		// private Background fondEcran;
 
 		JPanel up = new JPanel();
-		
+
 		JPanel backgroundIcon = new JPanel();
 
 		Icon delete = new Icon("images/icons/delete.png", 48, 48);
 		Icon previous = new Icon("images/icons/left-arrow.png", 48, 48);
-		Icon background = new Icon ("images\\icons\\icons8-fond-d'écran-filled-50.png", 48,48);
+		Icon background = new Icon("images\\icons\\icons8-fond-d'écran-filled-50.png", 48, 48);
+
+		/**
+		 * Constructor of the class PhotoPanel
+		 * 
+		 * @param photo : Photo in the gallery
+		 * @param image : The miniPicture
+		 * @author Samuel Michellod
+		 */
 
 		public PhotoPanel(Galerie photo, Photo image) {
 			this.photo = photo;
@@ -206,33 +218,26 @@ public class Galerie extends JPanel {
 			BorderLayout borderlayout = new BorderLayout();
 			this.setLayout(borderlayout);
 			this.setBackground(Color.BLACK);
-			
-			
 
-            backgroundIcon.add(background);
-            
-            backgroundIcon.setBackground(Color.BLACK);
+			backgroundIcon.add(background);
 
-        
-			
-			
-			
+			backgroundIcon.setBackground(Color.BLACK);
+
 			up.add(backgroundIcon, BorderLayout.CENTER);
 			up.setLayout(new BorderLayout());
 			up.setBackground(Color.BLACK);
 			this.add(up, BorderLayout.NORTH);
-			
-			
+
 			up.add(previous, BorderLayout.WEST);
 			up.add(delete, BorderLayout.EAST);
-            up.add(backgroundIcon, BorderLayout.CENTER);
+			up.add(backgroundIcon, BorderLayout.CENTER);
 
 			previous.addActionListener(new Previous());
 			delete.addActionListener(new ConfirmationDelete());
 			background.addActionListener(new BackgroundListener());
 
 			up.setVisible(true);
-
+			// Swipe with the click
 			m = new MouseAdapter() {
 				private Point origin;
 
@@ -286,7 +291,11 @@ public class Galerie extends JPanel {
 
 		}
 
-		// mÃ©thode qui permet de changer d'image par apport au tableau d'objets
+		/**
+		 * Method that allows the image swipe in relation to the object array
+		 * 
+		 * @param i : The position in the table
+		 */
 		public void changeImage(int i) {
 			int idImage = photo.getNextPhoto(image) + i;
 			ArrayList<Photo> liste = photo.getListImg();
@@ -305,43 +314,52 @@ public class Galerie extends JPanel {
 			return changeImage;
 		}
 
+		/**
+		 * Class that will display a dialog when you click on the button delete
+		 * 
+		 * @author Samuel Michellod
+		 *
+		 */
 		public class ConfirmationDelete implements ActionListener {
-			
+
 			private JDialog confirmation = new JDialog();
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-			        JLabel warning = new JLabel("Delete this photo?");
-		            JButton yes = new JButton("Yes");
-		            JButton no = new JButton("No");
-		            JPanel north = new JPanel();
-		            JPanel center = new JPanel();
 
-		            north.add(warning);
-		            center.add(yes);
-		            center.add(no);
-		            
-		            yes.addActionListener(new Delete());
-		            no.addActionListener(new CloseDialog());
-		            
-		            confirmation.add(north, BorderLayout.NORTH);
-		            confirmation.add(center, BorderLayout.CENTER);
-		            
-		            
-		            confirmation.setLocation(620,400);
-		            confirmation.setTitle("Warning");
-		            
-		            confirmation.pack();
-		            
-		            
-		            confirmation.setVisible(true);
-		            confirmation.setAlwaysOnTop(true);
-		       
-		            
+				JLabel warning = new JLabel("Delete this photo?");
+				JButton yes = new JButton("Yes");
+				JButton no = new JButton("No");
+				JPanel north = new JPanel();
+				JPanel center = new JPanel();
+
+				north.add(warning);
+				center.add(yes);
+				center.add(no);
+
+				yes.addActionListener(new Delete());
+				no.addActionListener(new CloseDialog());
+
+				confirmation.add(north, BorderLayout.NORTH);
+				confirmation.add(center, BorderLayout.CENTER);
+
+				confirmation.setLocation(620, 400);
+				confirmation.setTitle("Warning");
+
+				confirmation.pack();
+
+				confirmation.setVisible(true);
+				confirmation.setAlwaysOnTop(true);
+
 			}
-			
+
+			/**
+			 * Class that will delete the photo
+			 * 
+			 * @author Samuel Michellod
+			 *
+			 */
 			public class Delete implements ActionListener {
 
 				@Override
@@ -351,126 +369,144 @@ public class Galerie extends JPanel {
 					removeChild(panelgallery);
 					confirmation.dispose();
 				}
-				
+
 			}
-			   public class CloseDialog implements ActionListener {
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-					confirmation.dispose();
-				
-			   }
-			   }
-		}
-		
-		
-			public class BackgroundListener implements ActionListener {
-			
-			private JDialog confirmation = new JDialog();
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				
-			        JLabel warning = new JLabel("Set this photo as background?");
-		            JButton yes = new JButton("Yes");
-		            JButton no = new JButton("No");
-		            JPanel north = new JPanel();
-		            JPanel center = new JPanel();
-
-		            north.add(warning);
-		            center.add(yes);
-		            center.add(no);
-		            
-		            yes.addActionListener(new Background());
-		            no.addActionListener(new CloseDialog());
-		            confirmation.add(north, BorderLayout.NORTH);
-		            confirmation.add(center, BorderLayout.CENTER);
-		            
-		            
-		            confirmation.setLocation(620,400);
-		            confirmation.setTitle("Warning");
-		            
-		            confirmation.pack();
-		            
-		            
-		            confirmation.setVisible(true);
-		            confirmation.setAlwaysOnTop(true);
-		       
-		            
-			}
-			
-
-            public class Background implements ActionListener {
-    			
-    			@Override
-    			public void actionPerformed(ActionEvent e) {
-    				confirmation.dispose();
-    				//setPathbg(image.getPath());
-    				//change.changeBackground(image.getPath());
-    				String tempPath;
-    				tempPath=image.getPath();
-    				
-    				System.out.println("imagegetpath: " + tempPath);
-    				
-    				tempPath=findRelativePath(tempPath);
-    				
-    				System.out.println("tempPath: " + tempPath);
-    				
-    				setPathbg(tempPath);
-    				
-    				//activer le boolean pour que la serialization se fasse dans la frame
-    				setActiveBGserialization(true);
-    			}
-
-    		}
+			/**
+			 * Class that will close the dialog
+			 * 
+			 * @author Samuel Michellod
+			 *
+			 */
 			public class CloseDialog implements ActionListener {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					confirmation.dispose();
-				
-			   }
+
+				}
 			}
-			
-			//Permet de retrouver le chemin relatif
+		}
+
+		/**
+		 * Class that will display a dialog when you click on the button background
+		 * 
+		 * @author Samuel Michellod
+		 *
+		 */
+		public class BackgroundListener implements ActionListener {
+
+			private JDialog confirmation = new JDialog();
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				JLabel warning = new JLabel("Set this photo as background?");
+				JButton yes = new JButton("Yes");
+				JButton no = new JButton("No");
+				JPanel north = new JPanel();
+				JPanel center = new JPanel();
+
+				north.add(warning);
+				center.add(yes);
+				center.add(no);
+
+				yes.addActionListener(new Background());
+				no.addActionListener(new CloseDialog());
+				confirmation.add(north, BorderLayout.NORTH);
+				confirmation.add(center, BorderLayout.CENTER);
+
+				confirmation.setLocation(620, 400);
+				confirmation.setTitle("Warning");
+
+				confirmation.pack();
+
+				confirmation.setVisible(true);
+				confirmation.setAlwaysOnTop(true);
+
+			}
+
+			/**
+			 * Class that will change the background
+			 * 
+			 * @author Samuel Michellod
+			 *
+			 */
+			public class Background implements ActionListener {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					confirmation.dispose();
+					// setPathbg(image.getPath());
+					// change.changeBackground(image.getPath());
+					String tempPath;
+					tempPath = image.getPath();
+
+					System.out.println("imagegetpath: " + tempPath);
+
+					tempPath = findRelativePath(tempPath);
+
+					System.out.println("tempPath: " + tempPath);
+
+					setPathbg(tempPath);
+
+					// enable the boolean so that serialization is done in the frame
+					setActiveBGserialization(true);
+				}
+
+			}
+
+			/**
+			 * Class that will close the dialog
+			 * 
+			 * @author Samuel Michellod
+			 *
+			 */
+			public class CloseDialog implements ActionListener {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					confirmation.dispose();
+
+				}
+			}
+
+			// To find the relative path
 			private String findRelativePath(String x) {
 				String newPath = null;
-				int z=0;
-				int profondeur=0;
-				
+				int z = 0;
+				int profondeur = 0;
+
 				x = x.replace("\\", "/");
-								
-				for(int i=x.length()-1; i>0; i--) {
-					if(x.charAt(i)=='/') {
-						//x.charAt(i).
-						newPath=x.substring(x.length()-z, x.length());
+
+				for (int i = x.length() - 1; i > 0; i--) {
+					if (x.charAt(i) == '/') {
+						// x.charAt(i).
+						newPath = x.substring(x.length() - z, x.length());
 						profondeur++;
-						
-						//on veut obtenir 2 de profondeur
-						if(profondeur==2) {
+
+						if (profondeur == 2) {
 							break;
 						}
-						
+
 					}
 					z++;
 				}
-				
+
 				return newPath;
 			}
-			  
-			
-			
-			
-			
-			
+
 		}
-	
-	}	
-	
 
-		
+	}
 
+	/**
+	 * Method that will reactualise the gallery when you delete a photo
+	 * 
+	 * @param PaneltoRemove : the panel you use
+	 * @author Samuel Michellod
+	 */
 	private void removeChild(JPanel PaneltoRemove) {
 		panelgallery.setVisible(true);
 		cardlayout.show(tripanel, "scroll");
@@ -480,43 +516,57 @@ public class Galerie extends JPanel {
 		this.repaint();
 	}
 
+	/**
+	 * 
+	 * class that will manage the panel at the top of the gallery
+	 * 
+	 * @author Samuel Michellod
+	 *
+	 */
+
 	private class PanelGallery extends JPanel {
-		JLabel titrePanel;
+
+		JLabel PanelTitle;
 
 		Font globalFont = new Font("2.TimesRoman", Font.BOLD, 50);
 
 		Icon create = new Icon("images/icons/icons8-plus-2.png", 48, 48);
 
-		private String nomPhoto;
+		private String PhotoName;
 
-		public PanelGallery(String titre, String nomClass) {
-			titrePanel = new JLabel(titre);
-			titrePanel.setFont(globalFont);
-			titrePanel.setForeground(Color.WHITE);
+		/**
+		 * Constructor of the class PanelGallery
+		 * 
+		 * @param title     : the title
+		 * @param className : name of the class
+		 * 
+		 * @author Samuel Michellod
+		 */
+
+		public PanelGallery(String title, String className) {
+			PanelTitle = new JLabel(title);
+			PanelTitle.setFont(globalFont);
+			PanelTitle.setForeground(Color.WHITE);
 
 			this.setPreferredSize(new Dimension(480, 78));
 			this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 8));
 
-			this.add(titrePanel, BorderLayout.CENTER);
+			this.add(PanelTitle, BorderLayout.CENTER);
 
 			this.add(create, BorderLayout.CENTER);
 
 			create.addActionListener(new Create());
 
 		}
-
-		public ArrayList<Photo> getListImg() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		public int getNextPhoto(Photo image) {
-			// TODO Auto-generated method stub
-			return 0;
-		}
-
 	}
 
+	/**
+	 * 
+	 * Class that will manage the addition of a picture
+	 * 
+	 * @author Samuel Michellod
+	 *
+	 */
 	public class Create implements ActionListener {
 
 		@Override
@@ -542,6 +592,14 @@ public class Galerie extends JPanel {
 
 	}
 
+	/**
+	 * 
+	 * Class that will come back to the gallery panel
+	 * 
+	 * @author Samuel Michellod
+	 *
+	 */
+
 	public class Previous implements ActionListener {
 
 		@Override
@@ -552,8 +610,6 @@ public class Galerie extends JPanel {
 		}
 
 	}
-
-
 
 	public int getNextPhoto(Photo actuelle) {
 		return listPhoto.indexOf(actuelle);
@@ -566,6 +622,11 @@ public class Galerie extends JPanel {
 	public JPanel gettripanel() {
 		return tripanel;
 	}
+
+	/**
+	 * Method that will update the recorded pictures
+	 * 
+	 */
 
 	public void actualisePhoto() {
 		center.removeAll();
@@ -591,10 +652,22 @@ public class Galerie extends JPanel {
 		this.urlContact = urlContact;
 	}
 
+	/**
+	 * Creation of "photo buttons" in small
+	 * 
+	 * @author Samuel Michellod
+	 *
+	 */
 	private class MiniPhoto extends JButton {
 		private Photo pic;
 		private String path;
 
+		/**
+		 * Constructor of the class MiniPhoto
+		 * 
+		 * @param path : Recovering the image path
+		 * @author Samuel Michellod
+		 */
 		public MiniPhoto(String path) {
 			super();
 			this.path = path;
@@ -610,15 +683,15 @@ public class Galerie extends JPanel {
 				e.printStackTrace();
 			}
 
-			// Choix de la dimension de l'image
+			// Choice of the image size
 			BufferedImage img = pic.getPicture();
 			int nW = img.getWidth() / (img.getHeight() / 100);
 			this.setPreferredSize(new Dimension(nW, 200));
 
-			// Affichage du panel de l'image au moment du clique
+			// Display of the image panel when you click on it
 			this.addActionListener(new ClickPhoto(path));
 
-			// Ajout de la minipicture dans le panel center
+			// Adding the miniphoto in the panel center
 			center.add(this);
 
 			listPhoto.add(pic);
