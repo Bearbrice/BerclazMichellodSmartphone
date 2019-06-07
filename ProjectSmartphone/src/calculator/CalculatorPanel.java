@@ -1,6 +1,6 @@
 /*
  * Calculator App
- * Author: Samuel Michellod & Brice Berclaz
+ * Author: S. Michellod
  * Date creation: 20.04.2019
  * Date last modification: 07.06.2019
  */
@@ -78,7 +78,7 @@ public class CalculatorPanel extends JPanel {
 		screen = new JLabel("0");
 		screen.setFont(police);
 
-		// We align the information on the right in the JLabel
+		/* We align the information on the right in the JLabel */
 		screen.setHorizontalAlignment(JLabel.RIGHT);
 		screen.setPreferredSize(new Dimension(220, 20));
 
@@ -87,13 +87,10 @@ public class CalculatorPanel extends JPanel {
 
 		JPanel keyboard = new JPanel();
 
-		// original +40 +40
 		keyboard.setPreferredSize(new Dimension(165, 225));
 
-		// clavier.setPreferredSize(new Dimension(205, 265));
-
 		JPanel panEcran = new JPanel();
-		// original -40 -40
+
 		panEcran.setPreferredSize(new Dimension(260, 70));
 
 		panEcran.setLayout(new BorderLayout());
@@ -186,7 +183,6 @@ public class CalculatorPanel extends JPanel {
 		divise.addActionListener(new DivListener());
 		divise.setPreferredSize(dim2);
 
-		// SET FONTS
 		Font touche = new Font("Arial", Font.BOLD, 30);
 		t1.setFont(touche);
 		t2.setFont(touche);
@@ -206,7 +202,6 @@ public class CalculatorPanel extends JPanel {
 		point.setFont(touche);
 		egale.setFont(touche);
 
-		// SET FOREGROUNDS
 		Color fg = Color.WHITE;
 		t1.setForeground(fg);
 		t2.setForeground(fg);
@@ -221,12 +216,10 @@ public class CalculatorPanel extends JPanel {
 		plus.setForeground(fg);
 		moins.setForeground(fg);
 		divise.setForeground(fg);
-		// c.setForeground(fg);
 		fois.setForeground(fg);
 		point.setForeground(fg);
 		egale.setForeground(fg);
 
-		// SET BACKGROUNDS
 		Color background = Color.BLACK;
 		t1.setBackground(background);
 		t2.setBackground(background);
@@ -245,11 +238,6 @@ public class CalculatorPanel extends JPanel {
 		c.setBackground(background);
 		point.setBackground(background);
 		egale.setBackground(background);
-
-		// panEcran.setBackground(background);
-		// clavier.setBackground(background);
-		// operation.setBackground(background);
-		// container.setBackground(background);
 
 		panEcran.add(screen);
 		panEcran.setBorder(BorderFactory.createLineBorder(Color.black));

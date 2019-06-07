@@ -737,12 +737,12 @@ public class ContactPanel extends JPanel {
 				/* Don't save the contact if the organisation field is empty */
 				if (jtforganisation.getText().isBlank()) {
 					jlorganisation.setForeground(Color.RED);
-					jlorganisation.setText("Téléphone privé*");
+					jlorganisation.setText("Organisation*");
 					ready = false;
 				} else {
 					/* We make sure that the colors and texts are black if it isn't empty */
 					jlorganisation.setForeground(Color.BLACK);
-					jlorganisation.setText("Organisation*");
+					jlorganisation.setText("Organisation");
 				}
 
 				return ready;

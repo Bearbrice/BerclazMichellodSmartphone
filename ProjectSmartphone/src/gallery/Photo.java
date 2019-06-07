@@ -1,3 +1,10 @@
+/*
+ * Photo
+ * Author: S. Michellod
+ * Date creation: 27.04.2019
+ * Date last modification: 31.05.2019
+ */
+
 package gallery;
 
 import java.awt.image.BufferedImage;

@@ -1,6 +1,6 @@
 /*
  * Calculator App
- * Author: Samuel Michellod & Brice Berclaz
+ * Author: S. Michellod & B. Berclaz
  * Date creation: 27.04.2019
  * Date last modification: 31.05.2019
  */
