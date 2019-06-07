@@ -50,7 +50,6 @@ import images.Icon;
  * @see java.util.concurrent.ExecutorService
  * @see ContactData
  */
-
 public class ContactPanel extends JPanel {
 
 	private Galerie gallery = new Galerie();

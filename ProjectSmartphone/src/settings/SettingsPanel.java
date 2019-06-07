@@ -1,8 +1,8 @@
 /*
- * Settings App
+ * Settings Panel
  * Author: Brice Berclaz
  * Date creation: 03.05.2019
- * Date last modification: 13.05.2019
+ * Date last modification: 31.05.2019
  */
 
 package settings;
@@ -26,11 +26,16 @@ import javax.swing.JPanel;
 
 import images.Icon;
 
+/**
+ * The SettingsPanel class displays a panel who show information about the PC
+ * and the project and allow you to delete all contacts in one time
+ * 
+ * @author Brice Berclaz
+ */
 public class SettingsPanel extends JPanel {
 
 	private boolean reset = false;
 
-	// PANELS
 	private JPanel north = new JPanel();
 	private JPanel center = new JPanel();
 
@@ -45,11 +50,10 @@ public class SettingsPanel extends JPanel {
 	private Version versionpanel = new Version();
 	private Information infoPanel = new Information();
 
-	// Permettra d'afficher les différents panels
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel showPanel = new JPanel(cardLayout);
 
-	// Constructeur
+	/** Constructor of the SettingsPanel class */
 	public SettingsPanel() {
 
 		panelSettings();
@@ -91,6 +95,7 @@ public class SettingsPanel extends JPanel {
 		reset = false;
 	}
 
+	/** Modifies the parameters of the panel */
 	public void panelSettings() {
 		this.setPreferredSize(new Dimension(638, 188));
 		this.setVisible(true);
@@ -98,11 +103,13 @@ public class SettingsPanel extends JPanel {
 		this.setLayout(new BorderLayout());
 	}
 
+	/** Modifies the parameters of the JLabel title */
 	private void labelProperties() {
 		title.setFont(new Font("Serif", Font.BOLD, 35));
 		title.setForeground(Color.WHITE);
 	}
 
+	/** Modifies the parameters of the choosen JButtons */
 	private void buttonProperties() {
 		informations.setBackground(Color.BLACK);
 		informations.setForeground(Color.WHITE);
@@ -117,15 +124,17 @@ public class SettingsPanel extends JPanel {
 		resetContact.setFont(new Font("Algerian", Font.BOLD, 20));
 	}
 
+	/** Modifies the parameters of the north panel */
 	private void panelBackgrounds() {
 		north.setBackground(Color.GRAY);
 	}
 
-	/*
-	 * LISTENERS START
+	/**
+	 * Launches the secondary panel from the class ShowVersion.
 	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
 	 */
-
 	private class ShowVersion implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -137,6 +146,12 @@ public class SettingsPanel extends JPanel {
 
 	}
 
+	/**
+	 * Launches the secondary panel from the class ShowNetwork.
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 */
 	private class ShowNetwork implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -148,6 +163,12 @@ public class SettingsPanel extends JPanel {
 
 	}
 
+	/**
+	 * Launches the main panel center.
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 */
 	public class GetBack implements ActionListener {
 
 		@Override
@@ -161,6 +182,13 @@ public class SettingsPanel extends JPanel {
 
 	}
 
+	/**
+	 * This class shows a JDialog to make sure the user is ready and sure to remove
+	 * all contacts.
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 */
 	public class ConfirmationRC implements ActionListener {
 
 		private JDialog confirmation = new JDialog();
@@ -193,16 +221,30 @@ public class SettingsPanel extends JPanel {
 			confirmation.setAlwaysOnTop(true);
 		}
 
+		/**
+		 * This class allows to remove (all) contacts (R.C.)
+		 * 
+		 * @author Brice Berclaz
+		 * @see java.awt.event.ActionEvent
+		 */
 		public class ResetAllContacts implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// LE RESET SE FERA AU MOMENT OU ON OUVRIRA LES CONTACTS DEPUIS LE MENU (FRAME
-				// PRINCIPALE)
+				/*
+				 * The reset will be done when the contacts are opened from the menu (main
+				 * frame)
+				 */
 				reset = true;
 				confirmation.dispose();
 			}
 		}
 
+		/**
+		 * This class closes the JDialog
+		 * 
+		 * @author Brice Berclaz
+		 * @see java.awt.event.ActionEvent
+		 */
 		public class CloseDialog implements ActionListener {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -212,14 +254,22 @@ public class SettingsPanel extends JPanel {
 
 	}
 
-	// CLASS VERSION
+	// ******************************************************************** //
+	// ********************** NEW SECONDARY CLASS ************************* //
+	// ******************************************************************** //
+
+	/**
+	 * The Version class displays the version of the project.
+	 * 
+	 * @author Brice Berclaz
+	 */
 	private class Version extends JPanel {
 		private JLabel version = new JLabel("Version 1.44");
 		private JLabel credits = new JLabel("©Brice Berclaz & Samuel Michellod - 2019");
 
 		private JPanel center = new JPanel();
 
-		// Constructeur
+		/** Constructor of the Version class */
 		public Version() {
 
 			center.setLayout(new GridLayout(3, 1));
@@ -231,10 +281,13 @@ public class SettingsPanel extends JPanel {
 		}
 	}
 
-	// CLASS INFORMATION
+	/**
+	 * The Information class displays some information of the user PC.
+	 * 
+	 * @author Brice Berclaz
+	 */
 	private class Information extends JPanel {
 
-		// Variables
 		private String osName = System.getProperty("os.name");
 		private Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		private double width = screenDim.getWidth();
@@ -245,7 +298,6 @@ public class SettingsPanel extends JPanel {
 		private String IPAddress = getIP();
 		private String userName = System.getProperty("user.name");
 
-		// JLabels
 		private JLabel os = new JLabel("Operating system : " + osName);
 		private JLabel screenW = new JLabel("Screen width=" + width);
 		private JLabel screenH = new JLabel("Screen height=" + height);
@@ -264,10 +316,9 @@ public class SettingsPanel extends JPanel {
 		private JLabel empty2 = new JLabel();
 		private JLabel empty3 = new JLabel();
 
-		// JPANEL center
 		private JPanel center = new JPanel();
 
-		// Constructeur
+		/** Constructor of the ContactPanel class */
 		public Information() {
 
 			panelProperties();
@@ -298,28 +349,31 @@ public class SettingsPanel extends JPanel {
 			this.add(center, BorderLayout.CENTER);
 		}
 
+		/** Modifies the parameters of the JLabels titles */
 		private void titleProperties() {
-			// title1.setBackground(Color.BLACK);
 			title1.setForeground(Color.BLACK);
 			title1.setFont(new Font("Lucida Console", Font.BOLD, 15));
 
-			// title2.setBackground(Color.BLACK);
 			title2.setForeground(Color.BLACK);
 			title2.setFont(new Font("Lucida Console", Font.BOLD, 15));
 
-			// title3.setBackground(Color.BLACK);
 			title3.setForeground(Color.BLACK);
 			title3.setFont(new Font("Lucida Console", Font.BOLD, 15));
 
-			// title3.setBackground(Color.BLACK);
 			title4.setForeground(Color.BLACK);
 			title4.setFont(new Font("Lucida Console", Font.BOLD, 15));
 		}
 
+		/** Modifies the parameters of the panel center */
 		private void panelProperties() {
 			center.setLayout(new GridLayout(15, 1));
 		}
 
+		/**
+		 * Get the HostName of the user
+		 * 
+		 * @return hostname of the computer
+		 */
 		private String getHostName() {
 			try {
 				hostName = InetAddress.getLocalHost().getHostName();
@@ -329,6 +383,11 @@ public class SettingsPanel extends JPanel {
 			return hostName;
 		}
 
+		/**
+		 * Get the IP of the local host
+		 * 
+		 * @return IPAddress from the local host
+		 */
 		public String getIP() {
 			try {
 				InetAddress inetadr = InetAddress.getLocalHost();

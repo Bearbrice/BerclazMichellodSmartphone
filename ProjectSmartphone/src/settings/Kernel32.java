@@ -1,3 +1,9 @@
+/*
+ * Kernel32
+ * Author : B. Berclaz
+ * Date creation : 04.06.2019
+ * Date last modification : 04.06.2019
+ */
 
 package settings;
 
@@ -8,12 +14,27 @@ import com.sun.jna.Native;
 import com.sun.jna.Structure;
 import com.sun.jna.win32.StdCallLibrary;
 
-/*https://stackoverflow.com/questions/3434719/how-to-get-the-remaining-battery-life-in-a-windows-system*/
-
+/**
+ * The Kernel32 interface allows you to get battery's information from the PC
+ * used by the user.
+ * 
+ * @author Brice Berclaz
+ * @author BalusC
+ * @see <a href=
+ *      "https://stackoverflow.com/questions/3434719/how-to-get-the-remaining-battery-life-in-a-windows-system">stackoverflow</a>
+ * 
+ */
 public interface Kernel32 extends StdCallLibrary {
 
 	public Kernel32 INSTANCE = (Kernel32) Native.loadLibrary("Kernel32", Kernel32.class);
 
+	/**
+	 * The SYSTEM_POWER_STATUS class contains method and variable to retrieve
+	 * battery's information
+	 * 
+	 * @author BalusC
+	 * @see http://msdn2.microsoft.com/en-us/library/aa373232.aspx
+	 */
 	public class SYSTEM_POWER_STATUS extends Structure {
 		public byte ACLineStatus;
 		public byte BatteryFlag;
@@ -34,6 +55,9 @@ public interface Kernel32 extends StdCallLibrary {
 			return fields;
 		}
 
+		/**
+		 * The AC power status
+		 */
 		public String getACLineStatusString() {
 			switch (ACLineStatus) {
 			case (0):
@@ -45,6 +69,11 @@ public interface Kernel32 extends StdCallLibrary {
 			}
 		}
 
+		/**
+		 * The percentage of battery
+		 * 
+		 * @return path for icon corresponding to the level of the battery
+		 */
 		public String getBatterystate() {
 			if (BatteryLifePercent < ((byte) 25))
 				return "images/icons/Battery-low.png";
@@ -58,6 +87,11 @@ public interface Kernel32 extends StdCallLibrary {
 
 		}
 
+		/**
+		 * The percentage of battery
+		 * 
+		 * @return String of the percentage of the battery
+		 */
 		public String getBatterystate2() {
 
 			for (int i = 0; i <= 100; i++) {

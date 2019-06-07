@@ -1,8 +1,8 @@
 /*
- * Banner panel - contains informations & notifications
- * Author: Brice Berclaz
- * Date creation: 
- * Date last modification: 
+ * Banner panel
+ * Author: B. Berclaz
+ * Date creation: 20.04.2019
+ * Date last modification: 01.06.2019
  */
 
 package panels;
@@ -22,6 +22,14 @@ import images.Icon;
 import settings.Kernel32;
 import settings.WLAN;
 
+/**
+ * The BannerPanel class displays a panel with different information to show to
+ * the user
+ * 
+ * @author Brice Berclaz
+ * @see settings.Kernel32
+ * @see settings.WLAN
+ */
 public class BannerPanel extends JPanel {
 
 	private WLAN wlan = new WLAN();
@@ -30,34 +38,34 @@ public class BannerPanel extends JPanel {
 	private String wlanName = wlan.getWLANName();
 	private String percentage = wlan.getSignalPercentage();
 
-	JPanel pan1 = new JPanel();
-	JPanel pan1Icon = new JPanel();
-	JPanel pan2 = new JPanel();
-	JPanel pan3Icon = new JPanel();
-	JPanel pan3 = new JPanel();
+	private JPanel pan1 = new JPanel();
+	private JPanel pan1Icon = new JPanel();
+	private JPanel pan2 = new JPanel();
+	private JPanel pan3Icon = new JPanel();
+	private JPanel pan3 = new JPanel();
 
-	JPanel right = new JPanel();
-	JPanel left = new JPanel();
-	JPanel center = new JPanel();
-	JPanel north = new JPanel();
+	private JPanel right = new JPanel();
+	private JPanel left = new JPanel();
+	private JPanel center = new JPanel();
+	private JPanel north = new JPanel();
 
-	JPanel panL = new JPanel();
-	JPanel panR = new JPanel();
+	private JPanel panL = new JPanel();
+	private JPanel panR = new JPanel();
 
-	DateFormat df = new SimpleDateFormat("dd MMMM yyyy");
-	Date d = new Date();
-	String strDate = df.format(d);
+	private DateFormat df = new SimpleDateFormat("dd MMMM yyyy");
+	private Date d = new Date();
+	private String strDate = df.format(d);
 
-	JLabel operateur = new JLabel(wlanName);
-	JLabel perc = new JLabel(percentage);
-	JLabel date = new JLabel(strDate);
-	JLabel batteryPercentage = new JLabel("");
+	private JLabel operateur = new JLabel(wlanName);
+	private JLabel perc = new JLabel(percentage);
+	private JLabel date = new JLabel(strDate);
+	private JLabel batteryPercentage = new JLabel("");
 
-	Icon iconMusicRun = new Icon("images/icons/MusicRun-48.png", 18, 18);
-	Icon iconWlanForce = new Icon(wlan.getPathForce(), 18, 18);
-	Icon battery = new Icon("", 20, 20);
+	private Icon iconMusicRun = new Icon("images/icons/MusicRun-48.png", 18, 18);
+	private Icon iconWlanForce = new Icon(wlan.getPathForce(), 18, 18);
+	private Icon battery = new Icon("", 20, 20);
 
-	// CONSTRUCTEUR
+	/** Constructor of the BannerPanel class */
 	public BannerPanel() {
 		Kernel32.INSTANCE.GetSystemPowerStatus(batteryStatus);
 		String batteryIcon = batteryStatus.getBatterystate();
@@ -66,10 +74,6 @@ public class BannerPanel extends JPanel {
 
 		bannerSettings();
 
-		// left.setLayout(new FlowLayout(0, 0, 60));
-
-		// PAN1 - WEST
-		// pan1.setLayout(new FlowLayout(15, 30, 70));
 		pan1.setOpaque(false);
 
 		pan1.add(operateur, BorderLayout.WEST);
@@ -80,19 +84,10 @@ public class BannerPanel extends JPanel {
 
 		pan1Icon.add(perc);
 
-		// pan2.setLayout(new FlowLayout(FlowLayout.LEFT));
-		// pan1.setPreferredSize(new Dimension(150,20));
-
-		// PAN2 - CENTER
-		// pan2.setLayout(new FlowLayout(15, 30, 70));
 		pan2.setOpaque(false);
 
 		pan2.add(date, BorderLayout.CENTER);
 
-		// pan2.setPreferredSize(new Dimension(80,20));
-
-		// PAN3 - EAST
-		// pan3.setLayout(new FlowLayout(15, 30, 70));
 		pan3Icon.setOpaque(false);
 		pan3Icon.add(iconMusicRun, BorderLayout.WEST);
 		iconMusicRun.setVisible(false);
@@ -101,9 +96,6 @@ public class BannerPanel extends JPanel {
 		pan3.add(batteryPercentage, BorderLayout.WEST);
 		pan3.add(battery, BorderLayout.EAST);
 
-		// pan3.setPreferredSize(new Dimension(100,20));
-
-		// Ajout des panels
 		center.setLayout(new GridLayout(1, 4));
 		center.add(pan1, BorderLayout.WEST);
 		center.add(pan1Icon, BorderLayout.WEST);
@@ -122,9 +114,6 @@ public class BannerPanel extends JPanel {
 		right.add(panR);
 		panR.setOpaque(false);
 
-		// this.add(left, BorderLayout.WEST);
-		// this.add(center, BorderLayout.CENTER);
-		// this.add(right, BorderLayout.EAST);
 		north.setPreferredSize(new Dimension(480, 68));
 		north.setOpaque(false);
 		this.add(north, BorderLayout.NORTH);
@@ -133,7 +122,7 @@ public class BannerPanel extends JPanel {
 		this.add(right, BorderLayout.EAST);
 	}
 
-	// Propriétés du panel banner
+	/** Modifies the parameters of the main panel. */
 	public void bannerSettings() {
 		this.setLayout(new BorderLayout(3, 1));
 		this.setPreferredSize(new Dimension(480, 92));
@@ -149,6 +138,7 @@ public class BannerPanel extends JPanel {
 		}
 	}
 
+	/** Refresh WLAN information and the icon wlan in the panel */
 	public void refreshNetwork() {
 		wlan.refreshWlanInfo();
 		wlanName = wlan.getWLANName();

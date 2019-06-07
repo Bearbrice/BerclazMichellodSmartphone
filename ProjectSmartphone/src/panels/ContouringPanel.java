@@ -1,6 +1,6 @@
 /*
  * Contouring panel - Hardware view (coutouring) of a typic smartphone
- * Author: Brice Berclaz
+ * Author: B. Berclaz
  * Date creation: 16.04.2019
  * Date last modification: 07.05.2019
  */
@@ -16,17 +16,26 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+/**
+ * The ContactPanel class displays a panel with all contacts and offers the
+ * possibilities of adding, modifying and deleting.
+ * 
+ * @author Brice Berclaz
+ * @see javax.imageio.ImageIO
+ * @see java.awt.Graphics
+ * @see java.awt.Image
+ * @see javax.imageio.ImageIO
+ */
 public class ContouringPanel extends JPanel {
-	
-	//Constructeur
-	public ContouringPanel() 
-	{		
+
+	/** Constructor of the ContactPanel class */
+	public ContouringPanel() {
 		this.setLayout(new BorderLayout());
 	}
-	
-	
-	public void paintComponent(Graphics g)
-	{
+
+	/** Paint a component (image) */
+	@Override
+	public void paintComponent(Graphics g) {
 		try {
 
 			Image img = ImageIO.read(new File("images/smartphone/smartphone-contouring_960_720.png"));
@@ -34,8 +43,7 @@ public class ContouringPanel extends JPanel {
 
 		} catch (IOException e) {
 			e.printStackTrace();
-		}                
+		}
 
-	} 
+	}
 }
-

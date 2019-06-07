@@ -61,7 +61,7 @@ public class MusicPlayerPanel extends JPanel {
 
 	private ArrayList<Track> alltracks = new ArrayList<Track>();
 
-	// SOUND BAR = SB
+	/* SOUND BAR = SB */
 	private static final int SB_MIN = 0;
 	private static final int SB_MAX = 100;
 	private static final int SB_INIT = 80; // initial frames per second
@@ -87,7 +87,7 @@ public class MusicPlayerPanel extends JPanel {
 
 	private JScrollPane scrollPane;
 
-	// PANELS
+	/* Panels */
 	private JPanel manager = new JPanel(); // SOUTH
 	private JPanel south = new JPanel(); // SOUTH
 	private JPanel slider = new JPanel();
@@ -100,78 +100,7 @@ public class MusicPlayerPanel extends JPanel {
 
 	private Clip clip;
 
-	public void create() {
-		String location;
-		String musicTitle;
-
-		File folder = new File("music");
-
-		if (!folder.exists()) {
-			return;
-		}
-
-		// Tableau temporaire avec tous les fichiers du dossier music
-		File[] all = folder.listFiles();
-
-		// On vide le tableau dynamique
-		alltracks.removeAll(alltracks);
-
-		for (int i = 0; i < all.length; i++) {
-
-			musicTitle = all[i].getName();
-
-			// on enlève l'extension pour obtenir uniquement le nom
-			musicTitle = substrTitle(musicTitle);
-
-			// .substring(0, all[i].getName().length()-4);
-
-			// On recupere le chemin relatif
-			location = all[i].toString();
-
-			// On ajoute les tracks dans le tableau dynamique
-			alltracks.add(new Track(musicTitle, location));
-		}
-
-		// Supprime tous les JRADIOBUTTONs
-		content.removeAll();
-
-		// Ajoute tous les JRADIOBUTTONs
-		for (int i = 0; i < alltracks.size(); i++) {
-			select = new JRadioButton(alltracks.get(i).getTitle());
-			select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
-			select.setForeground(Color.DARK_GRAY);
-			content.add(select);
-
-			// permet la sélection d'un seul bouton à la fois
-			BG.add(select);
-		}
-
-		scrollPane = new JScrollPane(content);
-	}
-
-	// Methode qui permet d'enlever l'extension pour obtenir uniquement le nom du
-	// fichier
-	public String substrTitle(String name) {
-		int toDelete = 0;
-
-		// Boucle qui prend la longueur du nom et qui va jusqu'au . (décroissant)
-		for (int i = name.length() - 1; i > 0; i--) {
-			if (name.charAt(i) == '.') {
-				toDelete++;
-				break;
-			}
-			toDelete++;
-		}
-
-		// Integer qui contient l'index de fin du substring
-		int idxEnd = name.length() - toDelete;
-
-		name = name.substring(0, idxEnd);
-
-		return name;
-	}
-
-	// Constructor
+	/** Constructor of the ContactPanel class */
 	public MusicPlayerPanel() {
 		create();
 
@@ -184,7 +113,7 @@ public class MusicPlayerPanel extends JPanel {
 
 		slidersettings();
 
-		// panel banner parameters
+		/* Panel banner parameters */
 		banner.setLayout(new GridLayout(2, 1));
 
 		bannerN.add(title);
@@ -198,7 +127,7 @@ public class MusicPlayerPanel extends JPanel {
 		banner.add(bannerN);
 		banner.add(bannerS);
 
-		// panel south parameters
+		/* Panel south parameters */
 		south.setLayout(new GridLayout(3, 1));
 
 		valeur.add(sound);
@@ -206,7 +135,7 @@ public class MusicPlayerPanel extends JPanel {
 
 		slider.add(soundBar);
 
-		// Ajout des icones play, pause et stop au panel manager
+		/* Add play, pause and stop icons to the panel manager */
 		manager.add(iconPlay);
 		manager.add(iconPause);
 		manager.add(iconStop);
@@ -224,21 +153,102 @@ public class MusicPlayerPanel extends JPanel {
 		sound.addActionListener(new Mute());
 
 		this.add(banner, BorderLayout.NORTH);
-		// this.add(tracks, BorderLayout.CENTER);
 		this.add(scrollPane, BorderLayout.CENTER);
 		this.add(south, BorderLayout.SOUTH);
 
 	}
 
-	// RETRIEVED FROM
-	// https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+	/**
+	 * This method creates array and dispositions for the musics
+	 */
+	public void create() {
+		String location;
+		String musicTitle;
+
+		File folder = new File("music");
+
+		if (!folder.exists()) {
+			return;
+		}
+
+		/* Temporary table with all files in the music folder */
+		File[] all = folder.listFiles();
+
+		/* Empty the dynamic array */
+		alltracks.removeAll(alltracks);
+
+		for (int i = 0; i < all.length; i++) {
+
+			musicTitle = all[i].getName();
+
+			/* We remove the extension to get only the name */
+			musicTitle = substrTitle(musicTitle);
+
+			/* We get the relative path back */
+			location = all[i].toString();
+
+			/* Adding tracks to the dynamic table */
+			alltracks.add(new Track(musicTitle, location));
+		}
+
+		/* Delete all JRadioButtons */
+		content.removeAll();
+
+		/* Adds all JRADIOBUTTONs */
+		for (int i = 0; i < alltracks.size(); i++) {
+			select = new JRadioButton(alltracks.get(i).getTitle());
+			select.setFont(new Font("Serif", Font.CENTER_BASELINE, 14));
+			select.setForeground(Color.DARK_GRAY);
+			content.add(select);
+
+			/* Allows the selection of only one button at a time */
+			BG.add(select);
+		}
+
+		scrollPane = new JScrollPane(content);
+	}
+
+	/**
+	 * Method that allows you to remove the extension to get only the filename of
+	 * the file
+	 */
+	public String substrTitle(String name) {
+		int toDelete = 0;
+
+		/* Loop that takes the length of the name and goes up to. (decreasing) */
+		for (int i = name.length() - 1; i > 0; i--) {
+			if (name.charAt(i) == '.') {
+				toDelete++;
+				break;
+			}
+			toDelete++;
+		}
+
+		/* Integer which contains the end index of the substrate */
+		int idxEnd = name.length() - toDelete;
+
+		name = name.substring(0, idxEnd);
+
+		return name;
+	}
+
+	/**
+	 * Gets the volume of the current clip
+	 * 
+	 * @see <a href=
+	 *      "https://stackoverflow.com/questions/40514910/set-volume-of-java-clip">stackoverflow</a>
+	 */
 	public float getVolume() {
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
 		return (float) Math.pow(10f, gainControl.getValue() / 20f);
 	}
 
-	// RETRIEVED FROM
-	// https://stackoverflow.com/questions/40514910/set-volume-of-java-clip
+	/**
+	 * Sets the volume of the current clip
+	 * 
+	 * @see <a href=
+	 *      "https://stackoverflow.com/questions/40514910/set-volume-of-java-clip">stackoverflow</a>
+	 */
 	public void setVolume(float volume) {
 
 		if (volume < 0f || volume > 1f)
@@ -247,7 +257,7 @@ public class MusicPlayerPanel extends JPanel {
 		gainControl.setValue(20f * (float) Math.log10(volume));
 	}
 
-	// Parameters of the JSlider 'soundBar'
+	/** Parameters of the JSlider 'soundBar' */
 	private void slidersettings() {
 		soundBar.setMinorTickSpacing(10);
 		soundBar.setMajorTickSpacing(20);
@@ -257,7 +267,13 @@ public class MusicPlayerPanel extends JPanel {
 		soundBar.addChangeListener(new ChangeVolume());
 	}
 
-	class ChangeVolume implements ChangeListener {
+	/**
+	 * This class allows you to change the volume in real time
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 */
+	private class ChangeVolume implements ChangeListener {
 
 		@Override
 		public void stateChanged(ChangeEvent e) {
@@ -265,7 +281,6 @@ public class MusicPlayerPanel extends JPanel {
 
 			currentVolume = ((JSlider) e.getSource()).getValue();
 
-			// float z=(float) (x/100.0);
 			vol = (float) (currentVolume / 100.0);
 
 			String iconSoundLocation = null;
@@ -286,13 +301,19 @@ public class MusicPlayerPanel extends JPanel {
 			sound.setLocation(iconSoundLocation);
 			sound.refresh();
 
-			// execute only if there is an active clip
+			/* Execute only if there is an active clip */
 			if (isInProgress() == true) {
 				setVolume(vol);
 			}
 		}
 	}
 
+	/**
+	 * This class allows you to mute the volume in real time
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 */
 	private class Mute implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -306,18 +327,23 @@ public class MusicPlayerPanel extends JPanel {
 		}
 	}
 
+	/** Modifies the title label. */
 	private void labelProperties() {
 		title.setFont(new Font("Serif", Font.BOLD, 35));
 		title.setForeground(Color.WHITE);
 	}
 
-	// findLocation
+	/**
+	 * Modifies the parameters for the different JButtons.
+	 * 
+	 * @return the path
+	 * @see <a href=
+	 *      "https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup">stackoverflow</a>
+	 */
 	private String findLocation() {
 		String name = "";
 		String emplacement = "";
 
-		// source :
-		// https://stackoverflow.com/questions/201287/how-do-i-get-which-jradiobutton-is-selected-from-a-buttongroup
 		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
 			AbstractButton button = buttons.nextElement();
 
@@ -336,14 +362,14 @@ public class MusicPlayerPanel extends JPanel {
 		return null;
 	}
 
-	// methode play (start)
+	/** Play the selected music */
 	public void play(Clip clip) {
-		// Permet de gérer l'erreur java si le son est introuvable
+		/* Allows to manage the java error if the sound is not found */
 		if (findLocation() == null) {
 			return;
 		}
 
-		// On test si aucun bouton n'est sélectionné alors rien ne se passe
+		/* We test if no button is selected then nothing happens */
 		int i = -1;
 		for (Enumeration<AbstractButton> buttons = BG.getElements(); buttons.hasMoreElements();) {
 
@@ -354,17 +380,16 @@ public class MusicPlayerPanel extends JPanel {
 			}
 		}
 
-		// si le i est toujours à -1 il n'y a pas de bouton sélectionné
+		/* If the i is still at -1 there is no button selected */
 		if (i == -1) {
 			System.out.println("Aucun bouton sélectionné");
 			return;
 		}
 
-		// met sur pause avant de démarrer une nouvelle music
+		/* Pauses before starting a new music */
 		pause(clip);
 
-		// test si le son était en train de jouer, alors il recommence là où il s'est
-		// arrêté
+		/* Test if the sound was playing, then it starts again from where it stopped */
 		if (location == findLocation()) {
 			clip.start();
 		} else {
@@ -373,9 +398,9 @@ public class MusicPlayerPanel extends JPanel {
 			try {
 				File soundFile = new File(location);
 				AudioInputStream audioIn = AudioSystem.getAudioInputStream(soundFile);
-				// Get a sound clip resource.
+				/* Get a sound clip resource. */
 				clip = AudioSystem.getClip();
-				// Open audio clip and load samples from the audio input stream.
+				/* Open audio clip and load samples from the audio input stream. */
 				clip.open(audioIn);
 
 			} catch (UnsupportedAudioFileException e) {
@@ -392,12 +417,18 @@ public class MusicPlayerPanel extends JPanel {
 
 			this.clip = clip;
 
-			// starts the music at the volume chosen by the JSlider
+			/* Starts the music at the volume chosen by the JSlider */
 			setVolume(vol);
 
 		}
 	}
 
+	/**
+	 * Class actionListener that plays the music
+	 * 
+	 * @see java.awt.event.ActionEvent
+	 * @see MusicPlayerPanel#play(Clip clip)
+	 */
 	private class Play implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -493,7 +524,7 @@ public class MusicPlayerPanel extends JPanel {
 		}
 	}
 
-	// methode pause (stop)
+	/** Pauses the selected music */
 	public void pause(Clip clip) {
 		try {
 			// Block of code to try
@@ -507,16 +538,23 @@ public class MusicPlayerPanel extends JPanel {
 		this.clip = clip;
 	}
 
+	/**
+	 * Class actionListener that plays the music
+	 * 
+	 * @see java.awt.event.ActionEvent
+	 * @see MusicPlayerPanel#pause(Clip clip)
+	 */
 	private class Pause implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			pause(clip);
-
 		}
-
 	}
 
-	// methode stop (close)
+	/**
+	 * Stops the selected music (is the user starts again it will start from the
+	 * beginning)
+	 */
 	private void stop(Clip clip) {
 		try {
 			// Block of code to try

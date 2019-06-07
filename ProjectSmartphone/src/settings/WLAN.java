@@ -1,6 +1,6 @@
 /*
  * WLAN
- * Author: Brice Berclaz
+ * Author: B. Berclaz
  * Date creation: 13.05.2019
  * Date last modification: 13.05.2019
  */
@@ -11,6 +11,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+/**
+ * The WLAN class displays gets information about the wlan interfaces the user
+ * is connected to
+ * 
+ * @author Brice Berclaz
+ * @see java.io.InputStreamReader;
+ */
 public class WLAN {
 	private ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "netsh wlan show interfaces");
 
@@ -23,10 +30,14 @@ public class WLAN {
 		return pathForce;
 	}
 
+	/** Constructor of the WLAN class */
 	public WLAN() {
 		refreshWlanInfo();
 	}
 
+	/**
+	 * Refresh the information of the WLAN the user is connected to
+	 */
 	public void refreshWlanInfo() {
 		builder.redirectErrorStream(true);
 		Process p = null;
@@ -71,6 +82,9 @@ public class WLAN {
 		refreshForcePath();
 	}
 
+	/**
+	 * Refresh the path to the icon for the strength of the WLAN
+	 */
 	private void refreshForcePath() {
 		int length = signalPercentage.length();
 
