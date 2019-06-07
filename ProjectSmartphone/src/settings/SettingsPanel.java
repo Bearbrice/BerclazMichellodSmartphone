@@ -16,7 +16,6 @@ import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
@@ -28,25 +27,23 @@ import javax.swing.JPanel;
 import images.Icon;
 
 public class SettingsPanel extends JPanel {
+
 	private boolean reset = false;
 
 	// PANELS
-	JPanel north = new JPanel();
-	JPanel center = new JPanel();
-	JPanel left = new JPanel();
-	JPanel right = new JPanel();
+	private JPanel north = new JPanel();
+	private JPanel center = new JPanel();
 
-	JButton informations = new JButton("Informations");
-	JButton changeBG = new JButton("Change background");
-	JButton version = new JButton("Version");
-	JButton resetContact = new JButton("Remove all contacts");
+	private JButton informations = new JButton("Informations");
+	private JButton version = new JButton("Version");
+	private JButton resetContact = new JButton("Remove all contacts");
 
-	Icon iconBack = new Icon("images/icons/Back-48.png", 36, 36);
+	private Icon iconBack = new Icon("images/icons/Back-48.png", 36, 36);
 
-	JLabel title = new JLabel("SETTINGS");
+	private JLabel title = new JLabel("SETTINGS");
 
-	Version versionpanel = new Version();
-	Information infoPanel = new Information();
+	private Version versionpanel = new Version();
+	private Information infoPanel = new Information();
 
 	// Permettra d'afficher les différents panels
 	private CardLayout cardLayout = new CardLayout();
@@ -65,10 +62,9 @@ public class SettingsPanel extends JPanel {
 
 		north.add(title);
 
-		center.setLayout(new GridLayout(4, 1));
+		center.setLayout(new GridLayout(3, 1));
 
 		center.add(informations);
-		center.add(changeBG);
 		center.add(version);
 		center.add(resetContact);
 
@@ -85,8 +81,6 @@ public class SettingsPanel extends JPanel {
 
 		this.add(north, BorderLayout.NORTH);
 		this.add(showPanel, BorderLayout.CENTER);
-		// this.add(left, BorderLayout.WEST);
-		// this.add(right, BorderLayout.EAST);
 	}
 
 	public boolean isReset() {
@@ -113,10 +107,6 @@ public class SettingsPanel extends JPanel {
 		informations.setBackground(Color.BLACK);
 		informations.setForeground(Color.WHITE);
 		informations.setFont(new Font("Algerian", Font.BOLD, 20));
-
-		changeBG.setBackground(Color.BLACK);
-		changeBG.setForeground(Color.WHITE);
-		changeBG.setFont(new Font("Algerian", Font.BOLD, 20));
 
 		version.setBackground(Color.BLACK);
 		version.setForeground(Color.WHITE);
@@ -162,7 +152,6 @@ public class SettingsPanel extends JPanel {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			iconBack.setVisible(false);
 			title.setText("SETTINGS");
 
@@ -225,7 +214,7 @@ public class SettingsPanel extends JPanel {
 
 	// CLASS VERSION
 	private class Version extends JPanel {
-		private JLabel version = new JLabel("Version 1.17");
+		private JLabel version = new JLabel("Version 1.44");
 		private JLabel credits = new JLabel("©Brice Berclaz & Samuel Michellod - 2019");
 
 		private JPanel center = new JPanel();
@@ -349,25 +338,6 @@ public class SettingsPanel extends JPanel {
 			}
 			return IPAddress;
 		}
-	}
-
-	// CLASS CHANGEBACKGROUND
-	private class ChangeBackground extends JPanel {
-
-		// A CONFIGURER AVEC LA GALERIE
-
-		/*
-		 * Icon iconBG1 = new Icon("images/backgrounds/Background01.jpg", 400, 711);
-		 * Icon iconBG2 = new Icon("images/backgrounds/Background02.jpg", 400, 711);
-		 * Icon iconBG3 = new Icon("images/backgrounds/Background03.jpg", 400, 711);
-		 * Icon iconBG4 = new Icon("images/backgrounds/Background04.jpg", 400, 711);
-		 */
-
-		// Constructeur
-		public ChangeBackground() {
-
-		}
-
 	}
 
 }

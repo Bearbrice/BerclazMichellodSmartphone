@@ -11,8 +11,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import images.Icon;
-
 public class WLAN {
 	private ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "netsh wlan show interfaces");
 
@@ -35,7 +33,6 @@ public class WLAN {
 		try {
 			p = builder.start();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
@@ -46,7 +43,6 @@ public class WLAN {
 				try {
 					line = r.readLine();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				if (SSID == false) {
@@ -68,7 +64,6 @@ public class WLAN {
 
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

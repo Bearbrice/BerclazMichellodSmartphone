@@ -1,8 +1,8 @@
 /*
- * Menu principal
- * Author: Brice Berclaz
- * Date creation: 16.04.2019
- * Date last modification: 07.05.2019
+ * Frame
+ * Author : B. Berclaz
+ * Date creation : 16.04.2019
+ * Date last modification : 31.05.2019
  */
 
 package mainFrame;
@@ -12,7 +12,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -23,8 +22,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import javax.imageio.ImageIO;
-import javax.swing.*;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 import calculator.CalculatorPanel;
 import clock.ClockPanel;
@@ -36,85 +35,87 @@ import images.Icon;
 import musicPlayer.MusicPlayerPanel;
 import panels.BannerPanel;
 import panels.ContouringPanel;
-import panels.ScreenPanel;
 import settings.SettingsPanel;
-import settings.WLAN;
 
+/**
+ * The Frame class displays a frame with all necessary panel to show all the
+ * virtual smartphone
+ * 
+ * @author Brice Berclaz
+ * @see javax.swing.JFrame;
+ * @see javax.swing.JPanel
+ */
 public class Frame extends JFrame {
 	private String bgPath;
-	
-	// Panels
-	ContactPanel contactpanel = new ContactPanel();
-	MusicPlayerPanel musicpanel = new MusicPlayerPanel();
-	ClockPanel clockpanel = new ClockPanel();
-	SettingsPanel settingspanel = new SettingsPanel();
-	CalculatorPanel calculatorpanel = new CalculatorPanel();
-	Galerie gallerypanel = new Galerie();
 
-	// Panels emplacement
-	BannerPanel bannerPanel = new BannerPanel();
+	/* Application panels from other classes */
+	private ContactPanel contactpanel = new ContactPanel();
+	private MusicPlayerPanel musicpanel = new MusicPlayerPanel();
+	private ClockPanel clockpanel = new ClockPanel();
+	private SettingsPanel settingspanel = new SettingsPanel();
+	private CalculatorPanel calculatorpanel = new CalculatorPanel();
+	private Galerie gallerypanel = new Galerie();
 
-	// Panels classiques emplacement
-	JPanel backPanel = new JPanel();
-	// JPanel northPanel = new JPanel();
-	JPanel centerPanel = new JPanel();
-	JPanel southPanel = new JPanel();
+	/* Panel from another class */
+	private BannerPanel bannerPanel = new BannerPanel();
 
-	JPanel panS = new JPanel();
+	/* Location panels for design */
+	private JPanel centerPanel = new JPanel();
+	private JPanel southPanel = new JPanel();
 
-	JPanel bgCenter = new JPanel();
+	/* Location panels for design */
+	private JPanel leftPanel = new JPanel();
+	private JPanel rightPanel = new JPanel();
 
-	// Panels classiques emplacement (design)
-	JPanel leftPanel = new JPanel();
-	JPanel rightPanel = new JPanel();
+	private JPanel panL = new JPanel();
+	private JPanel panR = new JPanel();
 
-	JPanel panL = new JPanel();
-	JPanel panR = new JPanel();
+	private JPanel southMenu = new JPanel();
 
-	JPanel southMenu = new JPanel();
+	/* Main panels */
+	private ContouringPanel smartphone = new ContouringPanel();
+	private Background background = new Background();
+	private BackgroundData bgdata = new BackgroundData();
 
-	// Panels principaux
-	ContouringPanel smartphone = new ContouringPanel();
-	ScreenPanel screen = new ScreenPanel();
-	Background background = new Background();
-	BackgroundData bgdata = new BackgroundData();
+	/* Icons for applications */
+	private Icon iconContact = new Icon("images/icons/Contacts-48.png", 48, 48);
+	private Icon iconGallery = new Icon("images/icons/Gallery-48.png", 48, 48);
+	private Icon iconCalculator = new Icon("images/icons/Calculator-48.png", 48, 48);
+	private Icon iconClock = new Icon("images/icons/Clock-48.png", 48, 48);
+	private Icon iconMusic = new Icon("images/icons/Music-48.png", 48, 48);
+	private Icon iconSettings = new Icon("images/icons/Settings-48.png", 48, 48);
 
-	// Icons applications
-	Icon iconContact = new Icon("images/icons/Contacts-48.png", 48, 48);
-	Icon iconGallery = new Icon("images/icons/Gallery-48.png", 48, 48);
-	Icon iconCalculator = new Icon("images/icons/Calculator-48.png", 48, 48);
-	Icon iconClock = new Icon("images/icons/Clock-48.png", 48, 48);
-	Icon iconMusic = new Icon("images/icons/Music-48.png", 48, 48);
-	Icon iconSettings = new Icon("images/icons/Settings-48.png", 48, 48);
+	/* Icon for design only */
+	private Icon iconEmpty = new Icon("images/icons/Empty.png", 48, 48);
+	private Icon iconEmpty2 = new Icon("images/icons/Empty.png", 48, 48);
 
-	Icon iconEmpty = new Icon("images/icons/Empty.png", 48, 48);
-	Icon iconEmpty2 = new Icon("images/icons/Empty.png", 48, 48);
+	/* Icon for access to features */
+	private Icon iconHome = new Icon("images/icons/Home-48.png", 48, 48);
+	private Icon iconShutdown = new Icon("images/icons/Shutdown-48.png", 48, 48);
 
-	// Icons smartphone - fonctions
-	// Icon iconBack = new Icon("images/icons/Back-48.png", 48, 48);
-	Icon iconHome = new Icon("images/icons/Home-48.png", 48, 48);
-	Icon iconLock = new Icon("images/icons/Lock-48.png", 48, 48);
-	Icon iconShutdown = new Icon("images/icons/Shutdown-48.png", 48, 48);
-
-	// tri des panels static pour avoir accès dans le panel d'accueil
+	/*
+	 * This will allow to display the different panels
+	 * 
+	 * @see java.awt.CardLayout
+	 */
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel switchPanel = new JPanel(cardLayout);
 
-	/*
-	 * Constructeur de la classe Frame
+	/**
+	 * Constructor of the Frame class
+	 * 
+	 * @param title the name to give to the frame
 	 */
-
 	public Frame(String title) {
 		frameSettings(title);
-		
+
 		deserializeBG();
-		
+
 		// PANEL DU HAUT
 		smartphone.add(bannerPanel, BorderLayout.NORTH);
 
-//BRICOLAGE START
-		// PANELS LEFT & RIGHT - DEFINITION DES MARGES DU SCREEN (BACKGROUND)
-
+		/* Design but not visible - START */
+		/* Panels left & right - Definition of screen margins (background) */
 		smartphone.add(leftPanel, BorderLayout.WEST);
 		smartphone.add(rightPanel, BorderLayout.EAST);
 		leftPanel.setOpaque(false);
@@ -127,14 +128,12 @@ public class Frame extends JFrame {
 		panR.setLayout(new FlowLayout(0, 7, 0));
 		rightPanel.add(panR);
 		panR.setOpaque(false);
-//BRICOLAGE END			
+		/* Design but not visible - END */
 
-		// PANEL SOUTH
+		/* South panel */
 		smartphone.add(southPanel, BorderLayout.SOUTH);
 		southPanel.setOpaque(false);
 
-		// southPanel.setLayout(new FlowLayout(0,62,0));
-		// background.setLayout(new FlowLayout(30,50,70));
 		southPanel.setLayout(new BorderLayout());
 
 		southPanel.add(southMenu);
@@ -147,37 +146,17 @@ public class Frame extends JFrame {
 
 		southPanel.add(southMenu);
 
-		/*
-		 * panS.setLayout(new FlowLayout(0, 0, 35)); southPanel.add(panS);
-		 * panS.setOpaque(false);
-		 */
-		// PANEL NORTH
-		/*
-		 * smartphone.add(northPanel, BorderLayout.NORTH); northPanel.setOpaque(false);
-		 * 
-		 * northPanel.setLayout(new FlowLayout(100,60,0));
-		 * 
-		 * northPanel.add(iconEmpty); northPanel.add(iconHome);
-		 * northPanel.add(iconBack);
-		 */
-		/*
-		 * panS.setLayout(new FlowLayout(0, 0, 30)); southPanel.add(panS);
-		 * panS.setOpaque(false);
-		 */
-		// SCREEN PRINCIPAL
+		/* Main screen */
 		smartphone.add(switchPanel);
 		switchPanel.add(centerPanel, "mainpanel");
 
 		centerPanel.setLayout(new BorderLayout());
 		centerPanel.setPreferredSize(new Dimension(480, 40));
 
-		// AJOUT BACKGROUND AU PANEL PRINCIPAL
-		// centerPanel.add(bannerPanel, BorderLayout.NORTH);
+		/* Adding background to the center panel */
 		centerPanel.add(background, BorderLayout.CENTER);
 
-		// LAYOUT BACKGROUND - PERMET DE RAJOUTER LES CASES POUR APPLICATIONS
-		// background.add(bannerPanel, BorderLayout.NORTH);
-
+		/* Allows you to add the correct spacing for applications */
 		background.setLayout(new FlowLayout(30, 50, 80));
 
 		// AJOUTER LES ICONS SUR LE BACKGROUND
@@ -193,20 +172,11 @@ public class Frame extends JFrame {
 
 		background.setOpaque(false);
 
-		// switchPanel.add(background, "mainpanel");
-
-		// background.add(bgCenter);
-
-		// gapLayout();
-
-		// LISTENERS
-		// iconGallery.addActionListener(new RunGallery());
-		// iconCalculator.addActionListener(new RunCalculator());
-		// iconBack.addActionListener(new ComeBack());
-
+		/* Listeners for functions */
 		iconHome.addActionListener(new Home());
 		iconShutdown.addActionListener(new Shutdown());
 
+		/* Listeners for applications */
 		iconGallery.addActionListener(new RunGallery());
 		iconClock.addActionListener(new RunClock());
 		iconMusic.addActionListener(new RunMusic());
@@ -214,7 +184,7 @@ public class Frame extends JFrame {
 		iconSettings.addActionListener(new RunSettings());
 		iconCalculator.addActionListener(new RunCalculator());
 
-		// ajout des applis
+		/* Adding applications to the switchpanel */
 		switchPanel.add(musicpanel, "musicpanel");
 		switchPanel.add(clockpanel, "clockpanel");
 		switchPanel.add(contactpanel, "contactpanel");
@@ -222,121 +192,118 @@ public class Frame extends JFrame {
 		switchPanel.add(calculatorpanel, "calculatorpanel");
 		switchPanel.add(gallerypanel, "gallerypanel");
 
-		// rajouter le smartphone dans la frame principale
+		/* Adding the smartphone in the main frame */
 		this.add(smartphone);
 	}
 
-	// Paramètre de la frame
+	/**
+	 * Modifies the parameters of a the frame
+	 * 
+	 * @param title set the title you want for the frame
+	 */
 	private void frameSettings(String title) {
 		setTitle(title);
 
-		// setSize(480, 860);
 		setSize(400, 720);
-		// setPreferredSize(new Dimension(400, 720));
 
 		setLocationRelativeTo(null);
-		setUndecorated(true); // Ne pas afficher les boutons de la frame
+		setUndecorated(true); // Do not display the buttons of the frame
 		setAlwaysOnTop(true);
 		setResizable(false);
 		setBackground(new Color(0, 0, 0, 0));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		// pack();
 	}
 
-	// Permet de laisser une ligne vide
-	private void gapLayout() {
-		background.add(iconEmpty);
-		background.add(iconEmpty);
-		background.add(iconEmpty);
-	}
-	
-	//SERIALIZEBACKGROUND
+	/**
+	 * Method that will serialize the path for the background
+	 */
 	private void serializeBG() {
-		// Sérialisation du fond d'écran
 		FileOutputStream fos;
 		try {
 			fos = new FileOutputStream("serialization/background.ser");
 
-			ObjectOutputStream oos = new ObjectOutputStream(fos); // permet d'écrire au niveau du flux de sortie
+			ObjectOutputStream oos = new ObjectOutputStream(fos); // allows you to write to the output stream
 
 			oos.writeObject(bgdata);
-			
+
 			System.out.println("serialization effectuée : " + bgdata.getBackgroundPath());
-		
+
 			oos.close();
 
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	//DESERIALIZEBACKGROUND
-			public void deserializeBG() {
-				File f = new File("serialization/background.ser");
-				if (f.isFile()) {
-					FileInputStream fis;
-					try {
-						fis = new FileInputStream("serialization/background.ser");
 
-						ObjectInputStream ois = new ObjectInputStream(fis); // permet d'écrire au niveau du flux de sortie
-
-						
-						bgdata=(BackgroundData) ois.readObject();
-
-						ois.close();
-						
-						System.out.println("Déserialization effectuée : " + bgdata.getBackgroundPath());
-						
-//						background.setBackgroundPath(bgdata.getBackgroundPath());
-
-					
-					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (IOException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					} catch (ClassNotFoundException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-				
-				//Retrieves the path of the serialized file
-				File check = new File(bgdata.getBackgroundPath());
-				
-				//Check if the file exists
-				if (check.isFile()){
-					background.setBackgroundPath(bgdata.getBackgroundPath());
-				}
-				//If the serialize path no longer finds the file then it sets the default background
-				else {
-					background.setBackgroundPath(bgdata.getDefaultBackground());
-				}
-				
-				
-			}
-
-	/*
-	 * METHODES ACTION LISTENER
+	/**
+	 * Method that will read and retrieve the information from the serialized file
+	 * for background
 	 */
+	public void deserializeBG() {
+		File f = new File("serialization/background.ser");
+		if (f.isFile()) {
+			FileInputStream fis;
+			try {
+				fis = new FileInputStream("serialization/background.ser");
 
-	// RUNGALLERY
+				ObjectInputStream ois = new ObjectInputStream(fis);
+
+				bgdata = (BackgroundData) ois.readObject();
+
+				ois.close();
+
+				System.out.println("Déserialization effectuée : " + bgdata.getBackgroundPath());
+
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+
+		/* Retrieves the path of the serialized file */
+		File check = new File(bgdata.getBackgroundPath());
+
+		/* Check if the file exists */
+		if (check.isFile()) {
+			background.setBackgroundPath(bgdata.getBackgroundPath());
+		}
+		/*
+		 * If the serialize path no longer finds the file then it sets the default
+		 * background
+		 */
+		else {
+			background.setBackgroundPath(bgdata.getDefaultBackground());
+		}
+
+	}
+
+	/**
+	 * Launches the gallery panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see gallery.Galerie
+	 */
 	private class RunGallery implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			cardLayout.show(switchPanel, "gallerypanel");
-			
-			
+
 		}
 	}
-	
-	
-	// SHUTDOWN
+
+	/**
+	 * Turn off the smartphone, it closes the frame and also stops the console
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see java.lang.System.exit
+	 */
 	private class Shutdown implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -344,7 +311,13 @@ public class Frame extends JFrame {
 		}
 	}
 
-	// RUNCLOCK
+	/**
+	 * Launches the clock panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see clock.ClockPanel
+	 */
 	private class RunClock implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -352,7 +325,13 @@ public class Frame extends JFrame {
 		}
 	}
 
-	// RUNMUSIC
+	/**
+	 * Launches the music panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see musicPlayer.MusicPlayerPanel
+	 */
 	private class RunMusic implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -362,7 +341,12 @@ public class Frame extends JFrame {
 		}
 	}
 
-	// HOME
+	/**
+	 * Launches the home screen panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 */
 	private class Home implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -370,47 +354,56 @@ public class Frame extends JFrame {
 			musicpanel.checkProgress();
 			bannerPanel.setVisibleIconMusic(musicpanel.isInProgress());
 			bannerPanel.refreshNetwork();
-			
-			
-			
-			if(gallerypanel.isActiveBGserialization()==true) {
-				bgPath=gallerypanel.getPathbg();
-				
-				//change le background immédiatement
+
+			if (gallerypanel.isActiveBGserialization() == true) {
+				bgPath = gallerypanel.getPathbg();
+
+				/* Changes the background immediately */
 				background.setBackgroundPath(bgPath);
-				
-				//Stock le chemin avant serialization
+
+				/* Stock le chemin avant sérialisation */
 				bgdata.setBackgroundPath(bgPath);
-				
+
 				serializeBG();
-			
+
 				gallerypanel.setActiveBGserialization(false);
 			}
 		}
 	}
 
-	// RUNCONTACT
+	/**
+	 * Launches the contact panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see contact.ContactPanel
+	 */
 	private class RunContact implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			// SI LES CONTACTS ONT ETE REINTIALISER DANS LE MENU SETTINGS
+			/* If the contacts have benn reinitialized in the settings panel */
 			if (settingspanel.isReset() == true) {
 				contactpanel.removeAllContacts();
 			}
 
-			// REMETTRE A FALSE SINON A CHAQUE FOIS QU'ON LANCE CONTACT ON PERD TOUS LES
-			// CONTACTS
+			/* Reset to false or on every time contact is started all contacts are lost */
 			settingspanel.setResetToFalse();
-			
-			//Actualiser la galerie des contacts
+
+			/* Update the contact gallery */
 			contactpanel.actualiseGalleryC();
 
 			cardLayout.show(switchPanel, "contactpanel");
 		}
 	}
 
-	// RUNSETTINGS
+	/**
+	 * Launches the settings panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see settings.SettingsPanel
+	 */
 	private class RunSettings implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -418,7 +411,13 @@ public class Frame extends JFrame {
 		}
 	}
 
-	// RUNCALCULATOR
+	/**
+	 * Launches the calculator panel
+	 * 
+	 * @author Brice Berclaz
+	 * @see java.awt.event.ActionEvent
+	 * @see calculator.CalculatorPanel
+	 */
 	private class RunCalculator implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {

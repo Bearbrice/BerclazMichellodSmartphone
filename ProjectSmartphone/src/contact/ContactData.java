@@ -1,86 +1,118 @@
 /*
- * Author : Brice Berclaz
- * Date creation : 30 mai 2019
+ * Contact Data
+ * Author : B. Berclaz
+ * Date creation : 30.04.2019
+ * Date last modification : 03.06.2019 
  */
-
-/* CLASSE DEDIE A LA SERIALISATION*/
 
 package contact;
 
 import java.io.Serializable;
 
+/**
+ * This class is dedicated to the serialization of contact data
+ * 
+ * @author Brice Berclaz
+ * @see java.io.Serializable;
+ */
 public class ContactData implements Serializable {
 
-	// Initialisation des variables
+	/* Initialization of variables */
 	private int id;
-	private String prenom;
-	private String nom;
-	private String telephonePrive;
-	private String telephoneFixe;
-	private String adresse;
+	private String firstName;
+	private String lastName;
+	private String privatePhone;
+	private String landlinePhone;
+	private String address;
 	private String organisation;
 	private String locPicture;
 
-	// Constructeur
-	public ContactData(int id, String prenom, String nom, String telephonePrive, String telephoneFixe, String adresse,
+	/**
+	 * Constructor of the ContactData class
+	 * 
+	 * @param id            the panel whose parameters you want to modify
+	 * @param firstname     the firstname of the contact
+	 * @param name          the name of the contact
+	 * @param privatePhone  the privatePhone of the contact
+	 * @param landlinePhone the landlinePhone of the contact
+	 * @param address       the address of the contact
+	 * @param organisation  the organisation of the contact
+	 * @param locPicture    the picture's location of the contact
+	 */
+	public ContactData(int id, String firstname, String name, String privatePhone, String landlinePhone, String address,
 			String organisation, String locPicture) {
 		this.id = id;
-		setPrenom(prenom);
-		setNom(nom);
-		setTelephonePrive(telephonePrive);
-		setTelephoneFixe(telephoneFixe);
-		setAdresse(adresse);
+		setFirstName(firstname);
+		setLastName(name);
+		setPrivatePhone(privatePhone);
+		setLandlinePhone(landlinePhone);
+		setAddress(address);
 		setOrganisation(organisation);
 		setLocPicture(locPicture);
 	}
 
+	/** Secondary constructor of the ContactData class */
 	public ContactData() {
 
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public String toString() {
-		return prenom + " " + nom + " - " + telephonePrive + " - " + organisation;
+		return firstName + " " + lastName + " - " + privatePhone + " - " + organisation;
 	}
 
-	public String getPrenom() {
-		return prenom;
+	// ******************************************************************** //
+	// ************************ GETTERS & SETTERS ************************* //
+	// ******************************************************************** //
+	public int getId() {
+		return id;
 	}
 
-	public void setPrenom(String prenom) {
-		this.prenom = prenom;
+	public void setId(int id) {
+		this.id = id;
 	}
 
-	public String getNom() {
-		return nom;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setNom(String nom) {
-		this.nom = nom;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getTelephonePrive() {
-		return telephonePrive;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setTelephonePrive(String telephonePrive) {
-		this.telephonePrive = telephonePrive;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public String getTelephoneFixe() {
-		return telephoneFixe;
+	public String getPrivatePhone() {
+		return privatePhone;
 	}
 
-	public void setTelephoneFixe(String telephoneFixe) {
-		this.telephoneFixe = telephoneFixe;
+	public void setPrivatePhone(String privatePhone) {
+		this.privatePhone = privatePhone;
 	}
 
-	public String getAdresse() {
-		return adresse;
+	public String getLandlinePhone() {
+		return landlinePhone;
 	}
 
-	public void setAdresse(String adresse) {
-		this.adresse = adresse;
+	public void setLandlinePhone(String landlinePhone) {
+		this.landlinePhone = landlinePhone;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getOrganisation() {
@@ -98,5 +130,4 @@ public class ContactData implements Serializable {
 	public void setLocPicture(String locPicture) {
 		this.locPicture = locPicture;
 	}
-
 }

@@ -1,4 +1,5 @@
 /contact/
+<<<<<<< HEAD
 /gallery/
 /images/
 /mainFrame/
@@ -7,3 +8,7 @@
 /settings/
 /Test/
 /calculator/
+=======
+/mainFrame/
+/settings/
+>>>>>>> branch 'master' of https://github.com/Bearbrice/BerclazMichellodSmartphone.git

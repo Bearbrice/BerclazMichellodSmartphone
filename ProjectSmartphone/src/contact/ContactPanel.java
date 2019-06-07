@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -74,8 +75,6 @@ public class ContactPanel extends JPanel {
 	private JPanel north = new JPanel();
 	private JPanel center = new JPanel();
 	private JPanel south = new JPanel();
-	private JPanel left = new JPanel();
-	private JPanel right = new JPanel();
 
 	/* JButtons */
 	private JButton show = new JButton("Show");
@@ -94,25 +93,23 @@ public class ContactPanel extends JPanel {
 	private int selectedIndex = 0;
 
 	/*
-	 * This will allow you to display the different panels
+	 * This will allow to display the different panels
 	 * 
 	 * @see java.awt.CardLayout
 	 */
 	private CardLayout cardLayout = new CardLayout();
 	private JPanel showPanel = new JPanel(cardLayout);
 
-	/**
-	 * Constructor of the ContactPanel class
-	 */
+	/** Constructor of the ContactPanel class */
 	public ContactPanel() {
 
-		panelProperties();
+		panelProperties(this);
 
 		deserialize();
 
 		/*
 		 * We cannot create the JList outside the manufacturer because in this case we
-		 * have added base contacts
+		 * have added base contacts.
 		 */
 		contactinfo = new JList(allcontact.toArray());
 		contactinfo.setBackground(Color.WHITE);
@@ -120,13 +117,16 @@ public class ContactPanel extends JPanel {
 
 		/*
 		 * Let's say on which object added the elevator, added the listScroller in the
-		 * constructor
+		 * constructor.
 		 */
 		listScroller = new JScrollPane(contactinfo);
 
 		listScroller.setPreferredSize(new Dimension(300, 300));
 
-		// Initialiser dans le constructeur sinon le tableau est vide
+		/*
+		 * It is necessary to initialize in the constructor otherwise the dynamic array
+		 * will be empty
+		 */
 		contactShow = new ContactShow();
 		contactEdit = new ContactEdit();
 
@@ -185,13 +185,15 @@ public class ContactPanel extends JPanel {
 	}
 
 	/**
-	 * Modifies the parameters of the main panel, i.e. ContactPanel.
+	 * Modifies the parameters of a defined panel
+	 * 
+	 * @param pan the panel whose parameters you want to modify
 	 */
-	private void panelProperties() {
-		this.setPreferredSize(new Dimension(480, 40));
-		this.setLayout(new BorderLayout());
-		this.setOpaque(false);
-		this.setVisible(true);
+	private void panelProperties(JPanel pan) {
+		pan.setPreferredSize(new Dimension(480, 40));
+		pan.setLayout(new BorderLayout());
+		pan.setOpaque(false);
+		pan.setVisible(true);
 	}
 
 	/**
@@ -227,9 +229,8 @@ public class ContactPanel extends JPanel {
 
 				id = allcontact.size();
 
-				for (int i = 0; i < allcontact.size(); i++) {
-					System.out.println(allcontact.get(i));
-				}
+				/* Sort the array by alphabetic orders */
+				allcontact = orderArray();
 
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
@@ -245,7 +246,40 @@ public class ContactPanel extends JPanel {
 	 * Updates the dynamic array.
 	 */
 	public void actualizeList() {
+		allcontact = orderArray();
 		contactinfo.setListData(allcontact.toArray());
+	}
+
+	/**
+	 * Sorts the contact table according to the alphabetical order of first names
+	 * 
+	 * @return ArrayList<ContactData>
+	 */
+	public ArrayList<ContactData> orderArray() {
+
+		ArrayList<ContactData> newContact = new ArrayList<ContactData>();
+
+		/* The array will welcome all first names of contacts. */
+		ArrayList<String> firstnames = new ArrayList<String>();
+
+		/* We add the first names to the string array */
+		for (int i = 0; i < allcontact.size(); i++) {
+			firstnames.add(allcontact.get(i).getFirstName());
+		}
+
+		/* Sorts the array of string in alphabetical order of first names */
+		Collections.sort(firstnames, String.CASE_INSENSITIVE_ORDER);
+
+		/* We are preparing the new object array which will be ordered this time */
+		for (int j = 0; j < firstnames.size(); j++) {
+			for (int i = 0; i < allcontact.size(); i++) {
+				if (firstnames.get(j) == allcontact.get(i).getFirstName()) {
+					newContact.add(allcontact.get(i));
+				}
+			}
+		}
+
+		return newContact;
 	}
 
 	/**
@@ -275,7 +309,7 @@ public class ContactPanel extends JPanel {
 		try {
 			fos = new FileOutputStream("serialization/allcontacts.ser");
 
-			ObjectOutputStream oos = new ObjectOutputStream(fos); // permet d'écrire au niveau du flux de sortie
+			ObjectOutputStream oos = new ObjectOutputStream(fos); // allows you to write to the output stream
 
 			for (int i = 0; i < allcontact.size(); i++) {
 				oos.writeObject(allcontact.get(i));
@@ -330,8 +364,8 @@ public class ContactPanel extends JPanel {
 				newContact.setVisible(false);
 				title.setText("CONTACT EDITION");
 
-				title.setText("Editer : " + allcontact.get(selectedIndex).getPrenom() + " "
-						+ allcontact.get(selectedIndex).getNom());
+				title.setText("Editer : " + allcontact.get(selectedIndex).getFirstName() + " "
+						+ allcontact.get(selectedIndex).getLastName());
 				contactEdit.actualize();
 
 				cardLayout.show(showPanel, "contactEdit");
@@ -388,8 +422,8 @@ public class ContactPanel extends JPanel {
 				iconBack.setVisible(true);
 				newContact.setVisible(false);
 
-				title.setText("Contact : " + allcontact.get(selectedIndex).getPrenom() + " "
-						+ allcontact.get(selectedIndex).getNom());
+				title.setText("Contact : " + allcontact.get(selectedIndex).getFirstName() + " "
+						+ allcontact.get(selectedIndex).getLastName());
 				contactShow.actualize();
 
 			}
@@ -503,17 +537,17 @@ public class ContactPanel extends JPanel {
 			urlPicture = gallery.getUrlContact();
 
 			if (currentPanel == "contactEdit") {
-				/* updates the image of the contactEdit panel */
+				/* Updates the image of the contactEdit panel */
 				contactEdit.repaintEdit();
 			}
 
 			if (currentPanel == "contactAdd") {
-				/* updates the image of the contactAdd panel */
+				/* Updates the image of the contactAdd panel */
 				contactAdd.repaintAdd();
 			}
 
 			if (currentPanel == "contactShow") {
-				/* updates the image of the contactShow panel */
+				/* Updates the image of the contactShow panel */
 				contactShow.repaintShow();
 			}
 
@@ -544,13 +578,11 @@ public class ContactPanel extends JPanel {
 
 	class ContactAdd extends JPanel {
 
-		private JLabel title = new JLabel();
-
 		private JPanel north = new JPanel();
-		private JPanel left = new JPanel();
-		private JPanel right = new JPanel();
 		private JPanel south = new JPanel();
 		private JPanel center = new JPanel();
+		private JPanel left = new JPanel();
+		private JPanel right = new JPanel();
 
 		private JLabel jlprenom = new JLabel("Prenom");
 		private JLabel jlnom = new JLabel("Nom");
@@ -570,11 +602,9 @@ public class ContactPanel extends JPanel {
 
 		private Icon pictureContactAdd = new Icon(urlPicture, 96, 96);
 
-		/**
-		 * Constructor of the ContactAdd class.
-		 */
+		/** Constructor of the ContactAdd class. */
 		public ContactAdd() {
-			panelProperties();
+			panelProperties(this);
 
 			north.add(pictureContactAdd);
 			pictureContactAdd.addActionListener(new ChoosePicture());
@@ -604,17 +634,8 @@ public class ContactPanel extends JPanel {
 			this.add(north, BorderLayout.NORTH);
 			this.add(center, BorderLayout.CENTER);
 			this.add(south, BorderLayout.SOUTH);
-
-		}
-
-		/**
-		 * Modifies the parameters of the main panel, i.e. ContactAdd.
-		 */
-		private void panelProperties() {
-			this.setPreferredSize(new Dimension(480, 40));
-			this.setLayout(new BorderLayout());
-			this.setOpaque(false);
-			this.setVisible(true);
+			this.add(left, BorderLayout.WEST);
+			this.add(right, BorderLayout.EAST);
 		}
 
 		/**
@@ -636,6 +657,11 @@ public class ContactPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				boolean readyToSave = isReadyToSave();
+				if (readyToSave == false) {
+					return;
+				}
+
 				/* T = TYPED, S = SELECTED */
 				String prenomT = jtfprenom.getText();
 				String nomT = jtfnom.getText();
@@ -644,16 +670,6 @@ public class ContactPanel extends JPanel {
 				String adresseT = jtfadresse.getText();
 				String organisationT = jtforganisation.getText();
 				String pictureS = urlPicture;
-
-				// TESTS
-				// Interdire les vides
-				// Check numero telephone
-
-				// Creation contact
-				/*
-				 * ContactData createContact = new ContactData(id, prenomT, nomT, telPriveT,
-				 * telFixeT, adresseT, organisationT);
-				 */
 
 				/* Adding the contact to the dynamic table */
 				allcontact.add(
@@ -676,6 +692,63 @@ public class ContactPanel extends JPanel {
 
 			}
 
+			/**
+			 * Check if the required fields have been filled in and if the contact can
+			 * therefore be saved
+			 * 
+			 * @return a boolean if it is ready or not
+			 */
+			public boolean isReadyToSave() {
+				boolean ready = false;
+
+				/* Don't save the contact if the prenom field is empty */
+				if (jtfprenom.getText().isBlank()) {
+					jlprenom.setForeground(Color.RED);
+					jlprenom.setText("Prenom*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jlprenom.setForeground(Color.BLACK);
+					jlprenom.setText("Prenom");
+					ready = true;
+				}
+
+				/* Don't save the contact if the nom field is empty */
+				if (jtfnom.getText().isBlank()) {
+					jlnom.setForeground(Color.RED);
+					jlnom.setText("Nom*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jlnom.setForeground(Color.BLACK);
+					jlnom.setText("Nom");
+				}
+
+				/* Don't save the contact if the telephoneprive field is empty */
+				if (jtftelephoneprive.getText().isBlank()) {
+					jltelephoneprive.setForeground(Color.RED);
+					jltelephoneprive.setText("Téléphone privé*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jltelephoneprive.setForeground(Color.BLACK);
+					jltelephoneprive.setText("Téléphone privé");
+				}
+
+				/* Don't save the contact if the organisation field is empty */
+				if (jtforganisation.getText().isBlank()) {
+					jlorganisation.setForeground(Color.RED);
+					jlorganisation.setText("Téléphone privé*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jlorganisation.setForeground(Color.BLACK);
+					jlorganisation.setText("Organisation*");
+				}
+
+				return ready;
+			}
+
 		}
 
 	}
@@ -685,14 +758,12 @@ public class ContactPanel extends JPanel {
 	// ******************************************************************** //
 
 	/**
-	 * The ContacAdd class displays a panel which allows you to edit a contact.
+	 * The ContacEdit class displays a panel which allows you to edit a contact.
 	 * 
 	 * @author Brice Berclaz
 	 */
 
-	public class ContactEdit extends JLabel {
-
-		private JLabel title = new JLabel();
+	public class ContactEdit extends JPanel {
 
 		private JPanel north = new JPanel();
 		private JPanel left = new JPanel();
@@ -719,8 +790,9 @@ public class ContactPanel extends JPanel {
 
 		private JButton save = new JButton("Save");
 
+		/** Constructor of the ContactEdit class. */
 		public ContactEdit() {
-			panelProperties();
+			panelProperties(this);
 
 			north.add(pictureContactEdit);
 			pictureContactEdit.addActionListener(new ChoosePicture());
@@ -730,19 +802,14 @@ public class ContactPanel extends JPanel {
 			/* Adding elements to the center panel */
 			center.add(jlprenom);
 			center.add(jtfprenom);
-
 			center.add(jlnom);
 			center.add(jtfnom);
-
 			center.add(jltelephoneprive);
 			center.add(jtftelephoneprive);
-
 			center.add(jltelephonefixe);
 			center.add(jtftelephonefixe);
-
 			center.add(jladresse);
 			center.add(jtfadresse);
-
 			center.add(jlorganisation);
 			center.add(jtforganisation);
 
@@ -754,37 +821,25 @@ public class ContactPanel extends JPanel {
 			this.add(north, BorderLayout.NORTH);
 			this.add(center, BorderLayout.CENTER);
 			this.add(left, BorderLayout.WEST);
+			this.add(right, BorderLayout.EAST);
 			this.add(south, BorderLayout.SOUTH);
-
 		}
 
-		/**
-		 * Method that refreshes the panel's contact photo.
-		 */
+		/** Method that refreshes the panel's contact photo. */
 		public void repaintEdit() {
 			pictureContactEdit.setLocation(urlPicture);
 			pictureContactEdit.refresh();
 		}
 
 		/**
-		 * Modifies the parameters of the main panel, i.e. ContactEdit.
-		 */
-		private void panelProperties() {
-			this.setPreferredSize(new Dimension(480, 40));
-			this.setLayout(new BorderLayout());
-			this.setOpaque(false);
-			this.setVisible(true);
-		}
-
-		/**
 		 * Allows you to retrieve the information of the selected contact and modify it.
 		 */
 		public void actualize() {
-			jtfprenom.setText(allcontact.get(selectedIndex).getPrenom());
-			jtfnom.setText(allcontact.get(selectedIndex).getNom());
-			jtftelephoneprive.setText(allcontact.get(selectedIndex).getTelephonePrive());
-			jtftelephonefixe.setText(allcontact.get(selectedIndex).getTelephoneFixe());
-			jtfadresse.setText(allcontact.get(selectedIndex).getAdresse());
+			jtfprenom.setText(allcontact.get(selectedIndex).getFirstName());
+			jtfnom.setText(allcontact.get(selectedIndex).getLastName());
+			jtftelephoneprive.setText(allcontact.get(selectedIndex).getPrivatePhone());
+			jtftelephonefixe.setText(allcontact.get(selectedIndex).getLandlinePhone());
+			jtfadresse.setText(allcontact.get(selectedIndex).getAddress());
 			jtforganisation.setText(allcontact.get(selectedIndex).getOrganisation());
 
 			pictureContactEdit.setLocation(allcontact.get(selectedIndex).getLocPicture());
@@ -801,6 +856,11 @@ public class ContactPanel extends JPanel {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				boolean readyToSave = isReadyToSave();
+				if (readyToSave == false) {
+					return;
+				}
+
 				/* T = TYPED, S = SELECTED */
 				String prenomT = jtfprenom.getText();
 				String nomT = jtfnom.getText();
@@ -810,31 +870,73 @@ public class ContactPanel extends JPanel {
 				String organisationT = jtforganisation.getText();
 				String pictureS = urlPicture;
 
-				// System.out.println("SAVED : "+urlPicture);
-
-				// TESTS
-				// Interdire les vides
-				// Check numero telephone
-
-				// Creation contact
-				// ContactData createContact = new ContactData(0, prenomT, nomT, telPriveT,
-				// telFixeT, adresseT,
-				// organisationT);
-
-				// CREATION CONTACT
-				// allcontact.add(new ContactData(id, prenomT, nomT, telPriveT, telFixeT,
-				// adresseT, organisationT));
-
-				allcontact.get(selectedIndex).setPrenom(prenomT);
-				allcontact.get(selectedIndex).setNom(nomT);
-				allcontact.get(selectedIndex).setTelephonePrive(telPriveT);
-				allcontact.get(selectedIndex).setTelephoneFixe(telFixeT);
-				allcontact.get(selectedIndex).setAdresse(adresseT);
+				allcontact.get(selectedIndex).setFirstName(prenomT);
+				allcontact.get(selectedIndex).setLastName(nomT);
+				allcontact.get(selectedIndex).setPrivatePhone(telPriveT);
+				allcontact.get(selectedIndex).setLandlinePhone(telFixeT);
+				allcontact.get(selectedIndex).setAddress(adresseT);
 				allcontact.get(selectedIndex).setOrganisation(organisationT);
 				allcontact.get(selectedIndex).setOrganisation(organisationT);
 				allcontact.get(selectedIndex).setLocPicture(pictureS);
 
 				serialize();
+			}
+
+			/**
+			 * Check if the required fields have been filled in and if the contact can
+			 * therefore be saved
+			 * 
+			 * @return a boolean if it is ready or not
+			 */
+			public boolean isReadyToSave() {
+				boolean ready = false;
+
+				/* Don't save the contact if the prenom field is empty */
+				if (jtfprenom.getText().isBlank()) {
+					jlprenom.setForeground(Color.RED);
+					jlprenom.setText("Prenom*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jlprenom.setForeground(Color.BLACK);
+					jlprenom.setText("Prenom");
+					ready = true;
+				}
+
+				/* Don't save the contact if the nom field is empty */
+				if (jtfnom.getText().isBlank()) {
+					jlnom.setForeground(Color.RED);
+					jlnom.setText("Nom*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jlnom.setForeground(Color.BLACK);
+					jlnom.setText("Nom");
+				}
+
+				/* Don't save the contact if the telephoneprive field is empty */
+				if (jtftelephoneprive.getText().isBlank()) {
+					jltelephoneprive.setForeground(Color.RED);
+					jltelephoneprive.setText("Téléphone privé*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jltelephoneprive.setForeground(Color.BLACK);
+					jltelephoneprive.setText("Téléphone privé");
+				}
+
+				/* Don't save the contact if the organisation field is empty */
+				if (jtforganisation.getText().isBlank()) {
+					jlorganisation.setForeground(Color.RED);
+					jlorganisation.setText("Téléphone privé*");
+					ready = false;
+				} else {
+					/* We make sure that the colors and texts are black if it isn't empty */
+					jlorganisation.setForeground(Color.BLACK);
+					jlorganisation.setText("Organisation*");
+				}
+
+				return ready;
 			}
 		}
 
@@ -850,13 +952,10 @@ public class ContactPanel extends JPanel {
 	 * @author Brice Berclaz
 	 */
 
-	private class ContactShow extends JLabel {
-
-		private JLabel title = new JLabel();
+	private class ContactShow extends JPanel {
 
 		private JPanel north = new JPanel();
 		private JPanel left = new JPanel();
-		private JPanel right = new JPanel();
 		private JPanel south = new JPanel();
 
 		private JPanel center = new JPanel();
@@ -868,7 +967,7 @@ public class ContactPanel extends JPanel {
 		private JLabel jladresse = new JLabel("Adresse");
 		private JLabel jlorganisation = new JLabel("Organisation");
 
-		/* o pour object */
+		/* O for object. */
 		private JLabel jlprenomO = new JLabel();
 		private JLabel jlnomO = new JLabel();
 		private JLabel jltelephonepriveO = new JLabel();
@@ -878,8 +977,9 @@ public class ContactPanel extends JPanel {
 
 		private Icon pictureContactShow = new Icon(urlPicture, 96, 96);
 
+		/** Constructor of the ContactShow class. */
 		public ContactShow() {
-			panelProperties();
+			panelProperties(this);
 
 			north.add(pictureContactShow);
 
@@ -888,19 +988,14 @@ public class ContactPanel extends JPanel {
 			/* Adding elements to the center panel */
 			center.add(jlprenom);
 			center.add(jlprenomO);
-
 			center.add(jlnom);
 			center.add(jlnomO);
-
 			center.add(jltelephoneprive);
 			center.add(jltelephonepriveO);
-
 			center.add(jltelephonefixe);
 			center.add(jltelephonefixeO);
-
 			center.add(jladresse);
 			center.add(jladresseO);
-
 			center.add(jlorganisation);
 			center.add(jlorganisationO);
 
@@ -908,30 +1003,26 @@ public class ContactPanel extends JPanel {
 			this.add(left, BorderLayout.WEST);
 			this.add(south, BorderLayout.SOUTH);
 			this.add(north, BorderLayout.NORTH);
-
 		}
 
+		/** Method that refreshes the panel's contact photo. */
 		public void repaintShow() {
 			pictureContactShow.setLocation(urlPicture);
 			pictureContactShow.refresh();
 		}
 
+		/**
+		 * Allows you to retrieve the information of the selected contact and show it
+		 */
 		public void actualize() {
-			jlprenomO.setText(allcontact.get(selectedIndex).getPrenom());
-			jlnomO.setText(allcontact.get(selectedIndex).getNom());
-			jltelephonepriveO.setText(allcontact.get(selectedIndex).getTelephonePrive());
-			jltelephonefixeO.setText(allcontact.get(selectedIndex).getTelephoneFixe());
-			jladresseO.setText(allcontact.get(selectedIndex).getAdresse());
+			jlprenomO.setText(allcontact.get(selectedIndex).getFirstName());
+			jlnomO.setText(allcontact.get(selectedIndex).getLastName());
+			jltelephonepriveO.setText(allcontact.get(selectedIndex).getPrivatePhone());
+			jltelephonefixeO.setText(allcontact.get(selectedIndex).getLandlinePhone());
+			jladresseO.setText(allcontact.get(selectedIndex).getAddress());
 			jlorganisationO.setText(allcontact.get(selectedIndex).getOrganisation());
 
 			pictureContactShow.setLocation(allcontact.get(selectedIndex).getLocPicture());
-		}
-
-		private void panelProperties() {
-			this.setPreferredSize(new Dimension(480, 40));
-			this.setLayout(new BorderLayout());
-			this.setOpaque(false);
-			this.setVisible(true);
 		}
 	}
 }// End of the class ContactPanel
