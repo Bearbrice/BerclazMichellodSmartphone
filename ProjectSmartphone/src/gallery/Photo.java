@@ -29,6 +29,7 @@ public class Photo implements Serializable {
 	private String path;
 	private BufferedImage picture;
 
+	/** Constructor of the Photo class */
 	public Photo(String path, BufferedImage picture) {
 		this.path = path;
 		this.picture = picture;

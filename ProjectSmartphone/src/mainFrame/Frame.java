@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 import calculator.CalculatorPanel;
 import clock.ClockPanel;
 import contact.ContactPanel;
-import gallery.Galerie;
+import gallery.GalleryPanel;
 import images.Background;
 import images.BackgroundData;
 import images.Icon;
@@ -54,7 +54,7 @@ public class Frame extends JFrame {
 	private ClockPanel clockpanel = new ClockPanel();
 	private SettingsPanel settingspanel = new SettingsPanel();
 	private CalculatorPanel calculatorpanel = new CalculatorPanel();
-	private Galerie gallerypanel = new Galerie();
+	private GalleryPanel gallerypanel = new GalleryPanel();
 
 	/* Panel from another class */
 	private BannerPanel bannerPanel = new BannerPanel();
@@ -287,7 +287,7 @@ public class Frame extends JFrame {
 	 * 
 	 * @author Brice Berclaz
 	 * @see java.awt.event.ActionEvent
-	 * @see gallery.Galerie
+	 * @see gallery.GalleryPanel
 	 */
 	private class RunGallery implements ActionListener {
 		@Override

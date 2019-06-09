@@ -35,21 +35,12 @@ public class CalculatorPanel extends JPanel {
 	private Dimension dim = new Dimension(50, 40);
 	private Dimension dim2 = new Dimension(50, 30);
 
-	/**
-	 * Constructor of the calculator panel
-	 */
-
+	/** Constructor of the CalculatorPanel class */
 	public CalculatorPanel() {
-		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		// JFrame all = new JFrame("Calculatrice");
-		// setTitle("Calculette");
-		// this.setSize(300,320);
-		// this.setLocationRelativeTo(null);
-		// this.setResizable(false);
+
 		this.setPreferredSize(new Dimension(638, 188));
 		this.setVisible(true);
 		this.setOpaque(false);
-		// this.setLayout(new BorderLayout());
 
 		// Adding the title
 		banner.add(title);
@@ -63,8 +54,6 @@ public class CalculatorPanel extends JPanel {
 		this.add(banner, BorderLayout.NORTH);
 		this.add(container, BorderLayout.CENTER);
 
-		// this.setContentPane(container);
-		// this.setVisible(true);
 	}
 
 	/**

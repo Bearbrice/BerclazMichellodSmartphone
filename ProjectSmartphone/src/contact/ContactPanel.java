@@ -36,7 +36,7 @@ import javax.swing.JTextField;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-import gallery.Galerie;
+import gallery.GalleryPanel;
 //import Contacts.ContactData;
 import images.Icon;
 
@@ -52,7 +52,7 @@ import images.Icon;
  */
 public class ContactPanel extends JPanel {
 
-	private Galerie gallery = new Galerie();
+	private GalleryPanel gallery = new GalleryPanel();
 
 	private int id = 0;
 
@@ -561,7 +561,7 @@ public class ContactPanel extends JPanel {
 		ExecutorService executor = Executors.newCachedThreadPool();
 		executor.submit(r);
 		/*
-		 * you shouldn't put anything here because this line will execute immediately,
+		 * You shouldn't put anything here because this line will execute immediately,
 		 * not waiting for your task to complete
 		 */
 	}
@@ -575,7 +575,7 @@ public class ContactPanel extends JPanel {
 	 * @author Brice Berclaz
 	 */
 
-	class ContactAdd extends JPanel {
+	private class ContactAdd extends JPanel {
 
 		private JPanel north = new JPanel();
 		private JPanel south = new JPanel();
@@ -657,6 +657,7 @@ public class ContactPanel extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 
 				boolean readyToSave = isReadyToSave();
+
 				if (readyToSave == false) {
 					return;
 				}
@@ -686,6 +687,8 @@ public class ContactPanel extends JPanel {
 				jtfadresse.setText("");
 				jtforganisation.setText("");
 
+				/* We should replace the url of the picture so that it isn't stored for later */
+				urlPicture = urlStatic;
 				pictureContactAdd.setLocation(urlStatic);
 				pictureContactAdd.refresh();
 
@@ -700,8 +703,12 @@ public class ContactPanel extends JPanel {
 			public boolean isReadyToSave() {
 				boolean ready = false;
 
-				/* Don't save the contact if the prenom field is empty */
-				if (jtfprenom.getText().isBlank()) {
+				/*
+				 * Don't save the contact if the prenom field is empty. A method isBlank is
+				 * existing but have issues with differents JDK this is why we will prefer
+				 * .equals("") in this project
+				 */
+				if (jtfprenom.getText().equals("")) {
 					jlprenom.setForeground(Color.RED);
 					jlprenom.setText("Prenom*");
 					ready = false;
@@ -713,7 +720,7 @@ public class ContactPanel extends JPanel {
 				}
 
 				/* Don't save the contact if the nom field is empty */
-				if (jtfnom.getText().isBlank()) {
+				if (jtfnom.getText().equals("")) {
 					jlnom.setForeground(Color.RED);
 					jlnom.setText("Nom*");
 					ready = false;
@@ -724,7 +731,7 @@ public class ContactPanel extends JPanel {
 				}
 
 				/* Don't save the contact if the telephoneprive field is empty */
-				if (jtftelephoneprive.getText().isBlank()) {
+				if (jtftelephoneprive.getText().equals("")) {
 					jltelephoneprive.setForeground(Color.RED);
 					jltelephoneprive.setText("Téléphone privé*");
 					ready = false;
@@ -735,7 +742,7 @@ public class ContactPanel extends JPanel {
 				}
 
 				/* Don't save the contact if the organisation field is empty */
-				if (jtforganisation.getText().isBlank()) {
+				if (jtforganisation.getText().equals("")) {
 					jlorganisation.setForeground(Color.RED);
 					jlorganisation.setText("Organisation*");
 					ready = false;
@@ -891,7 +898,7 @@ public class ContactPanel extends JPanel {
 				boolean ready = false;
 
 				/* Don't save the contact if the prenom field is empty */
-				if (jtfprenom.getText().isBlank()) {
+				if (jtfprenom.getText().equals("")) {
 					jlprenom.setForeground(Color.RED);
 					jlprenom.setText("Prenom*");
 					ready = false;
@@ -903,7 +910,7 @@ public class ContactPanel extends JPanel {
 				}
 
 				/* Don't save the contact if the nom field is empty */
-				if (jtfnom.getText().isBlank()) {
+				if (jtfnom.getText().equals("")) {
 					jlnom.setForeground(Color.RED);
 					jlnom.setText("Nom*");
 					ready = false;
@@ -914,7 +921,7 @@ public class ContactPanel extends JPanel {
 				}
 
 				/* Don't save the contact if the telephoneprive field is empty */
-				if (jtftelephoneprive.getText().isBlank()) {
+				if (jtftelephoneprive.getText().equals("")) {
 					jltelephoneprive.setForeground(Color.RED);
 					jltelephoneprive.setText("Téléphone privé*");
 					ready = false;
@@ -925,7 +932,7 @@ public class ContactPanel extends JPanel {
 				}
 
 				/* Don't save the contact if the organisation field is empty */
-				if (jtforganisation.getText().isBlank()) {
+				if (jtforganisation.getText().equals("")) {
 					jlorganisation.setForeground(Color.RED);
 					jlorganisation.setText("Téléphone privé*");
 					ready = false;

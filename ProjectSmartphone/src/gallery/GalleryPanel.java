@@ -43,7 +43,7 @@ import images.Icon;
  * @author Samuel Michellod
  */
 
-public class Galerie extends JPanel {
+public class GalleryPanel extends JPanel {
 	// path pour background
 	private String pathbg;
 	private boolean activeBGserialization = false;
@@ -88,8 +88,8 @@ public class Galerie extends JPanel {
 	// for scrolling
 	JScrollPane scroll = new JScrollPane(center);
 
-	// Constructor of Galerie
-	public Galerie() {
+	/** Constructor of the GaleriePanel class */
+	public GalleryPanel() {
 
 		this.setPreferredSize(new Dimension(480, 40));
 		this.setLayout(new BorderLayout());
@@ -168,7 +168,7 @@ public class Galerie extends JPanel {
 
 				// Look for the source of the image click
 				MiniPhoto minsource = (MiniPhoto) e.getSource();
-				PhotoPanel photoPanel = new PhotoPanel(Galerie.this, minsource.pic);
+				PhotoPanel photoPanel = new PhotoPanel(GalleryPanel.this, minsource.pic);
 
 				// Creation of a panel for photos in large
 				photo.setLayout(new BorderLayout());
@@ -189,7 +189,7 @@ public class Galerie extends JPanel {
 	 *
 	 */
 	public class PhotoPanel extends JPanel {
-		private Galerie photo;
+		private GalleryPanel photo;
 		private Photo image;
 		private MouseAdapter m;
 		private String changeImage;
@@ -211,7 +211,7 @@ public class Galerie extends JPanel {
 		 * @author Samuel Michellod
 		 */
 
-		public PhotoPanel(Galerie photo, Photo image) {
+		public PhotoPanel(GalleryPanel photo, Photo image) {
 			this.photo = photo;
 			this.image = image;
 
