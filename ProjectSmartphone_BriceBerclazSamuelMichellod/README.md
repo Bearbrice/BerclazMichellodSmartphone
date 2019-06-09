@@ -17,7 +17,7 @@ The smartphone contains the following applications:
 
 ## Preview
 
-![alt text](C:\Users\brice\git\BerclazMichellodSmartphone\ProjectSmartphone_BriceBerclazSamuelMichellod\images\demo\Preview.png "")
+![alt text](\images\demo\Preview.png "")
 
 ## Applications
 ### Gallery
