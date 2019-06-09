@@ -1,5 +1,6 @@
 # BerclazMichellodSmartphone
-##Project smartphone 2019
+
+## Project smartphone 2019
 
 We made a virtual smartphone in java on eclipse as part of the object-oriented programming course.
 To launch the smartphone, simply launch the file BerclazMichellod.bat 
