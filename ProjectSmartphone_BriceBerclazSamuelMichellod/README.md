@@ -17,7 +17,7 @@ The smartphone contains the following applications:
 
 ## Preview
 
-![alt text](\images\demo\Preview.png "")
+![alt text](images/demo/Preview.png)
 
 ## Applications
 ### Gallery
