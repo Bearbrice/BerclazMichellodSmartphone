@@ -30,7 +30,13 @@ public class Icon extends JButton {
 	private int large = 10;
 	private int length = 10;
 
-	/** Constructor of the Icon class */
+	/**
+	 * Constructor of the Icon class
+	 * 
+	 * @param location the path where to find the icon
+	 * @param large    how large you want the icon
+	 * @param length   the length for the icon
+	 */
 	public Icon(String location, int large, int length) {
 
 		this.location = location;

@@ -18,13 +18,15 @@ import java.io.Serializable;
  */
 public class BackgroundData implements Serializable {
 
-	private static final long serialVersionUID = -7029499312549910978L; // generated
-
 	private String defaultBackground = "images/backgroundDefault/Background01.jpg";
 
 	private String backgroundPath = defaultBackground;
 
-	/** Constructor of the BackgroundData class */
+	/**
+	 * Constructor of the BackgroundData class
+	 * 
+	 * @param backgroundPath the path of the background
+	 */
 	public BackgroundData(String backgroundPath) {
 		this.backgroundPath = backgroundPath;
 	}

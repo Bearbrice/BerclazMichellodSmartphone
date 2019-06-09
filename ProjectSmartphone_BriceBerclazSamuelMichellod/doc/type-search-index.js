@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"musicPlayer","l":"Track"}]
+typeSearchIndex = [{"l":"All Classes","url":"allclasses-index.html"},{"p":"settings","l":"Kernel32"},{"p":"settings","l":"Kernel32.SYSTEM_POWER_STATUS"}]

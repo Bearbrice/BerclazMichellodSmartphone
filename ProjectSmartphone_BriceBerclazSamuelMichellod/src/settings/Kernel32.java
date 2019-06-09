@@ -33,7 +33,8 @@ public interface Kernel32 extends StdCallLibrary {
 	 * battery's information
 	 * 
 	 * @author BalusC
-	 * @see http://msdn2.microsoft.com/en-us/library/aa373232.aspx
+	 * @see <a href=
+	 *      "http://msdn2.microsoft.com/en-us/library/aa373232.aspx">Microsoft</a>
 	 */
 	public class SYSTEM_POWER_STATUS extends Structure {
 		public byte ACLineStatus;
@@ -57,6 +58,8 @@ public interface Kernel32 extends StdCallLibrary {
 
 		/**
 		 * The AC power status
+		 * 
+		 * @return status of the ACLine
 		 */
 		public String getACLineStatusString() {
 			switch (ACLineStatus) {

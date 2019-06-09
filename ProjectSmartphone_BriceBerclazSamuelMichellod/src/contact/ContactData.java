@@ -13,11 +13,9 @@ import java.io.Serializable;
  * This class is dedicated to the serialization of contact data
  * 
  * @author Brice Berclaz
- * @see java.io.Serializable;
+ * @see java.io.Serializable
  */
 public class ContactData implements Serializable {
-
-	private static final long serialVersionUID = 7190649505460308233L; // generated
 
 	/* Initialization of variables */
 	private int id;

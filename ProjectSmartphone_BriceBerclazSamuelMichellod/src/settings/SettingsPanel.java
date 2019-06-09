@@ -113,15 +113,15 @@ public class SettingsPanel extends JPanel {
 	private void buttonProperties() {
 		informations.setBackground(Color.BLACK);
 		informations.setForeground(Color.WHITE);
-		informations.setFont(new Font("Algerian", Font.BOLD, 20));
+		informations.setFont(new Font("Lucida Console", Font.BOLD, 20));
 
 		version.setBackground(Color.BLACK);
 		version.setForeground(Color.WHITE);
-		version.setFont(new Font("Algerian", Font.BOLD, 20));
+		version.setFont(new Font("Lucida Console", Font.BOLD, 20));
 
 		resetContact.setBackground(Color.BLACK);
 		resetContact.setForeground(Color.WHITE);
-		resetContact.setFont(new Font("Algerian", Font.BOLD, 20));
+		resetContact.setFont(new Font("Lucida Console", Font.BOLD, 20));
 	}
 
 	/** Modifies the parameters of the north panel */
@@ -264,7 +264,7 @@ public class SettingsPanel extends JPanel {
 	 * @author Brice Berclaz
 	 */
 	private class Version extends JPanel {
-		private JLabel version = new JLabel("Version 1.44");
+		private JLabel version = new JLabel("Version 1.68");
 		private JLabel credits = new JLabel("©Brice Berclaz & Samuel Michellod - 2019");
 
 		private JPanel center = new JPanel();
@@ -353,15 +353,23 @@ public class SettingsPanel extends JPanel {
 		private void titleProperties() {
 			title1.setForeground(Color.BLACK);
 			title1.setFont(new Font("Lucida Console", Font.BOLD, 15));
+			title1.setOpaque(true);
+			title1.setBackground(Color.WHITE);
 
 			title2.setForeground(Color.BLACK);
 			title2.setFont(new Font("Lucida Console", Font.BOLD, 15));
+			title2.setOpaque(true);
+			title2.setBackground(Color.WHITE);
 
 			title3.setForeground(Color.BLACK);
 			title3.setFont(new Font("Lucida Console", Font.BOLD, 15));
+			title3.setOpaque(true);
+			title3.setBackground(Color.WHITE);
 
 			title4.setForeground(Color.BLACK);
 			title4.setFont(new Font("Lucida Console", Font.BOLD, 15));
+			title4.setOpaque(true);
+			title4.setBackground(Color.WHITE);
 		}
 
 		/** Modifies the parameters of the panel center */

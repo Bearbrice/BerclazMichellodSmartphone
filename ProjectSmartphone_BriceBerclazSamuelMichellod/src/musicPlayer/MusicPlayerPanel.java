@@ -213,6 +213,7 @@ public class MusicPlayerPanel extends JPanel {
 	 * the file
 	 * 
 	 * @param name the name of the file that you want to change
+	 * @return filename without extension
 	 */
 	public String substrTitle(String name) {
 		int toDelete = 0;
@@ -538,7 +539,11 @@ public class MusicPlayerPanel extends JPanel {
 		}
 	}
 
-	/** Pauses the selected music */
+	/**
+	 * Pauses the selected music
+	 * 
+	 * @param clip the music you want to pause
+	 */
 	public void pause(Clip clip) {
 		try {
 			// Block of code to try
@@ -568,6 +573,8 @@ public class MusicPlayerPanel extends JPanel {
 	/**
 	 * Stops the selected music (is the user starts again it will start from the
 	 * beginning)
+	 * 
+	 * @param clip the music you want to stop
 	 */
 	private void stop(Clip clip) {
 		try {

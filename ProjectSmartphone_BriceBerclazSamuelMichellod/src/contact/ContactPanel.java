@@ -252,7 +252,7 @@ public class ContactPanel extends JPanel {
 	/**
 	 * Sorts the contact table according to the alphabetical order of first names
 	 * 
-	 * @return ArrayList<ContactData>
+	 * @return the new arraylist with objects from the class ContactData
 	 */
 	public ArrayList<ContactData> orderArray() {
 
@@ -349,7 +349,6 @@ public class ContactPanel extends JPanel {
 	 * 
 	 * @author Brice Berclaz
 	 * @see java.awt.event.ActionEvent
-	 * @see ContactEdition
 	 */
 	public class RunContactEdition implements ActionListener {
 
@@ -491,8 +490,6 @@ public class ContactPanel extends JPanel {
 	 * 
 	 * @author Brice Berclaz
 	 * @see java.awt.event.ActionEvent
-	 * @see #run()
-	 * @see #executeRunnable()
 	 */
 	public class ChoosePicture implements ActionListener {
 
@@ -511,7 +508,11 @@ public class ContactPanel extends JPanel {
 		}
 	}
 
-	/* Runnable that allows you to know when to return to the previous panel */
+	/**
+	 * Runnable that allows you to know when to return to the previous panel
+	 * 
+	 * @author Brice Berclaz
+	 */
 	private Runnable r = new Runnable() {
 		@Override
 		public void run() {
