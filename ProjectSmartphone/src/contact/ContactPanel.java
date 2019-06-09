@@ -691,7 +691,6 @@ public class ContactPanel extends JPanel {
 				urlPicture = urlStatic;
 				pictureContactAdd.setLocation(urlStatic);
 				pictureContactAdd.refresh();
-
 			}
 
 			/**
@@ -957,7 +956,6 @@ public class ContactPanel extends JPanel {
 	 * 
 	 * @author Brice Berclaz
 	 */
-
 	private class ContactShow extends JPanel {
 
 		private JPanel north = new JPanel();

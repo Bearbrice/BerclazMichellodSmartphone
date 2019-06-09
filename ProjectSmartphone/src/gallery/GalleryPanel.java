@@ -44,7 +44,7 @@ import images.Icon;
  */
 
 public class GalleryPanel extends JPanel {
-	// path pour background
+	// path for background
 	private String pathbg;
 	private boolean activeBGserialization = false;
 
@@ -58,7 +58,7 @@ public class GalleryPanel extends JPanel {
 
 	Background change = new Background();
 
-	// boolean pour savoir si la galerie s'exécute normalement ou dans les contacts
+	/* Boolean to know if the gallery is running normally or in contacts */
 	private boolean activContact = false;
 
 	// getter for activContact
@@ -71,8 +71,9 @@ public class GalleryPanel extends JPanel {
 		this.activContact = activContact;
 	}
 
-	// urldelimagecontact
+	// url of the contact image
 	private String urlContact = "";
+
 	// Creation of a picture object array
 	private ArrayList<Photo> listPhoto = new ArrayList<Photo>();
 
@@ -115,11 +116,14 @@ public class GalleryPanel extends JPanel {
 		this.pathbg = pathbg;
 	}
 
-	// Class that will manage the click on the image button of the gallery
+	/**
+	 * Class that will manage the click on the image button of the gallery
+	 * 
+	 * @author Samuel Michellod
+	 */
+	public class ClickPhoto implements ActionListener {
 
-	class ClickPhoto implements ActionListener {
-
-		String path;
+		private String path;
 
 		public ClickPhoto(String path) {
 			this.path = path;
@@ -128,40 +132,34 @@ public class GalleryPanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 
-			// START CODING BRICE (EN TEST)
-
+			// START CODING BRICE
 			if (activContact == true) {
 				String temp = "";
 				String temp2 = "";
 
-				// boucle qui exécute un substring inversé pour obtenir le chemin absolu de
-				// l'image
+				/*
+				 * Loop that executes an inverted substrate to obtain the absolute path of the
+				 * image
+				 */
 				for (int i = path.length() - 1; i > 0; i--) {
 					if (path.charAt(i) == '\\') {
 						break;
 					}
 					temp += path.charAt(i);
-					// System.out.println(path.charAt(i));
-					// System.out.println(temp);
 				}
 
-				// boucle qui remet à l'endroit le chemin absolu obtenu
+				/* Loop that returns the absolute path obtained to the place */
 				for (int i = temp.length() - 1; i >= 0; i--) {
 					temp2 += temp.charAt(i);
 				}
 
 				setUrlContact("imagesgallery/" + temp2);
 
-				// setUrlContact(path);
-				System.out.println(path);
-
-				System.out.println("TEMP2 = " + temp2);
-
 				activContact = false;
 			}
 			// END CODING BRICE
 
-			// else = utilisation normale de la galerie by SAMUEL
+			/* Else = normal use of the gallery by Samuel */
 			else {
 				panelgallery.setVisible(false);
 				cardlayout.show(gettripanel(), "photo");
@@ -472,7 +470,7 @@ public class GalleryPanel extends JPanel {
 				}
 			}
 
-			// To find the relative path
+			/** Find a relative path */
 			private String findRelativePath(String x) {
 				String newPath = null;
 				int z = 0;
@@ -518,7 +516,7 @@ public class GalleryPanel extends JPanel {
 
 	/**
 	 * 
-	 * class that will manage the panel at the top of the gallery
+	 * Class that will manage the panel at the top of the gallery
 	 * 
 	 * @author Samuel Michellod
 	 *

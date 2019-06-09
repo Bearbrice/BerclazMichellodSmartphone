@@ -1,3 +1,10 @@
+/*
+ * CalculatorTest
+ * Author: S. Michellod
+ * Date creation: 27.05.2019
+ * Date last modification: 07.06.2019
+ */
+
 package Test;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -9,7 +16,7 @@ import org.junit.jupiter.api.Test;
 import calculator.CalculatorPanel;
 
 /**
- * JUnit test case class
+ * JUnit test case class Calculator
  * 
  * @author Samuel Michellod
  *
@@ -33,7 +40,7 @@ class CalculatorTest {
 
 		/*
 		 **********************************
-		 * Test of the addition
+		 * Test for the addition
 		 **********************************
 		 */
 
@@ -57,7 +64,7 @@ class CalculatorTest {
 
 		/*
 		 **********************************
-		 * Test of the substraction
+		 * Test for the substraction
 		 **********************************
 		 */
 		// Set the first number to 15
@@ -80,7 +87,7 @@ class CalculatorTest {
 
 		/*
 		 **********************************
-		 * Test of the multiplication
+		 * Test for the multiplication
 		 **********************************
 		 */
 

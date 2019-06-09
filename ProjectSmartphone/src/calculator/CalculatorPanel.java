@@ -240,6 +240,8 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Method that will make the calcul according to the operateur
+	 * 
+	 * @author Samuel Michellod
 	 */
 
 	public void calcul() {
@@ -263,9 +265,7 @@ public class CalculatorPanel extends JPanel {
 				screen.setText("0");
 			}
 		}
-		/**
-		 * Set the screen to an int if the number finish by .0
-		 */
+		/* Set the screen to an int if the number finish by .0 */
 
 		double y = Math.round(number);
 		if (number - y == 0) {
@@ -276,6 +276,8 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener for the numbers in the keyboard
+	 * 
+	 * @author Samuel Michellod
 	 */
 
 	class NumberListener implements ActionListener {
@@ -294,8 +296,9 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the equals button
+	 * 
+	 * @author Samuel Michellod
 	 */
-
 	class EgalListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -307,8 +310,9 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the plus button
+	 * 
+	 * @author Samuel Michellod
 	 */
-
 	class PlusListener implements ActionListener {
 
 		@Override
@@ -328,8 +332,9 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the minus button
+	 * 
+	 * @author Samuel Michellod
 	 */
-
 	class MinusListener implements ActionListener {
 
 		@Override
@@ -348,8 +353,9 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the multiplication button
+	 * 
+	 * @author Samuel Michellod
 	 */
-
 	class MultiListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -367,8 +373,9 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the division button
+	 * 
+	 * @author Samuel Michellod
 	 */
-
 	class DivListener implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -386,6 +393,8 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the reset button
+	 * 
+	 * @author Samuel Michellod
 	 */
 
 	class ResetListener implements ActionListener {
@@ -401,6 +410,8 @@ public class CalculatorPanel extends JPanel {
 
 	/**
 	 * Listener of the point button
+	 * 
+	 * @author Samuel Michellod
 	 */
 
 	class PointListener implements ActionListener {

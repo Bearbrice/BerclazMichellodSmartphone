@@ -1,8 +1,8 @@
 /*
  * Background picture
- * Author: Brice Berclaz & Numeric1 (forum code source CCM)
- * Date creation: 
- * Date last modification:
+ * Author : B. Berclaz
+ * Date creation : 
+ * Date last modification : 
  */
 
 package images;
@@ -17,17 +17,20 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
 
+/**
+ * The Icon class allows a picture to be a JButton
+ * 
+ * @author Brice Berclaz
+ * @see java.awt.Graphics2D
+ */
 public class Icon extends JButton {
-
-	// private static final long serialVersionUID = 1L;
 
 	private String location = "";
 
 	private int large = 10;
 	private int length = 10;
-	// private String fileLocation = "";
 
-	// Constructeur
+	/** Constructor of the Icon class */
 	public Icon(String location, int large, int length) {
 
 		this.location = location;
@@ -50,10 +53,12 @@ public class Icon extends JButton {
 		});
 	}
 
-	// Bien que la methode soit appellée d'elle même, il faut prévoir une issue de
-	// secours : rafraichîr l'affichage.
-	// Car cetains composants la gèrent mal.
+	/** Repaint the icon */
 	public void refresh() {
+		/*
+		 * Although the method is called by itself, an emergency exit must be provided:
+		 * refresh the display. Because some components do not manage it well.
+		 */
 		this.repaint();
 	}
 
@@ -66,17 +71,16 @@ public class Icon extends JButton {
 	}
 
 	/**
-	 * method for painting a component
+	 * Method for painting a component.
 	 * 
 	 * @param ActionEvent e
 	 */
 	@Override
 	public void paintComponent(Graphics g) {
-		// Ajouter Graphics 2D afin de jouir de toutes les performances de la class
-		// graphic
+		/* Add 2D Graphics to enjoy all the performance of the graphic class */
 		Graphics2D g2 = (Graphics2D) g;
 
-		// Gérer l'exception si le fichier n'existe pas ou plus
+		/* Manage the exception if the file does not exist or no longer exists */
 		File f = new File(location);
 		if (!(f.isFile())) {
 			location = "images/icons/ImageNotFound.jpg";

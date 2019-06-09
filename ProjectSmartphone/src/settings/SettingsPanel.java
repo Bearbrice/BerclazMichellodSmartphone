@@ -1,6 +1,6 @@
 /*
  * Settings Panel
- * Author: Brice Berclaz
+ * Author: B. Berclaz
  * Date creation: 03.05.2019
  * Date last modification: 31.05.2019
  */

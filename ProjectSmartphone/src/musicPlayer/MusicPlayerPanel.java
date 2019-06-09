@@ -211,6 +211,8 @@ public class MusicPlayerPanel extends JPanel {
 	/**
 	 * Method that allows you to remove the extension to get only the filename of
 	 * the file
+	 * 
+	 * @param name the name of the file that you want to change
 	 */
 	public String substrTitle(String name) {
 		int toDelete = 0;
@@ -235,8 +237,10 @@ public class MusicPlayerPanel extends JPanel {
 	/**
 	 * Gets the volume of the current clip
 	 * 
+	 * @return the volume of the current clip
 	 * @see <a href=
 	 *      "https://stackoverflow.com/questions/40514910/set-volume-of-java-clip">stackoverflow</a>
+	 * 
 	 */
 	public float getVolume() {
 		FloatControl gainControl = (FloatControl) clip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -246,6 +250,7 @@ public class MusicPlayerPanel extends JPanel {
 	/**
 	 * Sets the volume of the current clip
 	 * 
+	 * @param volume the strength of the volume
 	 * @see <a href=
 	 *      "https://stackoverflow.com/questions/40514910/set-volume-of-java-clip">stackoverflow</a>
 	 */
@@ -362,7 +367,11 @@ public class MusicPlayerPanel extends JPanel {
 		return null;
 	}
 
-	/** Play the selected music */
+	/**
+	 * Play the selected music
+	 * 
+	 * @param clip the music you want to play
+	 */
 	public void play(Clip clip) {
 		/* Allows to manage the java error if the sound is not found */
 		if (findLocation() == null) {
@@ -479,10 +488,15 @@ public class MusicPlayerPanel extends JPanel {
 		BG.add(select);
 	}
 
+	/**
+	 * Class actionListener that delete a music from the app
+	 * 
+	 * @see java.awt.event.ActionEvent
+	 */
 	private class DeleteMusic implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// On test si aucun bouton n'est sélectionné alors rien ne se passe
+			// We test if no button is selected then nothing happens
 			int i = -1;
 			String text = null;
 
@@ -496,7 +510,7 @@ public class MusicPlayerPanel extends JPanel {
 				}
 			}
 
-			// si le i est toujours à -1 il n'y a pas de bouton sélectionné
+			// if the i is still at -1 there is no button selected
 			if (i == -1) {
 				System.out.println("Aucun bouton sélectionné");
 				return;
@@ -566,7 +580,7 @@ public class MusicPlayerPanel extends JPanel {
 
 		setInProgress(false);
 
-		// remet l'emplacement à 0 pour recommencer la lecture
+		/* Resets the location to 0 to restart playback. */
 		location = null;
 	}
 
@@ -585,15 +599,14 @@ public class MusicPlayerPanel extends JPanel {
 		this.inProgress = inProgress;
 	}
 
-	// Permet de checker quand la musique est terminée
+	/* Allows to check when the music is finished */
 	public void checkProgress() {
-		// Test si clip est vide
-		if (clip == null) {
+
+		if (clip == null) { // tests if clip is empty
 			return;
 		}
 
-		// Test qui regarde si la musique est terminée
-		if (clip.isRunning() == false) {
+		if (clip.isRunning() == false) { // test that checks if the music is finished
 			setInProgress(false);
 		}
 
